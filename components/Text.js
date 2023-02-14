@@ -15,7 +15,7 @@ const Text = ({ children, type, style, ...rest }) => {
 const styles = StyleSheet.create({
   heading: {
     fontSize: 32,
-    color: 'white',
+    color: '#ffffff',
     marginBottom: 10,
     fontWeight: 'bold',
   },
@@ -23,6 +23,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: '#939393',
     marginBottom: 20,
+  },
+  brightSubHeading: {
+    fontSize: 14,
+    color: '#BFBFBF',
   },
   link: {
     color: '#8C8AFA',
