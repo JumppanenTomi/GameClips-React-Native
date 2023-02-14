@@ -33,7 +33,7 @@ const RegisterForm = ({ handleToggle }) => {
   return (
     <View style={styles.container}>
       <Separator height={24} />
-      <Text type="heading" style={{textAlign: 'center'}}>Let's create your account!</Text>
+      <Text type="heading" style={{ textAlign: 'center' }}>Let's create your account!</Text>
       <Separator height={24} />
       <FormInput
         control={control}
@@ -95,17 +95,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 24,
     backgroundColor: '#0D0D25',
-  },
-  bigHeading: {
-    fontSize: 32,
-    color: 'white',
-    marginBottom: 10,
-    fontWeight: 'bold',
-  },
-  smallHeading: {
-    fontSize: 14,
-    color: '#939393',
-    marginBottom: 20,
   },
 });
 

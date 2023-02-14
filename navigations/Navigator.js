@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainContext } from '../contexts/MainContext';
 import Login from '../views/Login';
+import Home from '../views/Home';
 
 //const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -53,6 +54,7 @@ const StackScreen = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen name="Single" component={Single} /> */}
+          <Stack.Screen name="Home" component={Home} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />

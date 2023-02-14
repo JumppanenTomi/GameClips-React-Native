@@ -74,12 +74,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#0D0D25',
   },
-  loginButton: {
-    width: '100%',
-    marginTop: 12,
-    marginBottom: 12,
-    backgroundColor: '#8C8AFA',
-  },
 });
 
 export default LoginForm;
