@@ -1,8 +1,8 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 //import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {MainContext} from '../contexts/MainContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { MainContext } from '../contexts/MainContext';
 import Login from '../views/Login';
 
 //const Tab = createBottomTabNavigator();
@@ -39,10 +39,12 @@ const TabScreen = () => {
 */
 
 const StackScreen = () => {
-  const {isLoggedIn} = useContext(MainContext);
+  const { isLoggedIn } = useContext(MainContext);
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{
+      headerShown: false
+    }}>
       {isLoggedIn ? (
         <>
           {/* <Stack.Screen
