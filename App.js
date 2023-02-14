@@ -19,8 +19,6 @@ const appStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#0D0D25',
-    color: 'white',
-    fontFamily: 'Roboto',
   },
 });
 
