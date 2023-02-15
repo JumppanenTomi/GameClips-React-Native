@@ -14,7 +14,7 @@ const Onboarding = ({navigation}) => {
       console.log(error);
     }
   };
-  /*
+  
   const checkOnboardingStatus = async () => {
     const hasLaunched = await AsyncStorage.getItem(HAS_LAUNCHED_KEY);
     if (hasLaunched === 'true') {
@@ -25,15 +25,14 @@ const Onboarding = ({navigation}) => {
   useEffect(() => {
     checkOnboardingStatus();
   }, []);
-  */
 
   return (
     <View style={styles.container}>
       <Text type="heading" style={styles.text}>
-        Discover the best {'\n'} gaming highlights
+        Discover the best{'\n'}gaming highlights
       </Text>
       <Text type="subHeading" style={styles.text}>
-        GameClips is a platform for gamers {'\n'} to share their moments.
+        GameClips is a platform for gamers{'\n'}to share their moments.
       </Text>
       <Button icon="arrow-right" onPress={handleOnboardingComplete}>
         Discover
