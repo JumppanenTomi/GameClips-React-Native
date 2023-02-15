@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { SelectList } from 'react-native-dropdown-select-list'
-import List from "../components/List";
+import List from "../components/Lists/Home/Newest";
 import {StyleSheet, SafeAreaView, Image, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {Video} from 'expo-av';
