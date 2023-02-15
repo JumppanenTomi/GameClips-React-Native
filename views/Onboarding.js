@@ -14,7 +14,7 @@ const Onboarding = ({navigation}) => {
       console.log(error);
     }
   };
-  
+
   const checkOnboardingStatus = async () => {
     const hasLaunched = await AsyncStorage.getItem(HAS_LAUNCHED_KEY);
     if (hasLaunched === 'true') {
