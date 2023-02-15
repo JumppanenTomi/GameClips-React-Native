@@ -1,16 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Keyboard, TouchableOpacity, View } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {Keyboard, TouchableOpacity, View} from 'react-native';
 import PropTypes from 'prop-types';
-import { MainContext } from '../contexts/MainContext';
+import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUser } from '../hooks/ApiHooks';
+import {useUser} from '../hooks/ApiHooks';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
-import Text from '../components/Text';
 
-const Login = ({ navigation }) => {
-  const { setIsLoggedIn, setUser } = useContext(MainContext);
-  const { getUserByToken } = useUser();
+const Login = ({navigation}) => {
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
+  const {getUserByToken} = useUser();
   const [toggleForm, setToggleForm] = useState(true);
 
   const checkToken = async () => {
@@ -40,9 +39,14 @@ const Login = ({ navigation }) => {
         flex: 1,
         backgroundColor: '#0D0D25',
         justifyContent: 'center',
-      }}>
+      }}
+    >
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-        {toggleForm ? <LoginForm handleToggle={handleToggle} /> : <RegisterForm handleToggle={handleToggle} />}
+        {toggleForm ? (
+          <LoginForm handleToggle={handleToggle} />
+        ) : (
+          <RegisterForm handleToggle={handleToggle} />
+        )}
       </TouchableOpacity>
     </View>
   );

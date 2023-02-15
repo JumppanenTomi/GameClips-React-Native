@@ -1,14 +1,14 @@
 import React from 'react';
-import { Controller } from 'react-hook-form';
-import { HelperText, TextInput } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+import {Controller} from 'react-hook-form';
+import {HelperText, TextInput} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
 
-const FormInput = ({ control, name, label, errorText, ...rest }) => {
+const FormInput = ({control, name, label, errorText, ...rest}) => {
   return (
     <>
       <Controller
         control={control}
-        render={({ field: { onChange, onBlur, value } }) => (
+        render={({field: {onChange, onBlur, value}}) => (
           <TextInput
             style={styles.textInput}
             label={label}
@@ -24,7 +24,7 @@ const FormInput = ({ control, name, label, errorText, ...rest }) => {
                 primary: 'rgba(255, 255, 255, 0.5)',
               },
             }}
-            textColor='#FFF'
+            textColor="#FFF"
             {...rest}
           />
         )}

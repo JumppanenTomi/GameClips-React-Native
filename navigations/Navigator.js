@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 //import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainContext } from '../contexts/MainContext';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
 import Home from '../views/Home';
+import Onboarding from '../views/Onboarding';
 
 //const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -40,12 +41,14 @@ const TabScreen = () => {
 */
 
 const StackScreen = () => {
-  const { isLoggedIn } = useContext(MainContext);
+  const {isLoggedIn} = useContext(MainContext);
 
   return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {isLoggedIn ? (
         <>
           {/* <Stack.Screen
@@ -57,7 +60,10 @@ const StackScreen = () => {
           <Stack.Screen name="Home" component={Home} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login} />
+        <>
+          <Stack.Screen name="Onboarding" component={Onboarding} />
+          <Stack.Screen name="Login" component={Login} />
+        </>
       )}
     </Stack.Navigator>
   );
