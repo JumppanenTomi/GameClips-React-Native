@@ -36,7 +36,7 @@ const Home = ({navigation}) => {
           <Text style={{fontSize: 14,}} type="brightSubHeading">Howdy,</Text>
           <Text style={{fontSize: 18,}} type="heading">{user.username}👋🏻</Text>
         </View>
-        <Ionicons style={styles.video} name="md-videocam" size={30} color="#ffffff" />
+        <Ionicons onPress={() => {navigation.navigate('Upload');}} style={styles.video} name="md-videocam" size={30} color="#ffffff" />
       </View>
       <View>
         <View style={styles.section}>
