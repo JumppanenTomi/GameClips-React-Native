@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     backgroundColor: "#25253B",
     marginRight: 8,
-    borderRadius: 20,
   },
 
   image:{
@@ -83,7 +82,6 @@ const styles = StyleSheet.create({
   },
 
   tinyProfileImage:{
-    borderRadius: "50%",
     width: 24,
     height: 24,
     marginTop: 8,

@@ -18,6 +18,12 @@ module.exports = {
     "plugin:react/recommended",
     "plugin:prettier/recommended",
   ],
+  'prettier/prettier': [
+    'error',
+    {
+      'endOfLine': 'auto',
+    }
+  ],
   globals: {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
