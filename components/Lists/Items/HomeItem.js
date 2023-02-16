@@ -16,7 +16,7 @@ const ListItem = ({singleMedia}) => {
   const {getFilesByTag} =useTag();
   const {getUserById} = useUser();
 
-  const [avatar, setAvatar] = useState('http://placekitten.com/640');
+  const [avatar, setAvatar] = useState('5760');
   const [owner, setOwner] = useState({});
 
   const item = singleMedia;
@@ -26,7 +26,7 @@ const ListItem = ({singleMedia}) => {
       const avatarArray = await getFilesByTag('avatar_' + id);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
-      console.error('user avatar fetch failed', error.message);
+      setAvatar('4254c98a7ccd66d74ff4179b3d9df713.png');
     }
   };
 
