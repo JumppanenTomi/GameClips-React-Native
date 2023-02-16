@@ -53,6 +53,8 @@ useEffect(()=>{
           <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
           <Text style={styles.title}>{owner.username}</Text>
         </View>
+        <View>
+        </View>
       </View>
     </TouchableOpacity>
   );

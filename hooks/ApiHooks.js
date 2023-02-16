@@ -185,7 +185,22 @@ const useTag = () => {
     }
   };
 
-  return {getFilesByTag, getListTag, postTag};
+  const getTagsById = async (token, id) => {
+    const options = {
+      method: 'get',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      return await doFetch(baseUrl + 'tags/file/'+id, options);
+    } catch (error) {
+      throw new Error('getTagsById: ' + error.message);
+    }
+  };
+
+  return {getFilesByTag, getListTag, getTagsById, postTag};
 };
 
 export {useMedia, useAuthentication, useUser, useTag};
