@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     marginRight: 12,
-    borderRadius: '50%'
+    borderRadius: 50
   },
   text:{
     flex: 2
