@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { StatusBar } from 'react-native';
+import {View, StyleSheet} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import { MainProvider } from './contexts/MainContext';
 import Navigator from './navigations/Navigator';
 
@@ -10,7 +10,7 @@ const App = () => {
       <View style={appStyles.container}>
         <Navigator />
       </View>
-      <StatusBar style="auto" />
+      <StatusBar style={"light"} />
     </MainProvider>
   );
 };

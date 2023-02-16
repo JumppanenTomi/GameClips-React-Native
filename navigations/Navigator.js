@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { MainContext } from '../contexts/MainContext';
 import Login from '../views/Login';
 import Home from '../views/Home';
+import Upload from "../views/Upload";
 
 //const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -55,6 +56,7 @@ const StackScreen = () => {
           />
           <Stack.Screen name="Single" component={Single} /> */}
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Upload" component={Upload} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login} />
