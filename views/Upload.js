@@ -1,12 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
+import { SelectList } from 'react-native-dropdown-select-list';
+import {Card, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
-import { SelectList } from 'react-native-dropdown-select-list'
-import List from "../components/List";
-import {StyleSheet, SafeAreaView, Image, View} from 'react-native';
-import {MainContext} from '../contexts/MainContext';
-import {Video} from 'expo-av';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {Controller, useForm} from 'react-hook-form';
+import {Alert, Keyboard, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import Button from '../components/Button';
 import * as ImagePicker from 'expo-image-picker';
+import {useCallback, useContext, useRef, useState, SafeAreaView, List} from 'react';
+import {useMedia, useTag} from '../hooks/ApiHooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {MainContext} from '../contexts/MainContext';
+import {useFocusEffect} from '@react-navigation/native';
+import {appId} from '../utils/variables';
+import {Video} from 'expo-av';
 
 const Upload = ({navigation}) => {
   const [mediafile, setMediafile] = useState({});
@@ -25,6 +31,29 @@ const Upload = ({navigation}) => {
     defaultValues: {title: '', description: ''},
     mode: 'onChange',
   });
+
+  const [selected, setSelected] = React.useState("");
+
+  const data = [
+    {key:'1', value:'League of Legends'},
+    {key:'2', value:'Fortnite'},
+    {key:'3', value:'Call of Duty: Warzone'},
+    {key:'4', value:'Valorant'},
+    {key:'5', value:'Apex Legends'},
+    {key:'6', value:'Minecraft'},
+    {key:'7', value:'Grand Theft Auto V'},
+    {key:'8', value:'World of Warcraft'},
+    {key:'9', value:'Dota 2'},
+    {key:'10', value:'Rust'},
+    {key:'11', value:'Overwatch'},
+    {key:'12', value:'Escape from Tarkov'},
+    {key:'13', value:'Rainbow Six Siege'},
+    {key:'14', value:'Counter-Strike: Global Offensive'},
+    {key:'15', value:'FIFA 22'},
+    {key:'16', value:'Dead by Daylight'},
+    {key:'17', value:'NBA 2K22'},
+    {key:'18', value:'Genshin Impact'}
+    ];
 
   const uploadFile = async (data) => {
     // create form data and post it
@@ -111,19 +140,11 @@ const Upload = ({navigation}) => {
   );
 
   console.log('tupe', mediafile.type);
-  const data = [
-    // TODO: List of games. Below hardcoded examples
-      {key:'1', value:'Counter-Strike: Global Offensive', disabled:true},
-      {key:'2', value:'League Of Legends', disabled:true},
-      {key:'3', value:'Dota 2', disabled:true},
-      {key:'4', value:'Runescape', disabled:true},
-  ]
 
-    return (
-    <SafeAreaView style={styles.container}>
-          <ScrollView>
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-        <Card>
+        <Card containerStyle={styles.ccontainer}>
           {mediafile.type === 'video' ? (
             <Video
               ref={video}
@@ -138,7 +159,7 @@ const Upload = ({navigation}) => {
           ) : (
             <Card.Image
               source={{
-                uri: mediafile.uri || 'https://upload.wikimedia.org/wikipedia/en/thumb/e/ed/Nyan_cat_250px_frame.PNG/220px-Nyan_cat_250px_frame.PNG',
+                uri: mediafile.uri || 'https://placekitten.com/g/200/300',
               }}
               onPress={pickFile}
             />
@@ -148,7 +169,7 @@ const Upload = ({navigation}) => {
             rules={{
               required: {
                 value: true,
-                message: 'is required',
+                message: 'A title is required!',
               },
               minLength: {
                 value: 3,
@@ -162,6 +183,7 @@ const Upload = ({navigation}) => {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={errors.title && errors.title.message}
+                style={styles.input}
               />
             )}
             name="title"
@@ -171,7 +193,7 @@ const Upload = ({navigation}) => {
             rules={{
               minLength: {
                 value: 5,
-                message: 'Description min length is 5 characters.',
+                message: 'Minimum 5 characters!',
               },
             }}
             render={({field: {onChange, onBlur, value}}) => (
@@ -185,69 +207,79 @@ const Upload = ({navigation}) => {
             )}
             name="description"
           />
-          <Button title="Pick a file" onPress={pickFile} />
+              <SelectList
+                setSelected={(val) => setSelected(val)}
+                data={data}
+                save="value"
+                fontFamily="roboto"
+                color="white"
+                inputStyles={styles.listBox}
+                dropdownTextStyles={styles.listBox}
+                boxStyles={styles.listField}
+            />
+              <Button
+                mode="contained"
+                onPress={pickFile}
+              >
+                Choose file
+              </Button>
           <Button
-            loading={loading}
-            disabled={!mediafile.uri || errors.title || errors.description}
-            title="Upload"
-            onPress={handleSubmit(uploadFile)}
-          />
-          <Button title={'Reset'} onPress={resetForm} type="outline" />
+              loading={loading}
+              style={styles.button}
+              disabled={!mediafile.uri || errors.title || errors.description}
+              mode="contained"
+              onPress={handleSubmit(uploadFile)}
+            >
+              Upload
+            </Button>
+          <Button onPress={resetForm}
+                        style={styles.button}>
+            Reset
+            </Button>
         </Card>
       </TouchableOpacity>
     </ScrollView>
-    <SelectList
-        setSelected={(val) => setSelected(val)}
-        data={data}
-        save="value"
-    />
-            <List navigation={navigation}></List>
-    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0D0D25'
-  },
-  ProfileContainer:{
-    width: "100%",
-    flexDirection: "row",
+    backgroundColor: '#0D0D25',
     alignItems: "center",
-    justifyContent: "space-between",
-    paddingTop: 24,
-    paddingLeft: 24,
-    paddingRight: 24
+    justifyContent: "center",
   },
-  profileImage:{
-    width: 44,
-    height: 44,
-    marginRight: 12,
-    borderRadius: '50%'
-  },
-  text:{
-    flex: 2
-  },
-  section:{
+  ccontainer:{
     width: "100%",
     flexDirection: "row",
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
     paddingTop: 32,
-    paddingLeft: 24,
-    paddingRight: 24
+    paddingLeft: 110,
+    paddingRight: 110,
+    backgroundColor: '#00000000',
+    borderColor: '#00000000',
   },
-  sectionTitle:{
-    fontSize: 24,
+  listBox:{
+    color: "#ffffff",
   },
-  titleArrow:{
-    flex: 1,
+  listField:{
+    color: "ffffff",
+    width: "100%",
+    marginBottom: 10,
+  },
+  input:{
+    marginTop: 10,
+    color: "white",
+  },
+  button:{
+    width: 200,
   }
+
 });
 
 export default Upload;
 
+
 Upload.propTypes = {
   navigation: PropTypes.object,
 };
+

@@ -7,6 +7,7 @@ import Login from '../views/Login';
 import Home from '../views/Home';
 import Onboarding from '../views/Onboarding';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import Upload from "../views/Upload";
 
 const Tab = createMaterialBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -93,6 +94,7 @@ const StackScreen = () => {
         <>
           <Stack.Screen name="Tabs" component={TabScreen} />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Upload" component={Upload} />
         </>
       ) : (
         <>
