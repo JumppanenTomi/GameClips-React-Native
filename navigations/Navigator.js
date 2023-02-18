@@ -12,6 +12,7 @@ import Onboarding from "../views/Onboarding";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+
 const TabScreen = () => {
   return (
     <Tab.Navigator
@@ -25,6 +26,8 @@ const TabScreen = () => {
           backgroundColor: '#25253B',
           borderTopLeftRadius: 15,
           borderTopRightRadius: 15,
+          borderTopWidth: 0,
+          elevation: 0,
         },
         tabBarLabelStyle: {
           fontSize: 16,
@@ -75,14 +78,18 @@ const StackScreen = () => {
   const { isLoggedIn } = useContext(MainContext);
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+    }}>
       {isLoggedIn ? (
         <>
-          <Stack.Screen name="Tabs" component={TabScreen} />
+           <Stack.Screen
+            name="Tabs"
+            component={TabScreen}
+            screenOptions={{
+              headerShown: false
+           }}
+          />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Upload" component={Upload} />
         </>
