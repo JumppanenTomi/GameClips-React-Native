@@ -12,7 +12,7 @@ import {useUser} from "../../../hooks/ApiHooks";
 import {useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ListItem = ({singleMedia}) => {
+const ListItem = ({singleMedia, navigation}) => {
   const {getFilesByTag} =useTag();
   const {getUserById} = useUser();
   const {getTagsById} = useTag();
@@ -55,7 +55,10 @@ useEffect(()=>{
 }, []);
 
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={()=>{
+      navigation.navigate('Single', item)
+    }
+    }>
       <Image
         style={styles.image}
         source={{uri: uploadsUrl + item.thumbnails?.w160}}
@@ -64,7 +67,7 @@ useEffect(()=>{
         <Text style={styles.title}>{item.title}</Text>
         <View style={{flexDirection: "row", alignItems: "center"}}>
           <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
-          <Text style={styles.title}>{owner.username}</Text>
+          <Text style={styles.title}>@{owner.username}</Text>
         </View>
         <View style={{flexDirection: "row", overflow: "hidden"}}>
           {tags.map((item, index) => {
