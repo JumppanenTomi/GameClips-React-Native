@@ -4,12 +4,14 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "cache": "expo start -c",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",
+    "@expo/vector-icons": "^13.0.0",
     "@expo/webpack-config": "^0.17.2",
     "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-navigation/bottom-tabs": "^6.5.5",
@@ -18,6 +20,8 @@
     "babel-plugin-macros": "^3.1.0",
     "eslint-plugin-react-native": "^4.0.0",
     "expo": "~47.0.12",
+    "expo-av": "~13.0.2",
+    "expo-image-picker": "~14.0.2",
     "expo-status-bar": "~1.4.2",
     "prop-types": "^15.8.1",
     "react": "18.1.0",
@@ -27,9 +31,7 @@
     "react-native-dropdown-select-list": "^2.0.4",
     "react-native-paper": "^5.2.0",
     "react-native-svg": "13.4.0",
-    "react-native-web": "~0.18.9",
-    "expo-av": "~13.0.2",
-    "expo-image-picker": "~14.0.2"
+    "react-native-web": "~0.18.9"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
