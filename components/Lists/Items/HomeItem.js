@@ -11,7 +11,7 @@ const ListItem = ({singleMedia, navigation}) => {
   const {getTagsById} = useTag();
 
   const [avatar, setAvatar] = useState('5760');
-  const [owner, setOwner] = useState({});
+  const [owner, setOwner] = useState('');
   const [tags, setTags] = useState([]);
 
   const item = singleMedia;
@@ -26,8 +26,8 @@ const ListItem = ({singleMedia, navigation}) => {
     }
   };
   const getData = async ()=>{
-    setAvatar(await profile().loadAvatar(await item.user_id));
-    setOwner(await profile().loadOwner(await item.user_id));
+    setOwner(await profile().loadOwner(item.user_id))
+    setAvatar(await profile().loadAvatar(item.user_id));
   }
 
 useEffect(()=>{

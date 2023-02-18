@@ -12,9 +12,13 @@ const profile =  () => {
   };
 
   const loadOwner = async (userId) => {
-    const token = await AsyncStorage.getItem('userToken');
-    const owner = await useUser().getUserById(token, userId);
-    return owner.username;
+    try{
+      const token = await AsyncStorage.getItem('userToken');
+      const owner = await useUser().getUserById(token, userId);
+      return owner.username;
+    }catch (error) {
+      return error;
+    }
   };
 
   return {loadOwner,loadAvatar}
