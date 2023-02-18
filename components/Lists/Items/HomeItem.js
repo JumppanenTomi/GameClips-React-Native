@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     backgroundColor: "#25253B",
     marginRight: 8,
+    borderRadius: 20,
   },
 
   image:{
