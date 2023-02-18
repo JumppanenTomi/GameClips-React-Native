@@ -7,10 +7,10 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Login from '../views/Login';
 import Home from '../views/Home';
 import Upload from "../views/Upload";
+import Onboarding from "../views/Onboarding";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
 
 const TabScreen = () => {
   return (
@@ -75,23 +75,22 @@ const StackScreen = () => {
   const { isLoggedIn } = useContext(MainContext);
 
   return (
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       {isLoggedIn ? (
         <>
-           <Stack.Screen
-            name="Tabs"
-            component={TabScreen}
-            screenOptions={{
-              headerShown: false
-           }}
-          />
+          <Stack.Screen name="Tabs" component={TabScreen} />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Upload" component={Upload} />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login} />
+        <>
+          <Stack.Screen name="Onboarding" component={Onboarding} />
+          <Stack.Screen name="Login" component={Login} />
+        </>
       )}
     </Stack.Navigator>
   );
