@@ -1,6 +1,6 @@
 const baseUrl = 'https://media.mw.metropolia.fi/wbma/';
 const uploadsUrl = 'https://media.mw.metropolia.fi/wbma/uploads/';
-const appId = 'wxs4ecdr5fv6gtyhui';
+const appId = '4$!ox6T$bq';
 
 const HAS_LAUNCHED_KEY = 'hasLaunched';
 
