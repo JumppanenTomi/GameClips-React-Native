@@ -1,19 +1,30 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {useTag, useUser} from "../hooks/ApiHooks";
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {Video } from "expo-av";
 import Text from "../components/Text";
 import {Image, SafeAreaView, StyleSheet, TouchableOpacity, View} from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import shareClip from "../components/functions/shareClip";
+import profile from "../components/functions/profile";
 
 const Single = ({route}) => {
   const [avatar, setAvatar] = useState('');
   const [owner, setOwner] = useState('');
-
-  const video = useRef(null);
   const [status, setStatus] = useState({});
+
+  const {title, description, filename, time_added: timeAdded, user_id: userId,} = route.params;
+  const video = useRef(null);
+
+  const getData = async ()=>{
+    setAvatar(await profile().loadAvatar(userId));
+    setOwner(await profile().loadOwner(userId));
+  }
+
+  useEffect( () => {
+    getData();
+  }, []);
+
   const handleVideoPress = () => {
     if (status.isPlaying) {
       video.current.pauseAsync();
@@ -21,33 +32,6 @@ const Single = ({route}) => {
       video.current.playAsync();
     }
   }
-  const {
-    title,
-    description,
-    filename,
-    time_added: timeAdded,
-    user_id: userId,
-  } = route.params;
-
-  const loadAvatar = async (id) => {
-    try {
-      const avatarArray = await useTag().getFilesByTag('avatar_' + id);
-      setAvatar(avatarArray.pop().filename);
-    } catch (error) {
-      setAvatar('4254c98a7ccd66d74ff4179b3d9df713.png');
-    }
-  };
-
-  const getOwner = async (userId) => {
-    const token = await AsyncStorage.getItem('userToken');
-    const owner = await useUser().getUserById(token, userId);
-    setOwner(owner.username);
-  };
-
-  useEffect(()=>{
-    loadAvatar(userId)
-    getOwner(userId)
-  }, []);
 
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#000000'}}>
@@ -70,7 +54,7 @@ const Single = ({route}) => {
           <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
           <Ionicons style={styles.icon} onPress={() => {console.log("liked")}} name="heart" size={40} color="#ffffff" />
             <Ionicons style={styles.icon} onPress={() => {console.log("commented")}} name="chatbubble-ellipses" size={40} color="#ffffff" />
-            <Ionicons style={styles.icon} onPress={() => {console.log("commented")}} name="share-social" size={40} color="#ffffff" />
+            <Ionicons style={styles.icon} onPress={() => {shareClip().onShare(uploadsUrl+filename)}} name="share-social" size={40} color="#ffffff" />
         </View>
         <View style={styles.infoContainer}>
           <Text type="brightSubHeading" style={{fontSize: 16, fontWeight: '700'}}>@{owner}</Text>

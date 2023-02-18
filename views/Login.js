@@ -17,7 +17,7 @@ const Login = ({navigation}) => {
       const userToken = await AsyncStorage.getItem('userToken');
       if (!userToken) return;
       const userData = await getUserByToken(userToken);
-      console.log('The user data is ', userData);
+      console.log('The profile data is ', userData);
       if (userData) {
         setUser(userData);
         setIsLoggedIn(true);
