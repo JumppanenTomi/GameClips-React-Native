@@ -53,7 +53,7 @@ const Home = ({navigation}) => {
         <View>
           <TagList navigation={navigation}></TagList>
         </View>
-        <View style={{marginTop: 16}}>
+        <View style={{marginTop: 16, marginBottom: 120,}}>
           <Browse  navigation={navigation}></Browse>
         </View>
       </View>
