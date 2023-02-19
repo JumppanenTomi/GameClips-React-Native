@@ -40,6 +40,10 @@ const styles = StyleSheet.create({
     color: 'black',
     lineHeight: 24,
   },
+  meta: {
+    fontSize: 12,
+    color: '#FFF'
+  }
 });
 
 export default Text;

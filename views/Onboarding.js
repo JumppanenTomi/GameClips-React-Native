@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Button from '../components/Button';
-import Text from '../components/Text';
+import Button from '../components/atoms/Button';
+import Text from '../components/atoms/Text';
 import {HAS_LAUNCHED_KEY} from '../utils/variables';
 
 const Onboarding = ({navigation}) => {

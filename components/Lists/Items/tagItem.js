@@ -1,6 +1,6 @@
 import {StyleSheet, TouchableOpacity, View,} from 'react-native';
 import PropTypes from 'prop-types';
-import Text from '../../Text';
+import Text from '../../atoms/Text';
 
 
 const ListItem = ({singleMedia}) => {

@@ -4,7 +4,7 @@ import {Card, Input} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {Alert, Keyboard, ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
-import Button from '../components/Button';
+import Button from '../components/atoms/Button';
 import * as ImagePicker from 'expo-image-picker';
 import {useCallback, useContext, useRef, useState, SafeAreaView, List} from 'react';
 import {useMedia, useTag} from '../hooks/ApiHooks';

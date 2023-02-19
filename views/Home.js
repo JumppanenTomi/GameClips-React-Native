@@ -1,7 +1,7 @@
 import {StyleSheet, SafeAreaView, Image, View, ScrollView} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import PropTypes from 'prop-types';
-import Text from '../components/Text';
+import Text from '../components/atoms/Text';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import {useContext, useState} from "react";
 import Newest from "../components/Lists/Home/Newest";

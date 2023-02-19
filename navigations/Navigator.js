@@ -6,6 +6,7 @@ import {MainContext} from '../contexts/MainContext';
 import Login from '../views/Login';
 import Home from '../views/Home';
 import Onboarding from '../views/Onboarding';
+import Profile from '../views/Profile';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Upload from "../views/Upload";
 
@@ -15,7 +16,7 @@ const Stack = createNativeStackNavigator();
 const TabScreen = () => {
   return (
     <Tab.Navigator
-      initialRouteName="Home"
+      initialRouteName="Profile"
       activeColor="#FFF"
       shifting={true}
       inactiveColor="##9E9EA8"
@@ -65,7 +66,7 @@ const TabScreen = () => {
       />
       <Tab.Screen
         name="Profile"
-        component={Home}
+        component={Profile}
         options={{
           tabBarLabel: 'Profile',
           tabBarIcon: ({color}) => (
