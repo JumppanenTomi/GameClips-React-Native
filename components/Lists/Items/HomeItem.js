@@ -37,7 +37,7 @@ useEffect(()=>{
 
   return (
     <TouchableOpacity style={styles.item} onPress={()=>{
-      navigation.navigate('Single', item)
+      navigation.navigate('Single', item, navigation)
     }
     }>
       <Image
