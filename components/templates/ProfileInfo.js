@@ -9,7 +9,6 @@ import Avatar from '../atoms/Avatar';
 import FlatList from '../organisms/FlatList';
 
 const ProfileInfo = () => {
-  const {getFilesByTag} = useTag();
   const {user} = useContext(MainContext);
   const {loadUserMedia} = useMedia();
   const [mediaArray, setMediaArray] = useState([]);
@@ -18,11 +17,11 @@ const ProfileInfo = () => {
     const token = await AsyncStorage.getItem('userToken');
     const res = await loadUserMedia(token);
     setMediaArray(res);
-  }
+  };
 
   useEffect(() => {
     getMedia();
-  }, [])
+  }, []);
 
   console.log(mediaArray);
 
@@ -34,9 +33,7 @@ const ProfileInfo = () => {
         {user.full_name}
       </Text>
       <Text type="subHeading">@{user.username}</Text>
-      <Text type="subHeading">
-        I just no one that love to do livestream.
-      </Text>
+      <Text type="subHeading">I just no one that love to do livestream.</Text>
       <FlatList mediaArray={mediaArray} />
     </View>
   );

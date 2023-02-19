@@ -1,4 +1,5 @@
-import {StyleSheet} from 'react-native';
+import React from 'react';
+import {StyleSheet, Image} from 'react-native';
 import {Card} from 'react-native-paper';
 import {uploadsUrl} from '../../utils/variables';
 import Separator from '../atoms/Separator';
@@ -10,7 +11,7 @@ const MediaCard = ({singleMedia, navigation}) => {
 
   return (
     <Card style={styles.container} onPress={() => console.log('Pressed')}>
-      <Card.Cover
+      <Image
         style={styles.cardCover}
         source={{uri: uploadsUrl + item.filename}}
       />
@@ -27,14 +28,16 @@ const MediaCard = ({singleMedia, navigation}) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#25253B',
-    marginBottom: 16,
     borderRadius: 20,
+    marginBottom: 16,
+    minWidth: 302
   },
   cardCover: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
+    height: 180
   },
 });
 

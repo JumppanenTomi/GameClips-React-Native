@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Divider } from 'react-native-paper';
+import {View, StyleSheet} from 'react-native';
+import {Divider} from 'react-native-paper';
 
-const Separator = ({ height }) => {
+const Separator = ({height}) => {
   return (
-    <View style={[styles.separator, { height: height }]}>
+    <View style={[styles.separator, {height: height}]}>
       <Divider />
     </View>
   );

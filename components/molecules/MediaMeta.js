@@ -1,7 +1,8 @@
-import Avatar from '../atoms/Avatar';
-import Text from '../atoms/Text';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import Avatar from '../atoms/Avatar';
 import Separator from '../atoms/Separator';
+import Text from '../atoms/Text';
 
 const MediaMeta = ({singleMedia}) => {
   const item = singleMedia;
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
   },
   text: {
     marginLeft: 8,
-    flex: 1,
   },
 });
 

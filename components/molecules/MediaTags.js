@@ -18,8 +18,6 @@ const MediaTags = ({singleMedia, navigation}) => {
     getTagsByFile();
   }, []);
 
-  console.log(tags);
-
   return (
     <View style={styles.cardTags}>
       {tags.map((tag, index) => (
