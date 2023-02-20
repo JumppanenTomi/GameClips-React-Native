@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 import {Button as RNPButton} from 'react-native-paper';
 
-const Button = ({children, onPress, fullWidth, style, ...restProps}) => {
+const Button = ({children, onPress, fullWidth, style, ...rest}) => {
   const buttonStyle = [styles.button, fullWidth && styles.fullWidth, style];
 
   return (
@@ -12,7 +12,7 @@ const Button = ({children, onPress, fullWidth, style, ...restProps}) => {
         paddingVertical: 5,
       }}
       onPress={onPress}
-      {...restProps}
+      {...rest}
     >
       {children}
     </RNPButton>

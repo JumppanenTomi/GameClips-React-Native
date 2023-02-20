@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {Video } from "expo-av";
-import Text from "../components/Text";
+import Text from "../components/atoms/Text";
 import {
   Image,
   Keyboard,
@@ -17,7 +17,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import shareClip from "../components/functions/shareClip";
 import profile from "../components/functions/profile";
 import {useComments} from "../hooks/ApiHooks";
-import FormInput from "../components/FormInput";
+import FormInput from "../components/atoms/FormInput";
 import {useForm} from "react-hook-form";
 
 const Single = ({route, navigation}) => {

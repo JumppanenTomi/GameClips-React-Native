@@ -1,14 +1,14 @@
 import React, {useContext, useState} from 'react';
-import {MainContext} from '../contexts/MainContext';
+import {MainContext} from '../../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAuthentication} from '../hooks/ApiHooks';
+import {useAuthentication} from '../../hooks/ApiHooks';
 import {View, StyleSheet} from 'react-native';
 import {useForm} from 'react-hook-form';
 import {TextInput} from 'react-native-paper';
-import FormInput from './FormInput';
-import Text from './Text';
-import Separator from './Separator';
-import Button from './Button';
+import FormInput from '../atoms/FormInput';
+import Text from '../atoms/Text';
+import Separator from '../atoms/Separator';
+import Button from '../atoms/Button';
 
 const LoginForm = ({handleToggle}) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -18,9 +18,7 @@ const LoginForm = ({handleToggle}) => {
     control,
     handleSubmit,
     formState: {errors},
-  } = useForm({
-    defaultValues: {username: '', password: ''},
-  });
+  } = useForm();
 
   const logIn = async (loginData) => {
     console.log('Login button pressed', loginData);

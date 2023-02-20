@@ -6,6 +6,7 @@ import { MainContext } from '../contexts/MainContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Login from '../views/Login';
 import Home from '../views/Home';
+import Profile from '../views/Profile';
 import Upload from "../views/Upload";
 import Onboarding from "../views/Onboarding";
 import Single from "../views/Single";
@@ -68,7 +69,7 @@ const TabScreen = () => {
       <Tab.Screen name="Favorites" component={Home} options={{
         tabBarIcon: ({color}) => <Ionicons name="heart" color={color} style={{fontSize: 24,}} />,
       }}/>
-      <Tab.Screen name="Profile" component={Upload} options={{
+      <Tab.Screen name="Profile" component={Profile} options={{
         tabBarIcon: ({color}) => <Ionicons name="person" color={color} style={{fontSize: 24,}} />,
       }}/>
     </Tab.Navigator>

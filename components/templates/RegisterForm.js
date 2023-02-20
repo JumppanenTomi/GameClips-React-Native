@@ -1,12 +1,12 @@
 import React, {useContext, useState} from 'react';
-import {useUser} from '../hooks/ApiHooks';
+import {useUser} from '../../hooks/ApiHooks';
 import {View, StyleSheet} from 'react-native';
 import {useForm} from 'react-hook-form';
 import {TextInput} from 'react-native-paper';
-import FormInput from './FormInput';
-import Text from './Text';
-import Separator from './Separator';
-import Button from './Button';
+import FormInput from '../atoms/FormInput';
+import Text from '../atoms/Text';
+import Separator from '../atoms/Separator';
+import Button from '../atoms/Button';
 
 const RegisterForm = ({handleToggle}) => {
   const [showPassword, setShowPassword] = useState(false);
