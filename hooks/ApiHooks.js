@@ -72,6 +72,18 @@ const useMedia = () => {
   return {mediaArray, postMedia, loadUserMedia, mediaUser};
 };
 
+const useComments = () =>{
+  const getCommentsById = async (id)=>{
+    try {
+      return await doFetch(baseUrl + 'comments/file/' + id);
+    } catch (error) {
+      throw new Error('getCommentsById, ' + error.message);
+    }
+  }
+
+  return {getCommentsById};
+};
+
 const useAuthentication = () => {
   const postLogin = async (userCredentials) => {
     const options = {
@@ -217,4 +229,4 @@ const useTag = () => {
   return {getFilesByTag, getListTag, getTagsById, postTag};
 };
 
-export {useMedia, useAuthentication, useUser, useTag};
+export {useMedia, useAuthentication, useUser, useTag, useComments};

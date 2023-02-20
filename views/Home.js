@@ -3,29 +3,23 @@ import {MainContext} from '../contexts/MainContext';
 import PropTypes from 'prop-types';
 import Text from '../components/atoms/Text';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import Newest from "../components/Lists/Home/Newest";
 import {uploadsUrl} from "../utils/variables";
-import {useTag} from "../hooks/ApiHooks";
 import TagList from "../components/Lists/Home/TagList";
 import Browse from "../components/Lists/Home/Browse";
+import profile from "../components/functions/profile";
 
 const Home = ({navigation}) => {
-  const {getFilesByTag} =useTag();
-
   const {user} = useContext(MainContext);
-  const [avatar, setAvatar] = useState('http://placekitten.com/640');
+  const [avatar, setAvatar] = useState('');
 
-  const loadAvatar = async (id) => {
-    try {
-      const avatarArray = await getFilesByTag('avatar_' + id);
-      setAvatar(avatarArray.pop().filename);
-    } catch (error) {
-      console.error('user avatar fetch failed', error.message);
-    }
-  };
-
-  loadAvatar(user.user_id)
+  const getData = async ()=>{
+    setAvatar(await profile().loadAvatar(user.user_id));
+  }
+  useEffect( () => {
+    getData();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,7 +47,7 @@ const Home = ({navigation}) => {
         <View>
           <TagList navigation={navigation}></TagList>
         </View>
-        <View style={{marginTop: 16}}>
+        <View style={{marginTop: 16, marginBottom: 120,}}>
           <Browse  navigation={navigation}></Browse>
         </View>
       </View>
