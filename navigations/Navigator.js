@@ -8,6 +8,7 @@ import Login from '../views/Login';
 import Home from '../views/Home';
 import Profile from '../views/Profile';
 import Upload from "../views/Upload";
+import Browse from "../views/Browse";
 import Onboarding from "../views/Onboarding";
 import Single from "../views/Single";
 
@@ -63,7 +64,7 @@ const TabScreen = () => {
       <Tab.Screen name="Home" component={Home} options={{
         tabBarIcon: ({color}) => <Ionicons name="home" color={color} style={{fontSize: 24,}} />,
       }}/>
-      <Tab.Screen name="Browse" component={Upload} options={{
+      <Tab.Screen name="Browse" component={Browse} options={{
         tabBarIcon: ({color}) => <Ionicons name="search" color={color} style={{fontSize: 24,}} />,
       }}/>
       <Tab.Screen name="Favorites" component={Home} options={{
