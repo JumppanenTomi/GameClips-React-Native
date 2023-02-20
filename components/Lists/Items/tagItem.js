@@ -1,6 +1,6 @@
 import {StyleSheet, TouchableOpacity, View,} from 'react-native';
 import PropTypes from 'prop-types';
-import Text from '../../Text';
+import Text from '../../atoms/Text';
 
 
 const ListItem = ({singleMedia}) => {
@@ -22,7 +22,8 @@ export default ListItem;
 const styles = StyleSheet.create({
   tag:{
       marginRight: 8,
-      borderStyle: "solid",
+    borderRadius: 100,
+    borderStyle: "solid",
       borderWidth: 1,
       borderColor: "rgba(255, 255, 255, 0.16)",
       flexDirection: "row",

@@ -1,22 +1,18 @@
-import { StyleSheet } from 'react-native';
-import { Button as RNPButton } from 'react-native-paper';
+import {StyleSheet} from 'react-native';
+import {Button as RNPButton} from 'react-native-paper';
 
-const Button = ({ children, onPress, fullWidth, style, ...restProps }) => {
-  const buttonStyle = [
-    styles.button,
-    fullWidth && styles.fullWidth,
-    style
-  ];
+const Button = ({children, onPress, fullWidth, style, ...rest}) => {
+  const buttonStyle = [styles.button, fullWidth && styles.fullWidth, style];
 
   return (
     <RNPButton
-      mode='contained'
+      mode="contained"
       style={buttonStyle}
       contentStyle={{
         paddingVertical: 5,
       }}
       onPress={onPress}
-      {...restProps}
+      {...rest}
     >
       {children}
     </RNPButton>

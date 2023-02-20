@@ -16,6 +16,7 @@ const doFetch = async (url, options) => {
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [mediaUser, setMediaUser] = useState([]);
   const {update} = useContext(MainContext);
 
   const loadMedia = async () => {
@@ -33,8 +34,21 @@ const useMedia = () => {
     }
   };
 
+  const loadUserMedia = async (token) => {
+    const options = {
+      method: 'GET',
+      headers: {'x-access-token': token},
+    };
+    try {
+      return await doFetch(baseUrl + 'media/user', options);
+    } catch (error) {
+      throw new Error('checkUser: ' + error.message);
+    }
+  };
+
   useEffect(() => {
     loadMedia();
+
     // load media when update state changes in main context
     // by adding update state to the array below
   }, [update]);
@@ -55,7 +69,19 @@ const useMedia = () => {
     }
   };
 
-  return {mediaArray, postMedia};
+  return {mediaArray, postMedia, loadUserMedia, mediaUser};
+};
+
+const useComments = () =>{
+  const getCommentsById = async (id)=>{
+    try {
+      return await doFetch(baseUrl + 'comments/file/' + id);
+    } catch (error) {
+      throw new Error('getCommentsById, ' + error.message);
+    }
+  }
+
+  return {getCommentsById};
 };
 
 const useAuthentication = () => {
@@ -203,4 +229,4 @@ const useTag = () => {
   return {getFilesByTag, getListTag, getTagsById, postTag};
 };
 
-export {useMedia, useAuthentication, useUser, useTag};
+export {useMedia, useAuthentication, useUser, useTag, useComments};

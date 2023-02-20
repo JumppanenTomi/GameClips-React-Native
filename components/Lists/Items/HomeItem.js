@@ -1,36 +1,20 @@
-import {
-  Image,
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
+import {Image, StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import {appId, uploadsUrl} from '../../../utils/variables';
 import {useTag} from "../../../hooks/ApiHooks";
-import {useUser} from "../../../hooks/ApiHooks";
 import {useState, useEffect} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import profile from "../../functions/profile";
 
-const ListItem = ({singleMedia}) => {
-  const {getFilesByTag} =useTag();
-  const {getUserById} = useUser();
+const ListItem = ({singleMedia, navigation}) => {
   const {getTagsById} = useTag();
 
   const [avatar, setAvatar] = useState('5760');
-  const [owner, setOwner] = useState({});
+  const [owner, setOwner] = useState('');
   const [tags, setTags] = useState([]);
 
   const item = singleMedia;
-
-  const loadAvatar = async (id) => {
-    try {
-      const avatarArray = await getFilesByTag('avatar_' + id);
-      setAvatar(avatarArray.pop().filename);
-    } catch (error) {
-      setAvatar('4254c98a7ccd66d74ff4179b3d9df713.png');
-    }
-  };
 
   const loadTags = async (id) => {
     try {
@@ -38,24 +22,24 @@ const ListItem = ({singleMedia}) => {
       const tags = await getTagsById(token, id);
       setTags(tags);
     } catch (error) {
-      setAvatar('4254c98a7ccd66d74ff4179b3d9df713.png');
+      console.log(error)
     }
   };
-
-  const getOwner = async (userId) => {
-    const token = await AsyncStorage.getItem('userToken');
-    const owner = await getUserById(token, userId);
-    setOwner(owner);
-  };
+  const getData = async ()=>{
+    setOwner(await profile().loadOwner(item.user_id))
+    setAvatar(await profile().loadAvatar(item.user_id));
+  }
 
 useEffect(()=>{
-  loadAvatar(item.user_id)
-  getOwner(item.user_id)
+  getData();
   loadTags(item.file_id)
 }, []);
 
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={()=>{
+      navigation.navigate('Single', item, navigation)
+    }
+    }>
       <Image
         style={styles.image}
         source={{uri: uploadsUrl + item.thumbnails?.w160}}
@@ -64,7 +48,7 @@ useEffect(()=>{
         <Text style={styles.title}>{item.title}</Text>
         <View style={{flexDirection: "row", alignItems: "center"}}>
           <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
-          <Text style={styles.title}>{owner.username}</Text>
+          <Text style={styles.title}>@{owner}</Text>
         </View>
         <View style={{flexDirection: "row", overflow: "hidden"}}>
           {tags.map((item, index) => {
@@ -96,6 +80,7 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
     backgroundColor: "#25253B",
     marginRight: 8,
+    borderRadius: 20,
   },
 
   image:{

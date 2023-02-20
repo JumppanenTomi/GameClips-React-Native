@@ -9,7 +9,7 @@ const Newest =  ({navigation}) => {
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
-      data={mediaArray}
+      data={mediaArray.reverse()}
       style={{paddingLeft: 24, paddingRight: 24}}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => (

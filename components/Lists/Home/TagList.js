@@ -4,10 +4,8 @@ import ListItem from '../Items/tagItem';
 import PropTypes from 'prop-types';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useEffect, useState} from "react";
-
 const TagList =  ({navigation}) => {
   const [tags, setTags] = useState({});
-
   const getTags = async ()=>{
     try{
       const token = await AsyncStorage.getItem('userToken');
@@ -15,13 +13,12 @@ const TagList =  ({navigation}) => {
       setTags(data);
     } catch (error){
       console.error(error)
+      alert('Error fetching tag list! Please try again.');
     }
   };
-
   useEffect(()=>{
     getTags()
   }, []);
-
   return (
     <FlatList
       horizontal
@@ -35,9 +32,7 @@ const TagList =  ({navigation}) => {
     />
   );
 };
-
 TagList.propTypes = {
   navigation: PropTypes.object,
 };
-
 export default TagList;
