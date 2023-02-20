@@ -6,6 +6,12 @@ module.exports = {
     es2021: true,
     "react-native/react-native": true,
   },
+  'prettier/prettier': [
+    'error',
+    {
+      'endOfLine': 'auto',
+    }
+  ],
   extends: [
     "google",
     "eslint:recommended",
