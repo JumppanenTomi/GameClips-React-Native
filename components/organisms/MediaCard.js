@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, Image} from 'react-native';
 import {Card} from 'react-native-paper';
-import {uploadsUrl} from '../../utils/variables';
+import {uploadsUrl} from 'utils/variables';
 import Separator from '../atoms/Separator';
 import MediaMeta from '../molecules/MediaMeta';
 import MediaTags from '../molecules/MediaTags';
@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#25253B',
     borderRadius: 20,
     marginBottom: 16,
-    minWidth: 302
+    minWidth: 302,
   },
   cardCover: {
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     borderBottomLeftRadius: 0,
     borderBottomRightRadius: 0,
-    height: 180
+    height: 180,
   },
 });
 
