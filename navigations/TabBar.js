@@ -36,7 +36,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
             ) : (
               <Appbar.Action
                 icon={() => <Icon label={label} />}
-                color={isFocused ? '#0c766b' : 'black'}
                 onPress={onPress}
                 key={item => item}
               />
@@ -60,8 +59,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     paddingVertical: 24,
     height: 90,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15
+    //borderTopLeftRadius: 15,
+    //borderTopRightRadius: 15
   },
 })
 
