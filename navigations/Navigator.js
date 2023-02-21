@@ -7,6 +7,7 @@ import Login from 'views/Login';
 import Home from 'views/Home';
 import Profile from '../views/Profile';
 import Upload from "views/Upload";
+import Update from "views/Update";
 import Browse from "views/Browse";
 import Onboarding from "views/Onboarding";
 import Single from "views/Single";
@@ -46,6 +47,7 @@ const StackScreen = () => {
           />
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Upload" component={Upload} />
+          <Stack.Screen name="Update" component={Update} />
           <Stack.Screen name="Single" component={Single} />
         </>
       ) : (

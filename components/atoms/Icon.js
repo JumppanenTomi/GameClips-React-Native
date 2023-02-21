@@ -6,6 +6,8 @@ import HeartSvg from 'assets/icons/heart.svg';
 import HeartWhiteSvg from 'assets/icons/heart-white.svg';
 import ProfileSvg from 'assets/icons/profile.svg';
 import ProfileWhiteSvg from 'assets/icons/profile-white.svg';
+import MoreSvg from 'assets/icons/more.svg';
+import VideoSvg from 'assets/icons/video.svg';
 
 const Icon = ({ label, active, size }) => {
     if (label === 'Home') {
@@ -16,6 +18,10 @@ const Icon = ({ label, active, size }) => {
         return !active ? <HeartSvg size={size} /> : <HeartWhiteSvg />
     } else if (label === 'Profile') {
         return !active ? <ProfileSvg size={size} /> : <ProfileWhiteSvg />
+    } else if (label === 'More') {
+        return <MoreSvg />
+    } else if (label === 'Video') {
+        return <VideoSvg />
     }
 }
 
