@@ -21,11 +21,9 @@ const Button = ({children, onPress, fullWidth, style, ...rest}) => {
 
 const styles = StyleSheet.create({
   button: {
-    marginTop: 12,
-    marginBottom: 12,
+    marginVertical: 8,
     backgroundColor: '#8C8AFA',
     fontSize: 16,
-    fontFamily: 'Roboto',
     borderRadius: 100,
   },
   fullWidth: {
