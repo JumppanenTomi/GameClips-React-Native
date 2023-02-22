@@ -11,6 +11,7 @@ import Browse from "views/Browse";
 import Onboarding from "views/Onboarding";
 import Single from "views/Single";
 import TabBar from './TabBar';
+import ClipList from "views/ClipList";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,6 +48,7 @@ const StackScreen = () => {
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen name="ClipList" component={ClipList} />
         </>
       ) : (
         <>

@@ -1,11 +1,10 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import GamesList from '../components/Lists/Browse/GamesList';
+import { StyleSheet, View, FlatList, Text } from 'react-native';
 
-const Browse = () => {
+const ClipList = () => {
   return (
     <View style={styles.container}>
-      <GamesList />
+      <FlatList/>
     </View>
   );
 };
@@ -13,11 +12,11 @@ const Browse = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#0D0D25',
     alignItems: 'center',
     justifyContent: 'center',
   },
 });
 
-export default Browse;
+export default ClipList;
 
