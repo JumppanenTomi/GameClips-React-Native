@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {forwardRef, useEffect, useRef, useState} from 'react';
 import {uploadsUrl} from '../utils/variables';
 import PropTypes from 'prop-types';
 import {Video } from "expo-av";
@@ -6,7 +6,7 @@ import Text from "../components/atoms/Text";
 import {
   Image,
   Keyboard,
-  KeyboardAvoidingView,
+  KeyboardAvoidingView, Platform,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -19,8 +19,18 @@ import profile from "../components/functions/profile";
 import {useComments} from "../hooks/ApiHooks";
 import FormInput from "../components/atoms/FormInput";
 import {useForm} from "react-hook-form";
+import handleComment from "../components/functions/handleComment";
+import Toast from 'react-native-toast-message';
+
+
+const ScrollViewWithRef = forwardRef((props, ref) => {
+  return (
+    <ScrollView {...props} ref={ref} />
+  );
+});
 
 const Single = ({route, navigation}) => {
+  const scrollViewRef = useRef(null);
   const [avatar, setAvatar] = useState('');
   const [owner, setOwner] = useState('');
   const [comments, setComments] = useState([]);
@@ -28,21 +38,44 @@ const Single = ({route, navigation}) => {
   const [isHidden, toggleHidden] = useState(true)
   const {title, description, filename, user_id: userId,} = route.params;
   const video = useRef(null);
+  const [comment, setComment] = useState('');
+
+  const handleInputChange = (inputValue) => {
+    setComment(inputValue);
+  };
+
   const {
     control,
   } = useForm({
-    defaultValues: {username: '', password: ''},
+    defaultValues: {comment: ''},
   });
 
-  const getData = async ()=>{
+  const updateData = async ()=>{
     setAvatar(await profile().loadAvatar(userId));
     setOwner(await profile().loadOwner(userId));
     setComments(await useComments().getCommentsById(route.params.file_id));
   }
   useEffect( () => {
-    console.log("data received")
-    getData();
+    updateData();
   }, []);
+
+  const addComment = async ()=>{
+    try {
+      const data = await handleComment().postComment(5830, comment).then(updateData)
+      setComment('');
+      Toast.show({type: 'success', text1: data.message, visibilityTime: 1500,})
+    }catch (error){
+      Toast.show({type: 'error', text1: "Error adding comment", visibilityTime: 3000,});
+    }
+  }
+
+  const handleContentSizeChange = () => {
+    scrollViewRef.current.scrollToEnd({ animated: true });
+  };
+
+  const handleLayout = () => {
+    scrollViewRef.current.scrollToEnd({ animated: false });
+  };
 
   const handleVideoPress = () => {
     if (status.isPlaying && isHidden) {
@@ -89,7 +122,7 @@ const Single = ({route, navigation}) => {
       borderTopRightRadius: 15,
       display: isHidden ? 'none' : 'flex',
       zIndex: 99,
-      maxHeight: "60%",
+      maxHeight: "20%",
       bottom: 0,
       left: 0,
       right: 0,
@@ -134,29 +167,33 @@ const Single = ({route, navigation}) => {
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'position' : 'height'}>
       <View style={commentStyles.commentContainer}>
         <Text style={commentStyles.heading}>Comments</Text>
-        <ScrollView style={commentStyles.scrollContainer}>
-          {comments.reverse().map((item) => (
+        <ScrollViewWithRef style={commentStyles.scrollContainer} ref={scrollViewRef} onContentSizeChange={handleContentSizeChange} onLayout={handleLayout}>
+          {comments.map((item) => (
             <View style={commentStyles.text} key={item.comment_id}>
               <Text style={commentStyles.comment}>
                 <Text style={commentStyles.poster}>{item.user_id}</Text> {item.comment}
               </Text>
             </View>
           ))}
-        </ScrollView>
+        </ScrollViewWithRef>
 
         <View style={{width: "100%", flexWrap: 'wrap', flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
           <FormInput
             name="Post a comment"
             label="Post a comment"
+            onChangeText={handleInputChange}
+            value={comment}
+            rules={{required: true}}
             control={control}
-            style={{flex: 10, marginTop: 16, marginBottom: 16,}}
+            style={{flex: 10, marginTop: 16, marginBottom: 16, backgroundColor: 0}}
           />
           <View style={{borderRadius: 60,backgroundColor: "#8C8AFA", width: 46, padding: 13, marginLeft: 8, marginTop: 16, marginBottom: 16, }}>
-            <Ionicons onPress={() => {shareClip().onShare(uploadsUrl+filename)}} name="send" size={20} color="#ffffff" />
+            <Ionicons onPress={() => {addComment()}} name="send" size={20} color="#ffffff" />
           </View>
         </View>
       </View>
       </KeyboardAvoidingView>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   );
 };
