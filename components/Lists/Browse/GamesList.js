@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
 
@@ -19,6 +20,7 @@ const GamesList = () => {
   const [loading, setLoading] = useState(false);
   const idSet = new Set();
   const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -87,10 +89,11 @@ const GamesList = () => {
       return false;
     });
 
-  const handleGamePress = (index) => {
-    setSelectedItemIndex(index);
-    setTimeout(() => setSelectedItemIndex(-1), 1.0); // Auto reset the selected item after 2 seconds
-  };
+    const handleGamePress = (index) => {
+      navigation.navigate('ClipList');
+      setSelectedItemIndex(index);
+      setTimeout(() => setSelectedItemIndex(-1), 1.0);
+    };
 
     return (
       <View style={styles.container}>

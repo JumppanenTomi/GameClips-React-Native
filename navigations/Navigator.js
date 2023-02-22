@@ -13,7 +13,9 @@ import Update from "views/Update";
 import Browse from "views/Browse";
 import Single from "views/Single";
 import TabBar from './TabBar';
+import ClipList from "views/ClipList";
 import { HAS_LAUNCHED_KEY } from 'utils/variables';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,10 +51,27 @@ const StackScreen = () => {
     <Stack.Navigator screenOptions={{
       headerShown: false,
     }}>
+
+      {isLoggedIn ? (
+        <>
+          <Stack.Screen
+            name="Tabs"
+            component={TabScreen}
+            screenOptions={{
+              headerShown: false
+            }}
+          />
+          <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Upload" component={Upload} />
+          <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen name="ClipList" component={ClipList} />
+        </>
+
       {showOnboarding ? (
         <Stack.Screen name="Onboarding">
           {props => <Onboarding setShowOnboarding={setShowOnboarding} {...props} />}
         </Stack.Screen>
+
       ) : (
         isLoggedIn ? (
           <>
