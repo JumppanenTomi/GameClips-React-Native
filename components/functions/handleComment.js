@@ -32,6 +32,22 @@ const handleComment = () => {
       throw new Error('postComment: ' + error.message);
     }
   }
-  return {postComment};
+  const deleteComment = async (id) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      }
+    };
+    try {
+      return await doFetch(baseUrl + 'comments/'+id, options);
+    } catch (error) {
+      console.log('deleteComment: ',error)
+      throw new Error('deleteComment: ' + error.message);
+    }
+  }
+  return {postComment, deleteComment};
 };
 export default handleComment;
