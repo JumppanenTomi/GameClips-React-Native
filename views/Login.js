@@ -1,16 +1,17 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {Keyboard, TouchableOpacity, View} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { Keyboard, TouchableOpacity, View, StyleSheet, ImageBackground } from 'react-native';
 import PropTypes from 'prop-types';
-import {MainContext} from '../contexts/MainContext';
+import { MainContext } from 'contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useUser} from '../hooks/ApiHooks';
-import LoginForm from '../components/templates/LoginForm';
-import RegisterForm from '../components/templates/RegisterForm';
+import { useUser } from 'hooks/ApiHooks';
+import LoginForm from 'components/templates/LoginForm';
+import RegisterForm from 'components/templates/RegisterForm';
+const introImage = require('assets/imgs/intro-background.jpg');
 
-const Login = ({navigation}) => {
-  const {setIsLoggedIn, setUser} = useContext(MainContext);
-  const {getUserByToken} = useUser();
-  const [toggleForm, setToggleForm] = useState(true);
+const Login = () => {
+  const { setIsLoggedIn, setUser } = useContext(MainContext);
+  const { getUserByToken } = useUser();
+  const [toggle, setToggle] = useState(true);
 
   const checkToken = async () => {
     try {
@@ -27,30 +28,36 @@ const Login = ({navigation}) => {
     }
   };
 
-  const handleToggle = () => setToggleForm(!toggleForm);
+  const handleToggle = () => setToggle(!toggle);
 
   useEffect(() => {
     checkToken();
   }, []);
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: '#0D0D25',
-        justifyContent: 'center',
-      }}
-    >
-      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-        {toggleForm ? (
+    <ImageBackground style={styles.backgroundImage}
+      resizeMode='cover'
+      source={introImage}>
+      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1} style={styles.touchable}>
+        {toggle ? (
           <LoginForm handleToggle={handleToggle} />
         ) : (
           <RegisterForm handleToggle={handleToggle} />
         )}
       </TouchableOpacity>
-    </View>
+    </ImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    width: '100%',
+  },
+  touchable: {
+    flex: 1
+  }
+})
 
 Login.propTypes = {
   navigation: PropTypes.object,

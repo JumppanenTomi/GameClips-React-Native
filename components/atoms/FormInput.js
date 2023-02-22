@@ -1,11 +1,11 @@
 import React from 'react';
 import {Controller} from 'react-hook-form';
+import {View, StyleSheet} from 'react-native';
 import {HelperText, TextInput} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
 
-const FormInput = ({control, name, label, errorText, ...rest}) => {
+const FormInput = ({control, name, label, rules, errorText, ...rest}) => {
   return (
-    <>
+    <View style={styles.container}>
       <Controller
         control={control}
         render={({field: {onChange, onBlur, value}}) => (
@@ -30,22 +30,25 @@ const FormInput = ({control, name, label, errorText, ...rest}) => {
         )}
         name={name}
         defaultValue=""
+        rules={rules}
       />
       {errorText && (
         <HelperText type="error" visible={true}>
           {errorText}
         </HelperText>
       )}
-    </>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  textInput: {
+  container: {
     width: '100%',
+    marginVertical: 8
+  },
+  textInput: {
     backgroundColor: '#0D0D25',
-    marginTop: 12,
-    marginBottom: 12,
+    paddingHorizontal: 8
   },
   outline: {
     borderRadius: 100,

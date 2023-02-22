@@ -1,22 +1,45 @@
-import HomeSvg from 'assets/icons/home.svg'
-import HomeWhiteSvg from 'assets/icons/home-white.svg'
-import DiscoverSvg from 'assets/icons/discover.svg';
-import DiscoverWhiteSvg from 'assets/icons/discover-white.svg';
-import HeartSvg from 'assets/icons/heart.svg';
-import HeartWhiteSvg from 'assets/icons/heart-white.svg';
-import ProfileSvg from 'assets/icons/profile.svg';
-import ProfileWhiteSvg from 'assets/icons/profile-white.svg';
+import LogoIcon from 'assets/icons/logo.svg';
+import ArrowRightIcon from 'assets/icons/arrow-right.svg';
+import EyeIcon from 'assets/icons/eye.svg';
+import EyeSlashIcon from 'assets/icons/eye-slash.svg';
+import HomeIcon from 'assets/icons/home.svg';
+import HomeWhiteIcon from 'assets/icons/home-white.svg';
+import DiscoverIcon from 'assets/icons/discover.svg';
+import DiscoverWhiteIcon from 'assets/icons/discover-white.svg';
+import HeartIcon from 'assets/icons/heart.svg';
+import HeartWhiteIcon from 'assets/icons/heart-white.svg';
+import ProfileIcon from 'assets/icons/profile.svg';
+import ProfileWhiteIcon from 'assets/icons/profile-white.svg';
+import MoreIcon from 'assets/icons/more.svg';
+import VideoIcon from 'assets/icons/video.svg';
 
 const Icon = ({ label, active, size }) => {
-    if (label === 'Home') {
-        return active ? <HomeWhiteSvg /> : <HomeSvg />
-    } else if (label === 'Browse') {
-        return !active ? <DiscoverSvg size={size} /> : <DiscoverWhiteSvg />
-    } else if (label === 'Favorites') {
-        return !active ? <HeartSvg size={size} /> : <HeartWhiteSvg />
-    } else if (label === 'Profile') {
-        return !active ? <ProfileSvg size={size} /> : <ProfileWhiteSvg />
-    }
+  const commonProps = size ? { width: size, height: size } : {};
+
+  switch (label.toLowerCase()) {
+    case 'logo':
+      return <LogoIcon {...commonProps} />
+    case 'arrow-right':
+      return <ArrowRightIcon {...commonProps} />
+    case 'eye':
+      return <EyeIcon {...commonProps} />
+    case 'eye-slash':
+      return <EyeSlashIcon {...commonProps} />
+    case 'home':
+      return active ? <HomeWhiteIcon /> : <HomeIcon />;
+    case 'browse':
+      return !active ? <DiscoverIcon size={size} /> : <DiscoverWhiteIcon />;
+    case 'favorites':
+      return !active ? <HeartIcon size={size} /> : <HeartWhiteIcon />;
+    case 'profile':
+      return !active ? <ProfileIcon size={size} /> : <ProfileWhiteIcon />;
+    case 'more':
+      return <MoreIcon />;
+    case 'video':
+      return <VideoIcon />;
+    default:
+      return null;
+  }
 }
 
 export default Icon;

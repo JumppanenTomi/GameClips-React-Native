@@ -36,7 +36,6 @@ const TabBar = ({ state, descriptors, navigation }) => {
             ) : (
               <Appbar.Action
                 icon={() => <Icon label={label} />}
-                color={isFocused ? '#0c766b' : 'black'}
                 onPress={onPress}
                 key={item => item}
               />

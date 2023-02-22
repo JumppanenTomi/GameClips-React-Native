@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     paddingRight: 8,
-    fontFamily: 'Roboto',
     color: '#FFF'
   },
 })

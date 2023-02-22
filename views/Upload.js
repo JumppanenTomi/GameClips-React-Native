@@ -211,7 +211,6 @@ const Upload = ({navigation}) => {
                 setSelected={(val) => setSelected(val)}
                 data={data}
                 save="value"
-                fontFamily="roboto"
                 color="white"
                 inputStyles={styles.listBox}
                 dropdownTextStyles={styles.listBox}

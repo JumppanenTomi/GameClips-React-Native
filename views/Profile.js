@@ -1,26 +1,52 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Keyboard, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList } from 'react-native';
 import PropTypes from 'prop-types';
 import ProfileInfo from '../components/templates/ProfileInfo';
-import ProfileForm from '../components/templates/ProfileForm';
+import MediaCard from 'components/organisms/MediaCard';
+import { useMedia } from 'hooks/ApiHooks';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Separator from 'components/atoms/Separator';
 
 const Profile = ({ navigation }) => {
-  const [toggleForm, setToggleForm] = useState(true);
+  const [mediaArray, setMediaArray] = useState([]);
+  const { loadUserMedia } = useMedia();
 
-  const handleToggle = () => setToggleForm(!toggleForm);
+  const getMedia = async () => {
+    const token = await AsyncStorage.getItem('userToken');
+    const res = await loadUserMedia(token);
+    setMediaArray(res);
+  };
 
+  useEffect(() => {
+    getMedia();
+  }, []);
+
+
+  console.log(mediaArray);
   return (
-    <SafeAreaView style={{
-      backgroundColor: '#0D0D25',
-    }}>
-      <ScrollView>
-        <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-          {toggleForm ? <ProfileInfo /> : <ProfileForm />}
-        </TouchableOpacity>
-      </ScrollView>
+    <SafeAreaView style={styles.container}>
+      <Separator height={50} />
+      <FlatList
+        data={mediaArray}
+        ListHeaderComponent={<ProfileInfo navigation={navigation} />}
+        renderItem={({ item }) => <MediaCard singleMedia={item} style={styles.card} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    minHeight: '100%',
+    backgroundColor: '#0D0D25',
+    paddingBottom: 90
+  },
+  card: {
+    marginHorizontal: 24,
+    marginBottom: 16
+  }
+})
 
 Profile.propTypes = {
   navigation: PropTypes.object,

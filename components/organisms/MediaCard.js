@@ -6,11 +6,12 @@ import Separator from '../atoms/Separator';
 import MediaMeta from '../molecules/MediaMeta';
 import MediaTags from '../molecules/MediaTags';
 
-const MediaCard = ({singleMedia, navigation}) => {
+const MediaCard = ({singleMedia, onPress, style}) => {
   const item = singleMedia;
+  const cardStyle = [styles.container, style];
 
   return (
-    <Card style={styles.container} onPress={() => console.log('Pressed')}>
+    <Card style={cardStyle} onPress={onPress}>
       <Image
         style={styles.cardCover}
         source={{uri: uploadsUrl + item.filename}}
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: '#25253B',
     borderRadius: 20,
-    marginBottom: 16,
     minWidth: 302,
   },
   cardCover: {
