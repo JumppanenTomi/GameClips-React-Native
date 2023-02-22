@@ -1,5 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import axios from 'axios';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
@@ -10,6 +18,7 @@ const GamesList = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const idSet = new Set();
+  const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -26,6 +35,10 @@ const GamesList = () => {
     };
     fetchGames();
   }, [page]);
+
+  useEffect(() => {
+    setSelectedItemIndex(-1);
+  }, [searchTerm]);
 
   const handleLoadMore = () => {
     if (!loading) {
@@ -74,30 +87,41 @@ const GamesList = () => {
       return false;
     });
 
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search games..."
-        placeholderTextColor="#FFF"
-        onChangeText={handleSearchTermChange}
-        value={searchTerm}
-      />
-      <FlatList
-        data={filteredGames}
-        keyExtractor={(item) => item.id.toString()}
-        numColumns={2}
-        renderItem={({item}) => (
-          <View style={styles.game}>
-            <Image source={{uri: item.background_image}} style={styles.image} />
-            <Text style={styles.title}>{item.name}</Text>
-          </View>
-        )}
-        onEndReached={handleLoadMore} // Call handleLoadMore when the user reaches the end of the list
-        onEndReachedThreshold={0.5}
-      />
-    </View>
-  );
+  const handleGamePress = (index) => {
+    setSelectedItemIndex(index);
+    setTimeout(() => setSelectedItemIndex(-1), 1.0); // Auto reset the selected item after 2 seconds
+  };
+
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search games..."
+          placeholderTextColor="#FFF"
+          onChangeText={handleSearchTermChange}
+          value={searchTerm}
+        />
+        <FlatList
+          data={filteredGames}
+          keyExtractor={(item) => item.id.toString()}
+          numColumns={2}
+          renderItem={({item, index}) => (
+            <TouchableOpacity
+              style={[
+                styles.game,
+                selectedItemIndex === index && styles.selectedItem,
+              ]}
+              onPress={() => handleGamePress(index)}
+            >
+              <Image source={{uri: item.background_image}} style={styles.image} />
+              <Text style={styles.title}>{item.name}</Text>
+            </TouchableOpacity>
+          )}
+          onEndReached={handleLoadMore}
+          onEndReachedThreshold={0.5}
+        />
+      </View>
+    );
 };
 
 const styles = StyleSheet.create({
@@ -131,6 +155,13 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#25253B',
     color: '#fff',
+    marginTop: 40,
+  },
+  selectedGame: {
+    transform: [{scale: 0.9}],
+  },
+  selectedItem: {
+    transform: [{scale: 0.9}],
   },
 });
 
