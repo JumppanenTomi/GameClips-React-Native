@@ -8,6 +8,7 @@ import Button from 'components/atoms/Button';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
 import { StyleSheet, View, ImageBackground } from 'react-native';
+import Icon from 'components/atoms/Icon';
 
 const Update = ({ navigation }) => {
   const { putUser, getUserByToken } = useUser();
@@ -47,7 +48,7 @@ const Update = ({ navigation }) => {
   return (
     <ImageBackground style={styles.imgBackground}
       resizeMode='cover'
-      source={require('assets/imgs/1.jpg')}>
+      source={require('assets/imgs/profile-background.jpg')}>
       <View style={styles.container}>
         <Text type="heading" style={{ textAlign: 'center' }}>
           Update your account!
@@ -83,7 +84,7 @@ const Update = ({ navigation }) => {
           errorText={errors.email && 'Please enter a valid email'}
         />
 
-        <Button fullWidth icon="arrow-right" onPress={handleSubmit(updateUser)}>
+        <Button fullWidth icon={() => <Icon label="arrow-right" />} onPress={handleSubmit(updateUser)}>
           Update
         </Button>
         <Separator height={24} />
