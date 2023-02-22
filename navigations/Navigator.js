@@ -46,7 +46,6 @@ const StackScreen = () => {
     checkOnboardingStatus();
   }, []);
 
-
   return (
     <Stack.Navigator screenOptions={{
       headerShown: false,
@@ -66,27 +65,11 @@ const StackScreen = () => {
           <Stack.Screen name="Single" component={Single} />
           <Stack.Screen name="ClipList" component={ClipList} />
         </>
-
-      {showOnboarding ? (
-        <Stack.Screen name="Onboarding">
-          {props => <Onboarding setShowOnboarding={setShowOnboarding} {...props} />}
-        </Stack.Screen>
-
       ) : (
-        isLoggedIn ? (
-          <>
-            <Stack.Screen
-              name="Tabs"
-              component={TabScreen}
-              screenOptions={{
-                headerShown: false
-              }}
-            />
-            <Stack.Screen name="Home" component={Home} />
-            <Stack.Screen name="Upload" component={Upload} />
-            <Stack.Screen name="Update" component={Update} />
-            <Stack.Screen name="Single" component={Single} />
-          </>
+        showOnboarding ? (
+          <Stack.Screen name="Onboarding">
+            {props => <Onboarding setShowOnboarding={setShowOnboarding} {...props} />}
+          </Stack.Screen>
         ) : (
           <Stack.Screen name="Login" component={Login} />
         )
@@ -94,7 +77,6 @@ const StackScreen = () => {
     </Stack.Navigator>
   );
 };
-
 const Navigator = () => {
   return (
     <NavigationContainer>
