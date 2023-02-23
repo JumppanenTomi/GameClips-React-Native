@@ -12,6 +12,8 @@ import ProfileIcon from 'assets/icons/profile.svg';
 import ProfileWhiteIcon from 'assets/icons/profile-white.svg';
 import MoreIcon from 'assets/icons/more.svg';
 import VideoIcon from 'assets/icons/video.svg';
+import MessageIcon from 'assets/icons/message.svg'
+import ShareIcon from 'assets/icons/share.svg'
 
 const Icon = ({ label, active, size }) => {
   const commonProps = size ? { width: size, height: size } : {};
@@ -21,6 +23,10 @@ const Icon = ({ label, active, size }) => {
       return <LogoIcon {...commonProps} />
     case 'arrow-right':
       return <ArrowRightIcon {...commonProps} />
+    case 'message':
+      return <MessageIcon {...commonProps} />
+    case 'share':
+      return <ShareIcon {...commonProps} />
     case 'eye':
       return <EyeIcon {...commonProps} />
     case 'eye-slash':
@@ -30,7 +36,7 @@ const Icon = ({ label, active, size }) => {
     case 'browse':
       return !active ? <DiscoverIcon size={size} /> : <DiscoverWhiteIcon />;
     case 'favorites':
-      return !active ? <HeartIcon size={size} /> : <HeartWhiteIcon />;
+      return !active ? <HeartIcon {...commonProps} /> : <HeartWhiteIcon {...commonProps} />;
     case 'profile':
       return !active ? <ProfileIcon size={size} /> : <ProfileWhiteIcon />;
     case 'more':

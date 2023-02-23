@@ -1,11 +1,10 @@
-import React, {forwardRef, useEffect, useRef, useState} from 'react';
-import {uploadsUrl} from '../utils/variables';
+import React, { forwardRef, useEffect, useRef, useState } from 'react';
+import { uploadsUrl } from '../utils/variables';
 import PropTypes from 'prop-types';
-import {Video} from 'expo-av';
-import Text from '../components/atoms/Text';
+import { Video } from 'expo-av';
+import Text from 'components/atoms/Text';
 import {
   Alert,
-  Image,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
@@ -17,25 +16,24 @@ import {
   View,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import shareClip from '../components/functions/shareClip';
 import profile from '../components/functions/profile';
-import {useComments} from '../hooks/ApiHooks';
+import { useComments } from '../hooks/ApiHooks';
 import FormInput from '../components/atoms/FormInput';
-import {useForm} from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import handleComment from '../components/functions/handleComment';
 import Toast from 'react-native-toast-message';
 import handleLikes from "../components/functions/handleLikes";
+import ClipControl from 'components/organisms/ClipControl';
 
-const Single = ({route, navigation}) => {
+const Single = ({ route, navigation }) => {
   const scrollViewRef = useRef(null);
-  const [avatar, setAvatar] = useState('');
   const [owner, setOwner] = useState('');
   const [comments, setComments] = useState([]);
   const [like, toggleLike] = useState(false);
   const [likeCount, countLikes] = useState(0);
   const [status, setStatus] = useState({});
   const [isHidden, toggleHidden] = useState(true);
-  const {title, description, filename, user_id: userId} = route.params;
+  const { title, description, filename, user_id: userId } = route.params;
   const video = useRef(null);
   const [comment, setComment] = useState('');
 
@@ -47,8 +45,8 @@ const Single = ({route, navigation}) => {
     setComment(inputValue);
   };
 
-  const {control} = useForm({
-    defaultValues: {comment: ''},
+  const { control } = useForm({
+    defaultValues: { comment: '' },
   });
 
   const updateComments = async () => {
@@ -60,7 +58,7 @@ const Single = ({route, navigation}) => {
         }
         setComments(data);
       } else {
-        setComments([{user_id: '', comment: 'No comments yet'}]);
+        setComments([{ user_id: '', comment: 'No comments yet' }]);
       }
       console.log('Comments updated');
     } catch (error) {
@@ -77,15 +75,6 @@ const Single = ({route, navigation}) => {
       console.error('ownerUpdate', error);
     }
   };
-  const updateAvatar = async () => {
-    try {
-      setAvatar(await profile().loadAvatar(userId));
-      console.log('Avatar updated');
-    } catch (error) {
-      alert(error);
-      console.error('avatarUpdate', error);
-    }
-  };
   const updateLikes = async () => {
     try {
       const likes = await handleLikes().getUserLikes()
@@ -99,12 +88,12 @@ const Single = ({route, navigation}) => {
     }
   };
 
-  const toggleLikes = async () =>{
-    if (like){
+  const toggleLikes = async () => {
+    if (like) {
       await handleLikes().dislike(route.params.file_id)
       await updateLikes()
       console.log("disliked")
-    } else if (!like){
+    } else if (!like) {
       await handleLikes().like(route.params.file_id)
       await updateLikes()
       console.log("liked")
@@ -113,7 +102,6 @@ const Single = ({route, navigation}) => {
 
   useEffect(() => {
     console.log('Arrived single clip with id: ' + route.params.file_id);
-    updateAvatar();
     updateOwner();
     updateLikes()
   }, [1]);
@@ -171,16 +159,16 @@ const Single = ({route, navigation}) => {
           },
         },
       ],
-      {cancelable: true}
+      { cancelable: true }
     );
   };
 
   const handleContentSizeChange = () => {
-    scrollViewRef.current.scrollToEnd({animated: true});
+    scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
   const handleLayout = () => {
-    scrollViewRef.current.scrollToEnd({animated: false});
+    scrollViewRef.current.scrollToEnd({ animated: false });
   };
 
   const handleVideoPress = () => {
@@ -237,14 +225,14 @@ const Single = ({route, navigation}) => {
   });
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#000000'}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#000000' }}>
       <TouchableOpacity
         style={styles.videoContainer}
         onPress={handleVideoPress}
       >
         <Video
           ref={video}
-          source={{uri: uploadsUrl + filename}}
+          source={{ uri: uploadsUrl + filename }}
           style={styles.video}
           useNativeControls={false}
           shouldPlay
@@ -265,62 +253,15 @@ const Single = ({route, navigation}) => {
         size={40}
         color="#ffffff"
       />
-      <View style={styles.controlContainer}>
-        <Image
-          style={styles.tinyProfileImage}
-          source={{uri: uploadsUrl + avatar}}
-        />
-        <Ionicons
-          style={styles.icon}
-          onPress={() => {
-            toggleLikes()
-          }}
-          name="heart"
-          size={40}
-          color={like ? '#FF2E2E' : '#fff'}
-        />
-        <Text
-          style={{
-            color: '#fff',
-            fontWeight: "700",
-            alignSelf: 'center',
-            justifySelf: 'center',
-            marginTop: -10,
-            marginBottom: 15,
-            marginRight: 10,
-          }}
-        >
-          {likeCount}
-        </Text>
-        <Ionicons
-          style={styles.icon}
-          onPress={async () => {
-            video.current.pauseAsync();
-            toggleHidden(false);
-            await updateComments();
-          }}
-          name="chatbubble-ellipses"
-          size={40}
-          color="#ffffff"
-        />
-        <Ionicons
-          style={styles.icon}
-          onPress={() => {
-            shareClip().onShare(uploadsUrl + filename);
-          }}
-          name="share-social"
-          size={40}
-          color="#ffffff"
-        />
-      </View>
+      <ClipControl fileId={route.params.file_id} userId={route.params.user_id} fileName={route.params.filename} />
       <View style={styles.infoContainer}>
-        <Text type="brightSubHeading" style={{fontSize: 16, fontWeight: '700'}}>
+        <Text type="brightSubHeading" style={{ fontSize: 16, fontWeight: '700' }}>
           @{owner}
         </Text>
-        <Text type="brightSubHeading" style={{fontSize: 18}}>
+        <Text type="brightSubHeading" style={{ fontSize: 18 }}>
           {title}
         </Text>
-        <Text style={{color: '#fff'}}>{description}</Text>
+        <Text style={{ color: '#fff' }}>{description}</Text>
       </View>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
@@ -363,7 +304,7 @@ const Single = ({route, navigation}) => {
             label="Post a comment"
             onChangeText={handleInputChange}
             value={comment}
-            rules={{required: true}}
+            rules={{ required: true }}
             control={control}
             style={{
               flex: 10,
@@ -409,12 +350,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#000000',
   },
   controlContainer: {
-    height: 150,
-    top: '60%',
+    bottom: 90,
     right: 0,
     position: 'absolute',
-    alignContent: 'flex-end',
-    justifyContent: 'flex-end',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
   },
   infoContainer: {
     height: 50,
