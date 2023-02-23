@@ -20,7 +20,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import shareClip from '../components/functions/shareClip';
 import profile from '../components/functions/profile';
 import {useComments} from '../hooks/ApiHooks';
-import FormInput from '../components/atoms/FormInput';
+import CommentInput from '../components/atoms/CommentInput';
 import {useForm} from 'react-hook-form';
 import handleComment from '../components/functions/handleComment';
 import Toast from 'react-native-toast-message';
@@ -358,7 +358,7 @@ const Single = ({route, navigation}) => {
             alignItems: 'center',
           }}
         >
-          <FormInput
+          <CommentInput
             name="Post a comment"
             label="Post a comment"
             onChangeText={handleInputChange}
