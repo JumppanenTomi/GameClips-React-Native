@@ -25,7 +25,7 @@ const useLikes = () => {
       body: JSON.stringify({ file_id: fileId, rating: 1 }),
     };
     try {
-      return await doFetch(baseUrl + 'ratings', options);
+      await doFetch(baseUrl + 'ratings', options);
     } catch (error) {
       console.log(error)
       throw new Error('like: ' + error.message);
@@ -42,7 +42,7 @@ const useLikes = () => {
       },
     };
     try {
-      return await doFetch(baseUrl + 'ratings/file/' + fileId, options);
+      await doFetch(baseUrl + 'ratings/file/' + fileId, options);
     } catch (error) {
       console.log(error)
       throw new Error('dislike: ' + error.message);

@@ -24,18 +24,22 @@ import handleComment from '../components/functions/handleComment';
 import Toast from 'react-native-toast-message';
 import handleLikes from "../components/functions/handleLikes";
 import ClipControl from 'components/organisms/ClipControl';
+import ClipMeta from 'components/organisms/ClipMeta';
+import ClipSheet from 'components/organisms/ClipSheet';
 
 const Single = ({ route, navigation }) => {
   const scrollViewRef = useRef(null);
-  const [owner, setOwner] = useState('');
   const [comments, setComments] = useState([]);
-  const [like, toggleLike] = useState(false);
-  const [likeCount, countLikes] = useState(0);
   const [status, setStatus] = useState({});
   const [isHidden, toggleHidden] = useState(true);
-  const { title, description, filename, user_id: userId } = route.params;
-  const video = useRef(null);
+  const { title, description, filename, user_id: userId, file_id: fileId } = route.params;
   const [comment, setComment] = useState('');
+
+
+
+  const video = useRef(null);
+
+
 
   const ScrollViewWithRef = forwardRef((props, ref) => {
     return <ScrollView {...props} ref={ref} />;
@@ -66,45 +70,6 @@ const Single = ({ route, navigation }) => {
       console.error('commentUpdate', error);
     }
   };
-  const updateOwner = async () => {
-    try {
-      setOwner(await profile().loadOwner(userId));
-      console.log('Owner updated');
-    } catch (error) {
-      alert(error);
-      console.error('ownerUpdate', error);
-    }
-  };
-  const updateLikes = async () => {
-    try {
-      const likes = await handleLikes().getUserLikes()
-      toggleLike(likes.some(item => item.file_id === route.params.file_id))
-      const count = await handleLikes().countFileLikes(route.params.file_id)
-      countLikes(count.length)//how many likes
-      console.log('Likes updated');
-    } catch (error) {
-      alert(error);
-      console.error('avatarUpdate', error);
-    }
-  };
-
-  const toggleLikes = async () => {
-    if (like) {
-      await handleLikes().dislike(route.params.file_id)
-      await updateLikes()
-      console.log("disliked")
-    } else if (!like) {
-      await handleLikes().like(route.params.file_id)
-      await updateLikes()
-      console.log("liked")
-    }
-  }
-
-  useEffect(() => {
-    console.log('Arrived single clip with id: ' + route.params.file_id);
-    updateOwner();
-    updateLikes()
-  }, [1]);
 
   const addComment = async (id) => {
     try {
@@ -193,20 +158,6 @@ const Single = ({ route, navigation }) => {
       width: '100%',
       height: 300,
     },
-    comment: {
-      color: '#fff',
-      fontSize: 16,
-    },
-    poster: {
-      fontWeight: '700',
-      fontSize: 16,
-      color: 'rgba(255,255,255,0.51)',
-    },
-    text: {
-      width: '100%',
-      flexWrap: 'wrap',
-      marginBottom: 20,
-    },
     commentContainer: {
       paddingLeft: 24,
       paddingRight: 24,
@@ -223,6 +174,13 @@ const Single = ({ route, navigation }) => {
       flex: 1,
     },
   });
+
+  const sheetRef = useRef(null);
+
+  const handleSheet = () => {
+    sheetRef.current.snapTo('50%');
+  }
+
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#000000' }}>
@@ -253,16 +211,12 @@ const Single = ({ route, navigation }) => {
         size={40}
         color="#ffffff"
       />
-      <ClipControl fileId={route.params.file_id} userId={route.params.user_id} fileName={route.params.filename} />
-      <View style={styles.infoContainer}>
-        <Text type="brightSubHeading" style={{ fontSize: 16, fontWeight: '700' }}>
-          @{owner}
-        </Text>
-        <Text type="brightSubHeading" style={{ fontSize: 18 }}>
-          {title}
-        </Text>
-        <Text style={{ color: '#fff' }}>{description}</Text>
-      </View>
+
+      <ClipControl userId={userId} fileId={fileId} filename={filename}  handleSheet={handleSheet} />
+      <ClipMeta userId={userId} title={title} description={description} />
+      <ClipSheet fileId={fileId} sheetRef={sheetRef} />
+
+
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
@@ -275,19 +229,6 @@ const Single = ({ route, navigation }) => {
           onContentSizeChange={handleContentSizeChange}
           onLayout={handleLayout}
         >
-          {comments.map((item) => (
-            <TouchableOpacity
-              key={item.comment_id}
-              onLongPress={() => deleteComment(item.comment_id)}
-            >
-              <View style={commentStyles.text}>
-                <Text style={commentStyles.comment}>
-                  <Text style={commentStyles.poster}>{item.user_nickname}</Text>{' '}
-                  {item.comment}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          ))}
         </ScrollViewWithRef>
 
         <View
@@ -344,11 +285,6 @@ Single.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  videoContainer: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000000',
-  },
   controlContainer: {
     bottom: 90,
     right: 0,

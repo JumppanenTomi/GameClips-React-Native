@@ -14,6 +14,7 @@ import MoreIcon from 'assets/icons/more.svg';
 import VideoIcon from 'assets/icons/video.svg';
 import MessageIcon from 'assets/icons/message.svg'
 import ShareIcon from 'assets/icons/share.svg'
+import SendIcon from 'assets/icons/send.svg'
 
 const Icon = ({ label, active, size }) => {
   const commonProps = size ? { width: size, height: size } : {};
@@ -23,6 +24,8 @@ const Icon = ({ label, active, size }) => {
       return <LogoIcon {...commonProps} />
     case 'arrow-right':
       return <ArrowRightIcon {...commonProps} />
+    case 'send':
+      return <SendIcon {...commonProps} />
     case 'message':
       return <MessageIcon {...commonProps} />
     case 'share':

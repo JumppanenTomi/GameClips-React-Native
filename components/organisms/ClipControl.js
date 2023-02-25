@@ -8,29 +8,28 @@ import PropTypes from 'prop-types';
 import Separator from 'components/atoms/Separator';
 import { uploadsUrl } from 'utils/variables';
 
-const ClipControl = ({ fileId, fileName, userId }) => {
+const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [fileLikes, setFileLikes] = useState([]);
   const [likeCount, setLikeCount] = useState(0);
   const { addLike, removeLike, getFileLikes } = useLikes();
 
   useEffect(() => {
     const initLikes = async () => {
-      const result = await getFileLikes(fileId);
-      console.log(result)
-      setFileLikes(result);
-      setLikeCount(result.length);
-      setIsLiked(result.some(item => item.file_id === fileId));
+      const likes = await getFileLikes(fileId);
+      setLikeCount(likes.length);
+      setIsLiked(likes.some(item => item.file_id === fileId));
     }
 
     initLikes();
   }, [])
 
-  const handleLike = async () => {
+  const handleLike = () => {
     if (isLiked) {
-      await removeLike(fileId);
+      removeLike(fileId);
+      setLikeCount(likeCount-1);
     } else {
-      await addLike(fileId);
+      addLike(fileId);
+      setLikeCount(likeCount+1);
     }
     setIsLiked(!isLiked);
   }
@@ -38,7 +37,7 @@ const ClipControl = ({ fileId, fileName, userId }) => {
   const handleShare = async () => {
     try {
       const result = await Share.share({
-        message: uploadsUrl + fileName,
+        message: uploadsUrl + filename,
       });
       if (result.action === Share.sharedAction) {
         if (result.activityType) {
@@ -54,24 +53,31 @@ const ClipControl = ({ fileId, fileName, userId }) => {
       console.log(error)
     }
   }
+  
+  const sheetRef = React.useRef(null);
 
 
   return (
-    <View style={styles.container}>
-      <Avatar userID={userId} size={32} />
-      <Separator height={24} />
-      <IconButton label="favorites" active={isLiked} size={32} onPress={handleLike} />
-      <Text type="meta">
-        {likeCount}
-      </Text>
-      <Separator height={8} />
-      <IconButton label="message" active={true} size={32} onPress={async () => {
-        video.current.pauseAsync();
-        toggleHidden(false);
-        await updateComments();
-      }} />
-      <Separator height={8} />
-      <IconButton label="share" active={true} size={32} onPress={handleShare} />
+    <View style={{
+      flex: 1,
+      backgroundColor: 'papayawhip',
+      alignItems: 'center',
+      justifyContent: 'center',
+    }}>
+      
+      <View style={styles.container}>
+        <Avatar userID={userId} size={32} />
+        <Separator height={24} />
+        <IconButton label="favorites" active={isLiked} size={32} onPress={handleLike} />
+        <Text type="meta">
+          {likeCount}
+        </Text>
+        <Separator height={8} />
+        <IconButton label="message" active={true} size={32} onPress={handleSheet} />
+        <Separator height={8} />
+        <IconButton label="share" active={true} size={32} onPress={handleShare} />
+      </View>
+      
     </View>
   )
 }
@@ -83,13 +89,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'flex-start',
-
   }
 })
 
 
 ClipControl.propTypes = {
-  fileId: PropTypes.number.isRequired
+  userId: PropTypes.number.isRequired,
+  fileId: PropTypes.number.isRequired,
+  filename: PropTypes.string.isRequired,
 }
 
 export default ClipControl;
