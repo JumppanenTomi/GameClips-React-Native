@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: 90,
     width: '100%',
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   }
 })
 

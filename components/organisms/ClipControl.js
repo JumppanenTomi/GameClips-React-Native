@@ -53,7 +53,7 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
       console.log(error)
     }
   }
-  
+
   const sheetRef = React.useRef(null);
 
 
@@ -64,11 +64,11 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      
+
       <View style={styles.container}>
         <Avatar userID={userId} size={32} />
         <Separator height={24} />
-        <IconButton label="favorites" active={isLiked} size={32} onPress={handleLike} />
+        <IconButton label={isLiked ? 'heart-fill' : 'heart'} size={32} onPress={handleLike} />
         <Text type="meta">
           {likeCount}
         </Text>
@@ -77,7 +77,7 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
         <Separator height={8} />
         <IconButton label="share" active={true} size={32} onPress={handleShare} />
       </View>
-      
+
     </View>
   )
 }
