@@ -2,9 +2,9 @@ import React from 'react';
 import { IconButton as RNPIconButton } from 'react-native-paper';
 import Icon from './Icon';
 
-const IconButton = ({ ...rest }) => {
+const IconButton = ({ label, onPress, ...rest }) => {
     return (
-        <RNPIconButton icon={() => <Icon {...rest} />} />
+        <RNPIconButton icon={() => <Icon label={label} {...rest} />} onPress={onPress} />
     )
 }
 
