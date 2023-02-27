@@ -1,6 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import {appId, baseUrl} from '../utils/variables';
 import {MainContext} from '../contexts/MainContext';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -244,18 +245,22 @@ const useFavorites = () =>{
       throw new Error('deleteFavorite: ' + error.message);
     }
   }
-  const addFavorite = async (id, token)=>{
+  const addFavorite = async (id)=>{
+    const token = await AsyncStorage.getItem('userToken');
     const options = {
       method: 'POST',
       headers: {
         'x-access-token': token,
         'Content-Type': 'application/json',
       },
+      body: JSON.stringify({file_id: id}),
     };
     try {
-      return await doFetch(baseUrl + 'favourites'+id, options);
+      console.log(options)
+      return await doFetch(baseUrl + 'favourites', options);
     } catch (error) {
-      throw new Error('deleteFavorite: ' + error.message);
+      console.log(error)
+      throw new Error('favorite: ' + error.message);
     }
   }
 

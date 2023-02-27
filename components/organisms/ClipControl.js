@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Share, View } from 'react-native';
+import {StyleSheet, Share, View, Alert} from 'react-native';
 import IconButton from '../atoms/IconButton';
 import Text from '../atoms/Text';
 import useLikes from 'hooks/useLikes';
@@ -7,6 +7,8 @@ import Avatar from '../atoms/Avatar';
 import PropTypes from 'prop-types';
 import Separator from 'components/atoms/Separator';
 import { uploadsUrl } from 'utils/variables';
+import Toast from "react-native-toast-message";
+import {useFavorites} from "../../hooks/ApiHooks"
 
 const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
   const sheetRef = useRef(null);
@@ -36,19 +38,58 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
   }
 
   const handleShare = async () => {
-    try {
-      const result = await Share.share({
-        message: uploadsUrl + filename,
-      });
-      if (result.action === Share.sharedAction) {
-        console.log("Sharing");
-      } else if (result.action === Share.dismissedAction) {
-        console.log('Sharing canceled');
-      }
-    } catch (error) {
-      alert('Error occurred while sharing');
-      console.log(error)
-    }
+    Alert.alert(
+      'Share or add favorites',
+      'Do you want to share the clip with friends or add it to your favorites?',
+      [
+        {
+          text: 'Cancel',
+          style: "cancel"
+        },
+        {
+          text: 'Add to favorites',
+          style: 'default',
+          onPress: async () => {
+            try {
+              await useFavorites().addFavorite(fileId);
+              Toast.show({
+                type: 'success',
+                text1: 'Successfully added to favorites',
+                visibilityTime: 1500,
+              });
+            } catch (error) {
+              Toast.show({
+                type: 'error',
+                text1: 'Error occurred while adding to favorites.',
+                text2: 'Clip might already be added to favorites.',
+                visibilityTime: 5000,
+              });
+              console.log(error)
+            }
+          },
+        },
+        {
+          text: 'Share',
+          style: 'default',
+          onPress: async () => {
+            try {
+              const result = await Share.share({
+                message: uploadsUrl + filename,
+              });
+              if (result.action === Share.sharedAction) {
+                console.log("Sharing");
+              } else if (result.action === Share.dismissedAction) {
+                console.log('Sharing canceled');
+              }
+            } catch (error) {
+              alert('Error occurred while sharing');
+              console.log(error)
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
   }
 
   return (
