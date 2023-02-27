@@ -77,6 +77,7 @@ const StackScreen = () => {
     </Stack.Navigator>
   );
 };
+
 const Navigator = () => {
   return (
     <NavigationContainer>
