@@ -15,6 +15,7 @@ import Single from "views/Single";
 import TabBar from './TabBar';
 import ClipList from "views/ClipList";
 import { HAS_LAUNCHED_KEY } from 'utils/variables';
+import Favorites from "../views/Favorites";
 
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +28,7 @@ const TabScreen = () => {
     >
       <Tab.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Tab.Screen name="Browse" component={Browse} options={{ headerShown: false }} />
-      <Tab.Screen name="Favorites" component={Home} options={{ headerShown: false }} />
+      <Tab.Screen name="Favorites" component={Favorites} options={{ headerShown: false }} />
       <Tab.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
     </Tab.Navigator>
   );
