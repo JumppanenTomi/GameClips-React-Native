@@ -1,45 +1,65 @@
 import LogoIcon from 'assets/icons/logo.svg';
+import ArrowBackIcon from 'assets/icons/arrow-back.svg';
 import ArrowRightIcon from 'assets/icons/arrow-right.svg';
 import EyeIcon from 'assets/icons/eye.svg';
 import EyeSlashIcon from 'assets/icons/eye-slash.svg';
 import HomeIcon from 'assets/icons/home.svg';
-import HomeWhiteIcon from 'assets/icons/home-white.svg';
 import DiscoverIcon from 'assets/icons/discover.svg';
-import DiscoverWhiteIcon from 'assets/icons/discover-white.svg';
 import HeartIcon from 'assets/icons/heart.svg';
-import HeartWhiteIcon from 'assets/icons/heart-white.svg';
+import HeartFillIcon from 'assets/icons/heart-fill.svg';
 import ProfileIcon from 'assets/icons/profile.svg';
-import ProfileWhiteIcon from 'assets/icons/profile-white.svg';
+import ProfileFillIcon from 'assets/icons/profile-fill.svg';
 import MoreIcon from 'assets/icons/more.svg';
 import VideoIcon from 'assets/icons/video.svg';
+import MessageIcon from 'assets/icons/message.svg';
+import ShareIcon from 'assets/icons/share.svg';
+import SendIcon from 'assets/icons/send.svg';
 
-const Icon = ({ label, active, size }) => {
-  const commonProps = size ? { width: size, height: size } : {};
+const Icon = ({ label, size, color }) => {
+  const style = { color: color || '#FFF' };
+  const commonProps = {
+    ...(size ? { width: size, height: size } : {}),
+    ...style,
+  };
 
   switch (label.toLowerCase()) {
     case 'logo':
-      return <LogoIcon {...commonProps} />
+      return <LogoIcon {...commonProps} />;
     case 'arrow-right':
-      return <ArrowRightIcon {...commonProps} />
+      return <ArrowRightIcon {...commonProps} />;
+    case 'arrow-back':
+      return <ArrowBackIcon {...commonProps} />;
+    case 'send':
+      return <SendIcon {...commonProps} />;
+    case 'message':
+      return <MessageIcon {...commonProps} />;
+    case 'share':
+      return <ShareIcon {...commonProps} />;
     case 'eye':
-      return <EyeIcon {...commonProps} />
+      return <EyeIcon {...commonProps} />;
     case 'eye-slash':
-      return <EyeSlashIcon {...commonProps} />
+      return <EyeSlashIcon {...commonProps} />;
     case 'home':
-      return active ? <HomeWhiteIcon /> : <HomeIcon />;
+      return <HomeIcon {...commonProps} />;
     case 'browse':
-      return !active ? <DiscoverIcon size={size} /> : <DiscoverWhiteIcon />;
+      return <DiscoverIcon {...commonProps} />;
     case 'favorites':
-      return !active ? <HeartIcon size={size} /> : <HeartWhiteIcon />;
+      return <HeartIcon {...commonProps} />;
+    case 'heart':
+      return <HeartIcon {...commonProps} />;
+    case 'heart-fill':
+      return <HeartFillIcon {...commonProps} />;
     case 'profile':
-      return !active ? <ProfileIcon size={size} /> : <ProfileWhiteIcon />;
+      return <ProfileIcon {...commonProps} />;
+    case 'profile-fill':
+      return <ProfileFillIcon {...commonProps} />;
     case 'more':
-      return <MoreIcon />;
+      return <MoreIcon {...commonProps} />;
     case 'video':
-      return <VideoIcon />;
+      return <VideoIcon {...commonProps} />;
     default:
       return null;
   }
-}
+};
 
 export default Icon;
