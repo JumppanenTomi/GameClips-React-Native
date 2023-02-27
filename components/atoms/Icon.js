@@ -1,4 +1,5 @@
 import LogoIcon from 'assets/icons/logo.svg';
+import ArrowBackIcon from 'assets/icons/arrow-back.svg';
 import ArrowRightIcon from 'assets/icons/arrow-right.svg';
 import EyeIcon from 'assets/icons/eye.svg';
 import EyeSlashIcon from 'assets/icons/eye-slash.svg';
@@ -14,10 +15,10 @@ import MessageIcon from 'assets/icons/message.svg';
 import ShareIcon from 'assets/icons/share.svg';
 import SendIcon from 'assets/icons/send.svg';
 
-const Icon = ({label, size, color}) => {
-  const style = {color: color || '#FFF'};
+const Icon = ({ label, size, color }) => {
+  const style = { color: color || '#FFF' };
   const commonProps = {
-    ...(size ? {width: size, height: size} : {}),
+    ...(size ? { width: size, height: size } : {}),
     ...style,
   };
 
@@ -26,6 +27,8 @@ const Icon = ({label, size, color}) => {
       return <LogoIcon {...commonProps} />;
     case 'arrow-right':
       return <ArrowRightIcon {...commonProps} />;
+    case 'arrow-back':
+      return <ArrowBackIcon {...commonProps} />;
     case 'send':
       return <SendIcon {...commonProps} />;
     case 'message':

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Share, View } from 'react-native';
 import IconButton from '../atoms/IconButton';
 import Text from '../atoms/Text';
@@ -9,6 +9,7 @@ import Separator from 'components/atoms/Separator';
 import { uploadsUrl } from 'utils/variables';
 
 const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
+  const sheetRef = useRef(null);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const { addLike, removeLike, getFileLikes } = useLikes();
@@ -26,10 +27,10 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
   const handleLike = () => {
     if (isLiked) {
       removeLike(fileId);
-      setLikeCount(likeCount-1);
+      setLikeCount(likeCount - 1);
     } else {
       addLike(fileId);
-      setLikeCount(likeCount+1);
+      setLikeCount(likeCount + 1);
     }
     setIsLiked(!isLiked);
   }
@@ -40,22 +41,15 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
         message: uploadsUrl + filename,
       });
       if (result.action === Share.sharedAction) {
-        if (result.activityType) {
-          alert('Successful sharing');
-        } else {
-          alert('Sharing canceled');
-        }
+        console.log("Sharing");
       } else if (result.action === Share.dismissedAction) {
-        alert('Sharing canceled');
+        console.log('Sharing canceled');
       }
     } catch (error) {
       alert('Error occurred while sharing');
       console.log(error)
     }
   }
-
-  const sheetRef = React.useRef(null);
-
 
   return (
     <View style={{
@@ -69,7 +63,7 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
         <Avatar userID={userId} size={32} />
         <Separator height={24} />
         <IconButton label={isLiked ? 'heart-fill' : 'heart'} size={32} onPress={handleLike} />
-        <Text type="meta">
+        <Text type="meta" style={{ fontWeight: 'bold', marginTop: -3 }}>
           {likeCount}
         </Text>
         <Separator height={8} />

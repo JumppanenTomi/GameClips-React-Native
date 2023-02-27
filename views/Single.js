@@ -3,19 +3,17 @@ import { uploadsUrl } from '../utils/variables';
 import PropTypes from 'prop-types';
 import { Video } from 'expo-av';
 import {
-  Alert,
   Keyboard,
-  Platform,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  View,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Toast from 'react-native-toast-message';
+import { IconButton } from 'react-native-paper';
 import ClipControl from 'components/organisms/ClipControl';
 import ClipMeta from 'components/organisms/ClipMeta';
 import ClipSheet from 'components/organisms/ClipSheet';
+import Icon from 'components/atoms/Icon';
+import Toast from 'react-native-toast-message';
 
 const Single = ({ route, navigation }) => {
   const [status, setStatus] = useState({});
@@ -59,21 +57,11 @@ const Single = ({ route, navigation }) => {
           onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </TouchableOpacity>
-      <Ionicons
-        style={styles.back}
-        onPress={() => {
-          navigation.goBack();
-        }}
-        name="chevron-back-outline"
-        size={40}
-        color="#ffffff"
-      />
+      <IconButton style={styles.iconBack} icon={() => <Icon label="arrow-back" size={35} />} onPress={() => navigation.goBack()} />
 
-      <ClipControl userId={userId} fileId={fileId} filename={filename}  handleSheet={handleSheet} />
+      <ClipControl userId={userId} fileId={fileId} filename={filename} handleSheet={handleSheet} />
       <ClipMeta userId={userId} title={title} description={description} />
       <ClipSheet fileId={fileId} sheetRef={sheetRef} />
-
-
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   );
@@ -84,13 +72,10 @@ Single.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  back: {
+  iconBack: {
     position: 'absolute',
-    marginTop: 40,
-    marginBottom: 15,
-    marginLeft: 10,
-    top: 0,
-    left: 0,
+    top: 50,
+    left: 8
   },
   video: {
     width: '100%',
