@@ -1,28 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { MainContext } from 'contexts/MainContext';
+import React, {useContext, useState} from 'react';
+import {MainContext} from 'contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useMedia, useTag, useUser } from 'hooks/ApiHooks';
-import { Controller, useForm } from 'react-hook-form';
+import {useMedia, useTag, useUser} from 'hooks/ApiHooks';
+import {useForm} from 'react-hook-form';
 import FormInput from 'components/atoms/FormInput';
 import Button from 'components/atoms/Button';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
-import { StyleSheet, View, ImageBackground, Alert } from 'react-native';
+import {StyleSheet, View, ImageBackground, Alert} from 'react-native';
 import Icon from 'components/atoms/Icon';
 import Avatar from 'components/atoms/Avatar';
 import * as ImagePicker from 'expo-image-picker';
+import Loader from 'components/atoms/Loader';
 
-const Update = ({ navigation }) => {
+const Update = ({navigation}) => {
   const [mediafile, setMediafile] = useState({});
-  const { putUser, getUserByToken } = useUser();
-  const { postMedia } = useMedia();
-  const { postTag } = useTag();
-  const { user, setUser } = useContext(MainContext);
+  const [loader, setLoader] = useState(false);
+  const {putUser, getUserByToken} = useUser();
+  const {postMedia} = useMedia();
+  const {postTag} = useTag();
+  const {user, setUser} = useContext(MainContext);
   const {
     control,
     handleSubmit,
     trigger,
-    formState: { errors },
+    formState: {errors},
   } = useForm({
     defaultValues: {
       username: user.username,
@@ -34,6 +36,7 @@ const Update = ({ navigation }) => {
   });
 
   const updateUser = async (updateData) => {
+    setLoader(true);
     delete updateData.confirmPassword;
     if (!updateData.password) {
       delete updateData.password;
@@ -45,9 +48,11 @@ const Update = ({ navigation }) => {
       const updatedData = await getUserByToken(token);
       setUser(updatedData);
       uploadAvatar();
-      navigation.navigate('Profile')
+      navigation.navigate('Profile');
     } catch (error) {
       console.log('Error updating user', error);
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -74,21 +79,6 @@ const Update = ({ navigation }) => {
       };
       const tagResult = await postTag(appTag, token);
       console.log('tag result', tagResult);
-
-      Alert.alert('Uploaded', 'File id: ' + result.file_id, [
-        {
-          text: 'OK',
-          onPress: () => {
-            console.log('OK Pressed');
-            // update 'update' state in context
-            setUpdate(!update);
-            // reset form
-            // reset();
-            // TODO: navigate to home
-            navigation.navigate('Home');
-          },
-        },
-      ]);
     } catch (error) {
       console.error('file upload failed', error);
     } finally {
@@ -98,7 +88,6 @@ const Update = ({ navigation }) => {
 
   const pickFile = async () => {
     try {
-      // No permissions request is necessary for launching the image library
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -110,7 +99,6 @@ const Update = ({ navigation }) => {
 
       if (!result.canceled) {
         setMediafile(result.assets[0]);
-        // validate form
         trigger();
       }
     } catch (error) {
@@ -119,21 +107,28 @@ const Update = ({ navigation }) => {
   };
 
   return (
-    <ImageBackground style={styles.imgBackground}
-      resizeMode='cover'
-      source={require('assets/imgs/profile-background.jpg')}>
+    <ImageBackground
+      style={styles.imgBackground}
+      resizeMode="cover"
+      source={require('assets/imgs/profile-background.jpg')}
+    >
       <View style={styles.container}>
-        <Text type="heading" style={{ textAlign: 'center' }}>
+        <Text type="heading" style={{textAlign: 'center'}}>
           Update your account!
         </Text>
         <Separator height={48} />
-        <Avatar source={mediafile.uri || null} userID={user.user_id} size={160} onPress={pickFile} />
+        <Avatar
+          source={mediafile.uri || null}
+          userID={user.user_id}
+          size={160}
+          onPress={pickFile}
+        />
         <Separator height={24} />
         <FormInput
           control={control}
           name="username"
           label="Username"
-          rules={{ required: true, minLength: 3 }}
+          rules={{required: true, minLength: 3}}
           errorText={
             errors.username &&
             'Please enter a username with at least 3 characters'
@@ -145,7 +140,7 @@ const Update = ({ navigation }) => {
           name="password"
           label="Password"
           secureTextEntry
-          rules={{ minLength: 3 }}
+          rules={{minLength: 3}}
           errorText={
             errors.password &&
             'Please enter a password with at least 3 characters, one number and one uppercase letter'
@@ -155,11 +150,20 @@ const Update = ({ navigation }) => {
           control={control}
           name="email"
           label="Email"
-          rules={{ required: true, pattern: /^[a-z0-9.-]{1,64}@[a-z0-9.-]{3,64}/i }}
+          rules={{
+            required: true,
+            pattern: /^[a-z0-9.-]{1,64}@[a-z0-9.-]{3,64}/i,
+          }}
           errorText={errors.email && 'Please enter a valid email'}
         />
 
-        <Button fullWidth icon={() => <Icon label="arrow-right" />} onPress={handleSubmit(updateUser)}>
+        <Button
+          fullWidth
+          icon={() =>
+            loader ? <Loader size={16} /> : <Icon label="arrow-right" />
+          }
+          onPress={handleSubmit(updateUser)}
+        >
           Update
         </Button>
         <Separator height={24} />
@@ -184,8 +188,8 @@ const styles = StyleSheet.create({
   },
   imgBackground: {
     flex: 1,
-    width: '100%'
-  }
-})
+    width: '100%',
+  },
+});
 
 export default Update;

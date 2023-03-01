@@ -1,30 +1,32 @@
-import React, { useContext, useState } from 'react';
-import { MainContext } from 'contexts/MainContext';
+import React, {useContext, useState} from 'react';
+import {MainContext} from 'contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuthentication } from 'hooks/ApiHooks';
-import { useForm } from 'react-hook-form';
-import { View, StyleSheet } from 'react-native';
-import { TextInput } from 'react-native-paper';
-import Button from '../atoms/Button';
-import FormInput from '../atoms/FormInput';
-import Icon from '../atoms/Icon';
-import Separator from '../atoms/Separator';
-import Text from '../atoms/Text';
+import {useAuthentication} from 'hooks/ApiHooks';
+import {useForm} from 'react-hook-form';
+import {StyleSheet, View, Keyboard} from 'react-native';
+import {TextInput} from 'react-native-paper';
+import Button from 'components/atoms/Button';
+import FormInput from 'components/atoms/FormInput';
+import Icon from 'components/atoms/Icon';
+import Loader from 'components/atoms/Loader';
+import Separator from 'components/atoms/Separator';
+import Text from 'components/atoms/Text';
 import Toast from 'react-native-toast-message';
-import { Keyboard } from 'react-native';
 
-const LoginForm = ({ handleToggle }) => {
+const LoginForm = ({handleToggle}) => {
   const [showPassword, setShowPassword] = useState(false);
-  const { setIsLoggedIn, setUser } = useContext(MainContext);
-  const { postLogin } = useAuthentication();
+  const [loader, setLoader] = useState(false);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
+  const {postLogin} = useAuthentication();
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
   const logIn = async (loginData) => {
     console.log('Attempting login with credentials:', loginData);
+    setLoader(true);
     Keyboard.dismiss();
     try {
       const loginResult = await postLogin(loginData);
@@ -39,6 +41,8 @@ const LoginForm = ({ handleToggle }) => {
         text1: error.message,
         visibilityTime: 3000,
       });
+    } finally {
+      setLoader(false);
     }
   };
 
@@ -54,7 +58,7 @@ const LoginForm = ({ handleToggle }) => {
           control={control}
           name="username"
           label="Username"
-          rules={{ required: true, minLength: 3 }}
+          rules={{required: true, minLength: 3}}
           errorText={
             errors.username &&
             'Please enter a username with at least 3 characters'
@@ -66,20 +70,32 @@ const LoginForm = ({ handleToggle }) => {
           name="password"
           label="Password"
           secureTextEntry={!showPassword}
-          rules={{ required: true, minLength: 3 }}
+          rules={{required: true, minLength: 3}}
           errorText={
             errors.password &&
             'Please enter a password with at least 3 characters'
           }
           right={
             <TextInput.Icon
-              icon={() => <Icon label={showPassword ? 'eye' : 'eye-slash'} size={16} />}
+              icon={() => (
+                <Icon label={showPassword ? 'eye' : 'eye-slash'} size={16} />
+              )}
               onPress={() => setShowPassword(!showPassword)}
             />
           }
         />
         <Separator height={8} />
-        <Button fullWidth icon={() => <Icon label="arrow-right" size={16} />} onPress={handleSubmit(logIn)}>
+        <Button
+          fullWidth
+          icon={() =>
+            loader ? (
+              <Loader size={16} />
+            ) : (
+              <Icon label="arrow-right" size={16} />
+            )
+          }
+          onPress={handleSubmit(logIn)}
+        >
           Login
         </Button>
       </View>
@@ -111,7 +127,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 24,
     paddingBottom: 50,
-  }
+  },
 });
 
 export default LoginForm;
