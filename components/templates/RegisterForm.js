@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useUser } from 'hooks/ApiHooks';
 import { useForm } from 'react-hook-form';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, View, Keyboard } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Button from '../atoms/Button';
 import FormInput from '../atoms/FormInput';
@@ -20,12 +20,18 @@ const RegisterForm = ({ handleToggle }) => {
   } = useForm();
 
   const register = async (registerData) => {
-    console.log('Registering: ', registerData);
+    console.log('Attempting register with credentials:', registerData);
+    Keyboard.dismiss();
     try {
       const registerResult = await postUser(registerData);
-      console.log('register', registerResult);
+      console.log('Register successful. Received data:', registerResult);
+      Toast.show({
+        type: 'success',
+        text1: 'Succesfully register',
+        visibilityTime: 3000,
+      });
     } catch (error) {
-      console.log('Error register', error);
+      console.log('Register failed. Received error:', error.message);
       Toast.show({
         type: 'error',
         text1: error.message,
@@ -53,7 +59,7 @@ const RegisterForm = ({ handleToggle }) => {
           control={control}
           name="username"
           label="Username"
-          rules={{ required: true, minLength: 5 }}
+          rules={{ required: true, minLength: 3 }}
           errorText={
             errors.username &&
             'Please enter a username with at least 3 characters'
