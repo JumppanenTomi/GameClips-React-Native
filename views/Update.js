@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     padding: 24,
-    backgroundColor: 'rgba(13,13,37,0.9)',
+    backgroundColor: 'rgba(13,13,37,0.8)',
     justifyContent: 'flex-end',
     paddingBottom: 90,
   },

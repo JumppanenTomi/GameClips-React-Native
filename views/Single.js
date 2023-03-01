@@ -13,7 +13,6 @@ import ClipControl from 'components/organisms/ClipControl';
 import ClipMeta from 'components/organisms/ClipMeta';
 import ClipSheet from 'components/organisms/ClipSheet';
 import Icon from 'components/atoms/Icon';
-import Toast from 'react-native-toast-message';
 
 const Single = ({ route, navigation }) => {
   const [status, setStatus] = useState({});
@@ -62,7 +61,6 @@ const Single = ({ route, navigation }) => {
       <ClipControl userId={userId} fileId={fileId} filename={filename} handleSheet={handleSheet} />
       <ClipMeta userId={userId} title={title} description={description} />
       <ClipSheet fileId={fileId} sheetRef={sheetRef} />
-      <Toast ref={(ref) => Toast.setRef(ref)} />
     </SafeAreaView>
   );
 };

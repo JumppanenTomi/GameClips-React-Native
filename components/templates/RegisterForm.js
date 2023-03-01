@@ -8,6 +8,7 @@ import FormInput from '../atoms/FormInput';
 import Icon from '../atoms/Icon';
 import Separator from '../atoms/Separator';
 import Text from '../atoms/Text';
+import Toast from 'react-native-toast-message';
 
 const RegisterForm = ({ handleToggle }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,6 +26,11 @@ const RegisterForm = ({ handleToggle }) => {
       console.log('register', registerResult);
     } catch (error) {
       console.log('Error register', error);
+      Toast.show({
+        type: 'error',
+        text1: error.message,
+        visibilityTime: 3000,
+      });
     }
   };
 

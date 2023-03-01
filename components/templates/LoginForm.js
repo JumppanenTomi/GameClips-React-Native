@@ -10,6 +10,8 @@ import FormInput from '../atoms/FormInput';
 import Icon from '../atoms/Icon';
 import Separator from '../atoms/Separator';
 import Text from '../atoms/Text';
+import Toast from 'react-native-toast-message';
+import { Keyboard } from 'react-native';
 
 const LoginForm = ({ handleToggle }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,15 +24,21 @@ const LoginForm = ({ handleToggle }) => {
   } = useForm();
 
   const logIn = async (loginData) => {
-    console.log('Login button pressed', loginData);
+    console.log('Attempting login with credentials:', loginData);
+    Keyboard.dismiss();
     try {
       const loginResult = await postLogin(loginData);
-      console.log('logIn', loginResult);
+      console.log('Login successful. Received data:', loginResult);
       await AsyncStorage.setItem('userToken', loginResult.token);
       setUser(loginResult.user);
       setIsLoggedIn(true);
     } catch (error) {
-      console.log('Error login', error);
+      console.log('Login failed. Received error:', error.message);
+      Toast.show({
+        type: 'error',
+        text1: error.message,
+        visibilityTime: 3000,
+      });
     }
   };
 
