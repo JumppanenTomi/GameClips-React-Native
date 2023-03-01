@@ -16,15 +16,21 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
   const openMenu = () => setVisible(true);
   const closeMenu = () => setVisible(false);
 
-  const uploadMedia = () => navigation.navigate('Upload');
-  const updateProfile = () => navigation.navigate('Update');
+  const uploadMedia = () => {
+    closeMenu();
+    navigation.navigate('Upload');
+  }
+  const updateProfile = () => {
+    closeMenu();
+    navigation.navigate('Update');
+  }
 
   const logout = async () => {
     console.log('Logging out!');
     setUser({});
     setIsLoggedIn(false);
     try {
-      await AsyncStorage.clear();
+      await AsyncStorage.removeItem('userToken');
     } catch (e) {
       console.log('clearing asyncstorage failed', e);
     }
@@ -45,7 +51,7 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
       </Appbar>
 
       <View style={styles.info}>
-        <Avatar size={100} userID={user.user_id} />
+        <Avatar size={100} userID={user.user_id} onPress={updateProfile} />
         <Separator height={16} />
         <Text type="body" style={[styles.textName, {fontSize: 18}]}>
           {user.full_name}

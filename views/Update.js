@@ -1,22 +1,27 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { MainContext } from 'contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUser } from 'hooks/ApiHooks';
+import { useMedia, useTag, useUser } from 'hooks/ApiHooks';
 import { Controller, useForm } from 'react-hook-form';
 import FormInput from 'components/atoms/FormInput';
 import Button from 'components/atoms/Button';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
-import { StyleSheet, View, ImageBackground } from 'react-native';
+import { StyleSheet, View, ImageBackground, Alert } from 'react-native';
 import Icon from 'components/atoms/Icon';
+import Avatar from 'components/atoms/Avatar';
+import * as ImagePicker from 'expo-image-picker';
 
 const Update = ({ navigation }) => {
+  const [mediafile, setMediafile] = useState({});
   const { putUser, getUserByToken } = useUser();
+  const { postMedia } = useMedia();
+  const { postTag } = useTag();
   const { user, setUser } = useContext(MainContext);
   const {
     control,
-    getValues,
     handleSubmit,
+    trigger,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -39,9 +44,77 @@ const Update = ({ navigation }) => {
       console.log('updateUser', updateResult);
       const updatedData = await getUserByToken(token);
       setUser(updatedData);
+      uploadAvatar();
       navigation.navigate('Profile')
     } catch (error) {
       console.log('Error updating user', error);
+    }
+  };
+
+  const uploadAvatar = async () => {
+    const formData = new FormData();
+    formData.append('title', 'avatar_' + user.user_id);
+    const filename = mediafile.uri.split('/').pop();
+    let fileExt = filename.split('.').pop();
+    if (fileExt === 'jpg') fileExt = 'jpeg';
+    const mimeType = mediafile.type + '/' + fileExt;
+    formData.append('file', {
+      uri: mediafile.uri,
+      name: filename,
+      type: mimeType,
+    });
+    console.log('form data', formData);
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const result = await postMedia(formData, token);
+
+      const appTag = {
+        file_id: result.file_id,
+        tag: 'avatar_' + user.user_id,
+      };
+      const tagResult = await postTag(appTag, token);
+      console.log('tag result', tagResult);
+
+      Alert.alert('Uploaded', 'File id: ' + result.file_id, [
+        {
+          text: 'OK',
+          onPress: () => {
+            console.log('OK Pressed');
+            // update 'update' state in context
+            setUpdate(!update);
+            // reset form
+            // reset();
+            // TODO: navigate to home
+            navigation.navigate('Home');
+          },
+        },
+      ]);
+    } catch (error) {
+      console.error('file upload failed', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const pickFile = async () => {
+    try {
+      // No permissions request is necessary for launching the image library
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
+
+      console.log(result);
+
+      if (!result.canceled) {
+        setMediafile(result.assets[0]);
+        // validate form
+        trigger();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -53,12 +126,14 @@ const Update = ({ navigation }) => {
         <Text type="heading" style={{ textAlign: 'center' }}>
           Update your account!
         </Text>
-        <Separator height={100} />
+        <Separator height={48} />
+        <Avatar source={mediafile.uri || null} userID={user.user_id} size={160} onPress={pickFile} />
+        <Separator height={24} />
         <FormInput
           control={control}
           name="username"
           label="Username"
-          rules={{ required: true, minLength: 5 }}
+          rules={{ required: true, minLength: 3 }}
           errorText={
             errors.username &&
             'Please enter a username with at least 3 characters'
@@ -70,10 +145,10 @@ const Update = ({ navigation }) => {
           name="password"
           label="Password"
           secureTextEntry
-          rules={{ required: true, minLength: 5 }}
+          rules={{ minLength: 3 }}
           errorText={
             errors.password &&
-            'Please enter a password with at least 5 characters, one number and one uppercase letter'
+            'Please enter a password with at least 3 characters, one number and one uppercase letter'
           }
         />
         <FormInput
@@ -105,8 +180,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 24,
     backgroundColor: 'rgba(13,13,37,0.8)',
-    justifyContent: 'flex-end',
-    paddingBottom: 90,
+    justifyContent: 'center',
   },
   imgBackground: {
     flex: 1,
