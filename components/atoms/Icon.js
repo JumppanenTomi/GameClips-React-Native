@@ -14,6 +14,7 @@ import VideoIcon from 'assets/icons/video.svg';
 import MessageIcon from 'assets/icons/message.svg';
 import ShareIcon from 'assets/icons/share.svg';
 import SendIcon from 'assets/icons/send.svg';
+import SearchIcon from 'assets/icons/search.svg';
 
 const Icon = ({ label, size, color }) => {
   const style = { color: color || '#FFF' };
@@ -31,6 +32,8 @@ const Icon = ({ label, size, color }) => {
       return <ArrowBackIcon {...commonProps} />;
     case 'send':
       return <SendIcon {...commonProps} />;
+    case 'search':
+      return <SearchIcon {...commonProps} />;
     case 'message':
       return <MessageIcon {...commonProps} />;
     case 'share':
