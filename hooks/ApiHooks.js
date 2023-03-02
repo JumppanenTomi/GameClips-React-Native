@@ -17,6 +17,7 @@ const doFetch = async (url, options) => {
 
 const useMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+  const [favoriteArray, setFavoriteArray] = useState([]);
   const [mediaUser, setMediaUser] = useState([]);
   const {update} = useContext(MainContext);
 
@@ -30,6 +31,21 @@ const useMedia = () => {
         })
       );
       setMediaArray(media);
+    } catch (error) {
+      console.error('List', 'loadMedia', error);
+    }
+  };
+
+  const loadFavoriteMedia = async () => {
+    try {
+      const json = await useFavorites().loadFavorites();
+      const media = await Promise.all(
+        json.map(async (file) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
+          return await fileResponse.json();
+        })
+      );
+      setFavoriteArray(media);
     } catch (error) {
       console.error('List', 'loadMedia', error);
     }
@@ -49,6 +65,7 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
+    loadFavoriteMedia()
 
     // load media when update state changes in main context
     // by adding update state to the array below
@@ -70,7 +87,7 @@ const useMedia = () => {
     }
   };
 
-  return {mediaArray, postMedia, loadUserMedia, mediaUser};
+  return {mediaArray, favoriteArray, postMedia, loadUserMedia, loadFavoriteMedia, mediaUser};
 };
 
 const useComments = () =>{
@@ -264,7 +281,23 @@ const useFavorites = () =>{
     }
   }
 
-  return {deleteFavorite, addFavorite};
+  const loadFavorites = async ()=>{
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'GET',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      return await doFetch(baseUrl + 'favourites', options);
+    } catch (error) {
+      throw new Error('favoriteList: ' + error.message);
+    }
+  }
+
+  return {deleteFavorite, addFavorite, loadFavorites};
 };
 
 export {useMedia, useAuthentication, useUser, useTag, useComments, useFavorites};

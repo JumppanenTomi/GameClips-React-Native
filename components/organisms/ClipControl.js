@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {StyleSheet, Share, View, Alert} from 'react-native';
 import IconButton from '../atoms/IconButton';
 import Text from '../atoms/Text';
@@ -9,9 +9,10 @@ import Separator from 'components/atoms/Separator';
 import { uploadsUrl } from 'utils/variables';
 import Toast from "react-native-toast-message";
 import {useFavorites} from "../../hooks/ApiHooks"
+import {MainContext} from "../../contexts/MainContext";
 
 const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
-  const sheetRef = useRef(null);
+  const { update, setUpdate } = useContext(MainContext);
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const { addLike, removeLike, getFileLikes } = useLikes();
@@ -57,6 +58,7 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
                 text1: 'Successfully added to favorites',
                 visibilityTime: 1500,
               });
+              setUpdate(!update)
             } catch (error) {
               Toast.show({
                 type: 'error',

@@ -4,20 +4,21 @@ import {
   View,
   Text,
   TouchableOpacity,
-  Keyboard,
   Alert,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {appId, uploadsUrl} from '../../../utils/variables';
-import {useFavorites, useTag} from '../../../hooks/ApiHooks';
-import {useState, useEffect} from 'react';
+import {uploadsUrl} from '../../../utils/variables';
+import {useFavorites} from '../../../hooks/ApiHooks';
+import {useState, useEffect, useContext} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import profile from '../../functions/profile';
 import Toast from 'react-native-toast-message';
+import {MainContext} from "../../../contexts/MainContext";
 
 const FavoriteListitem = ({singleMedia, navigation}) => {
   const [avatar, setAvatar] = useState('5760');
   const [owner, setOwner] = useState('');
+  const { update, setUpdate } = useContext(MainContext);
   const item = singleMedia;
 
   const getData = async () => {
@@ -42,16 +43,16 @@ const FavoriteListitem = ({singleMedia, navigation}) => {
             try {
               await useFavorites()
                 .deleteFavorite(id, token)
-                .then(console.log('update list'));
               Toast.show({
                 type: 'success',
                 text1: 'Successfully deleted favorite',
                 visibilityTime: 1500,
               });
+              setUpdate(!update)
             } catch (error) {
               Toast.show({
                 type: 'error',
-                text1: 'Error deleting comment',
+                text1: 'Error deleting favorite',
                 text2: error,
                 visibilityTime: 3000,
               });
@@ -61,26 +62,6 @@ const FavoriteListitem = ({singleMedia, navigation}) => {
       ],
       {cancelable: true}
     );
-  };
-  const addFavorite = async (id) => {
-    const token = await AsyncStorage.getItem('userToken');
-    try {
-      await useFavorites()
-        .addFavorite(id, token)
-        .then(console.log('update list'));
-      Toast.show({
-        type: 'success',
-        text1: 'Successfully deleted favorite',
-        visibilityTime: 1500,
-      });
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error deleting comment',
-        text2: error,
-        visibilityTime: 3000,
-      });
-    }
   };
 
   useEffect(() => {

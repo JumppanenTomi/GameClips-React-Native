@@ -13,7 +13,7 @@ const Favorites = ({navigation}) => {
       <Text style={styles.title} type="heading">
         Favorites
       </Text>
-      <View>
+      <View style={{flex: 1}}>
         <FavoritesList navigation={navigation}></FavoritesList>
       </View>
     </SafeAreaView>
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   title:{
     fontSize: 24,
-    marginTop: 72,
+    marginTop: 32,
     marginLeft: 24,
     marginRight: 24,
     marginBottom: 32,
