@@ -1,16 +1,21 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Keyboard, TouchableOpacity, View, StyleSheet, ImageBackground } from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  ImageBackground,
+  Keyboard,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { MainContext } from 'contexts/MainContext';
+import {MainContext} from 'contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useUser } from 'hooks/ApiHooks';
+import {useUser} from 'hooks/ApiHooks';
 import LoginForm from 'components/templates/LoginForm';
 import RegisterForm from 'components/templates/RegisterForm';
 const introImage = require('assets/imgs/intro-background.jpg');
 
 const Login = () => {
-  const { setIsLoggedIn, setUser } = useContext(MainContext);
-  const { getUserByToken } = useUser();
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
+  const {getUserByToken} = useUser();
   const [toggle, setToggle] = useState(true);
 
   const checkToken = async () => {
@@ -35,10 +40,16 @@ const Login = () => {
   }, []);
 
   return (
-    <ImageBackground style={styles.backgroundImage}
-      resizeMode='cover'
-      source={introImage}>
-      <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1} style={styles.touchable}>
+    <ImageBackground
+      style={styles.backgroundImage}
+      resizeMode="cover"
+      source={introImage}
+    >
+      <TouchableOpacity
+        onPress={() => Keyboard.dismiss()}
+        activeOpacity={1}
+        style={styles.touchable}
+      >
         {toggle ? (
           <LoginForm handleToggle={handleToggle} />
         ) : (
@@ -55,9 +66,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   touchable: {
-    flex: 1
-  }
-})
+    flex: 1,
+  },
+});
 
 Login.propTypes = {
   navigation: PropTypes.object,

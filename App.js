@@ -5,6 +5,7 @@ import { MainProvider } from './contexts/MainContext';
 import Navigator from './navigations/Navigator';
 import { LogBox } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Toast from 'react-native-toast-message';
 
 LogBox.ignoreLogs([
   'fontFamily "Roboto" is not a system font and has not been loaded through Font.loadAsync.',
@@ -19,6 +20,7 @@ const App = () => {
           <Navigator />
         </View>
         <StatusBar style={"light"} />
+        <Toast />
       </MainProvider>
     </GestureHandlerRootView>
   );

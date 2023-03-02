@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {Avatar as RNPAvatar} from 'react-native-paper';
-import {uploadsUrl} from '../../utils/variables';
-import {useTag} from '../../hooks/ApiHooks';
+import React, { useState, useEffect } from 'react';
+import { Avatar as RNPAvatar } from 'react-native-paper';
+import { uploadsUrl } from '../../utils/variables';
+import { useTag } from '../../hooks/ApiHooks';
+import { TouchableOpacity } from 'react-native';
 
-const Avatar = ({userID, ...rest}) => {
-  const {getFilesByTag} = useTag();
+const Avatar = ({ source, userID, onPress, ...rest }) => {
+  const { getFilesByTag } = useTag();
   const [avatar, setAvatar] = useState('');
 
   const loadAvatar = async () => {
@@ -20,7 +21,11 @@ const Avatar = ({userID, ...rest}) => {
     loadAvatar();
   }, []);
 
-  return <RNPAvatar.Image source={{uri: uploadsUrl + avatar}} {...rest} />;
+  return (
+    <TouchableOpacity onPress={onPress}>
+      <RNPAvatar.Image source={{ uri: source || (uploadsUrl + avatar) }}  {...rest} />
+    </TouchableOpacity>
+  )
 };
 
 export default Avatar;

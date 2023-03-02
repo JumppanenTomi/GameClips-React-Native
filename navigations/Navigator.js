@@ -62,6 +62,7 @@ const StackScreen = () => {
             }}
           />
           <Stack.Screen name="Home" component={Home} />
+          <Stack.Screen name="Update" component={Update} />
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Single" component={Single} />
           <Stack.Screen name="ClipList" component={ClipList} />

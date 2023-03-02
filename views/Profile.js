@@ -5,30 +5,35 @@ import ProfileInfo from '../components/templates/ProfileInfo';
 import MediaCard from 'components/organisms/MediaCard';
 import { useMedia } from 'hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import Separator from 'components/atoms/Separator';
+import EmptyList from 'components/molecules/EmptyList';
+import { useIsFocused } from '@react-navigation/native'
 
 const Profile = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [mediaArray, setMediaArray] = useState([]);
   const { loadUserMedia } = useMedia();
-
-  const getMedia = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    const res = await loadUserMedia(token);
-    setMediaArray(res);
-  };
-
+  
   useEffect(() => {
-    getMedia();
-  }, []);
+    const getMedia = async () => {
+      const token = await AsyncStorage.getItem('userToken');
+      const json = await loadUserMedia(token);
+      const media = json.filter((item) => item.media_type === 'video');
+      setMediaArray(media);
+    };
+
+    if (isFocused) {
+      getMedia();
+    }
+  }, [isFocused]);
 
 
   console.log(mediaArray);
   return (
     <SafeAreaView style={styles.container}>
-      <Separator height={50} />
       <FlatList
         data={mediaArray}
-        ListHeaderComponent={<ProfileInfo navigation={navigation} />}
+        ListHeaderComponent={<ProfileInfo navigation={navigation} mediaCount={mediaArray.length} />}
+        ListEmptyComponent={<EmptyList />}
         renderItem={({ item }) => <MediaCard singleMedia={item} style={styles.card} />}
         keyExtractor={(item, index) => index.toString()}
       />
@@ -40,11 +45,12 @@ const styles = StyleSheet.create({
   container: {
     minHeight: '100%',
     backgroundColor: '#0D0D25',
-    paddingBottom: 90
+    paddingTop: 50,
+    paddingBottom: 90,
   },
   card: {
     marginHorizontal: 24,
-    marginBottom: 16
+    marginVertical: 8
   }
 })
 
