@@ -37,7 +37,6 @@ const Update = ({navigation}) => {
 
   const updateUser = async (updateData) => {
     setLoader(true);
-    delete updateData.confirmPassword;
     if (!updateData.password) {
       delete updateData.password;
     }
@@ -81,8 +80,6 @@ const Update = ({navigation}) => {
       console.log('tag result', tagResult);
     } catch (error) {
       console.error('file upload failed', error);
-    } finally {
-      setLoading(false);
     }
   };
 

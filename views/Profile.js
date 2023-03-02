@@ -6,21 +6,25 @@ import MediaCard from 'components/organisms/MediaCard';
 import { useMedia } from 'hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyList from 'components/molecules/EmptyList';
+import { useIsFocused } from '@react-navigation/native'
 
 const Profile = ({ navigation }) => {
+  const isFocused = useIsFocused();
   const [mediaArray, setMediaArray] = useState([]);
   const { loadUserMedia } = useMedia();
-
-  const getMedia = async () => {
-    const token = await AsyncStorage.getItem('userToken');
-    const json = await loadUserMedia(token);
-    const media = json.filter((item) => item.media_type === 'video');
-    setMediaArray(media);
-  };
-
+  
   useEffect(() => {
-    getMedia();
-  }, []);
+    const getMedia = async () => {
+      const token = await AsyncStorage.getItem('userToken');
+      const json = await loadUserMedia(token);
+      const media = json.filter((item) => item.media_type === 'video');
+      setMediaArray(media);
+    };
+
+    if (isFocused) {
+      getMedia();
+    }
+  }, [isFocused]);
 
 
   console.log(mediaArray);
