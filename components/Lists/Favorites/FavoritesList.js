@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 
 const FavoritesList = ({navigation}) => {
   const {favoriteArray} = useMedia();
-  const [setData] = useState(favoriteArray);
+  const [data, setData] = useState(favoriteArray);
 
   useEffect(() => {
     setData(favoriteArray);
