@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Text from '../atoms/Text';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Separator from '../atoms/Separator';
 import Avatar from '../atoms/Avatar';
 import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
-import Icon from 'components/atoms/Icon';
 import {getQuote} from 'utils/quotes';
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const quote = getQuote();
 const ProfileInfo = ({ mediaCount, navigation }) => {
@@ -38,17 +38,17 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
 
   return (
     <Provider>
-      <Appbar style={styles.header}>
-        <Appbar.Action icon={() => <Icon label="Video" />} onPress={uploadMedia} />
+      <View style={{flex: 1, paddingLeft: 24, paddingRight: 24, flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", flexDirection: "row"}}>
+        <Ionicons name="md-videocam" size={27} color="#ffffff" onPress={uploadMedia}/>
         <Menu
           visible={visible}
           onDismiss={closeMenu}
-          anchor={<Appbar.Action icon={() => <Icon label="More" />} onPress={openMenu} />}>
+          anchor={<Appbar.Action icon={() => <Ionicons name="ellipsis-horizontal-outline" size={27} color="#ffffff" onPress={openMenu}/>}  />}>
           <Menu.Item  titleStyle={styles.menuItem} onPress={updateProfile} title="Edit profile" />
           <Divider />
           <Menu.Item titleStyle={styles.menuItem} onPress={logout} title="Logout" />
         </Menu>
-      </Appbar>
+      </View>
 
       <View style={styles.info}>
         <Avatar size={100} userID={user.user_id} onPress={updateProfile} />
