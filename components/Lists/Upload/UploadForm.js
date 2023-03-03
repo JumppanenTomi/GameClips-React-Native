@@ -31,12 +31,15 @@ import {MainContext} from '/contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 import {appId} from '/utils/variables';
 import {Video} from 'expo-av';
+import { useNavigation } from '@react-navigation/native';
+import axios from 'axios';
 const bgImage = require('assets/imgs/upload-background.png');
 
-const UploadForm = ({navigation}) => {
+const UploadForm = () => {
   const [mediafile, setMediafile] = useState({});
   const video = useRef(null);
   const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
   const {postMedia} = useMedia();
   const {postTag} = useTag();
   const {update, setUpdate} = useContext(MainContext);
@@ -52,59 +55,25 @@ const UploadForm = ({navigation}) => {
   const [games, setGames] = useState([]);
   const [selectedGame, setSelectedGame] = useState(null);
 
-  const items = [
-    {
-      id: 1,
-      name: 'League of Legends',
-    },
-    {
-      id: 2,
-      name: 'Dota 2',
-    },
-    {
-      id: 3,
-      name: 'Counter-Strike: Global Offensive',
-    },
-    {
-      id: 4,
-      name: 'Fortnite',
-    },
-    {
-      id: 5,
-      name: 'Apex Legends',
-    },
-    {
-      id: 6,
-      name: 'Rainbow Six Siege',
-    },
-    {
-      id: 7,
-      name: 'Overwatch',
-    },
-    {
-      id: 8,
-      name: 'Call of Duty: Modern Warfare',
-    },
-    {
-      id: 9,
-      name: 'Rocket League',
-    },
-    {
-      id: 10,
-      name: 'Valorant',
-    },
-  ]
+  const searchGames = async (query) => {
+    const url = `https://api.rawg.io/api/games?search=${query}&key=6411c4fb4f4340ad87976cbfecd8158c&fields=name`;
+    try {
+      const response = await axios.get(url);
+      const gameList = response.data.results.map((result) => ({ id: result.id, name: result.name }));
+      setGames(gameList);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const [gameItems, setItems] = useState([items]);
-
-  const handleGameSelect = (items) => {
-    console.log(`Selected game with id ${items.id} and name ${items.name}`);
-    setSelectedGame(items);
+  const handleGameSelect = (game) => {
+    console.log(`Selected game with id ${game.id} and name ${game.name}`);
+    setSelectedGame(game);
   };
 
   const handleSubmit = async (data) => {
     uploadFile(data, selectedGame);
-  }
+  };
 
   const uploadFile = async (data, selectedGame) => {
     setLoading(true);
@@ -274,16 +243,11 @@ const UploadForm = ({navigation}) => {
               itemTextStyle={styles.itemText}
               placeholderTextColor="#aaa"
               itemsContainerStyle={styles.itemsContainer}
-              items={items}
+              items={games}
               placeholder={selectedGame ? selectedGame.name : 'Select game'}
               resetValue={false}
               underlineColorAndroid="transparent"
-              onTextChange={(text) => {
-                const filteredItems = items.filter((item) =>
-                  item.name.toLowerCase().includes(text.toLowerCase())
-                );
-                setItems(filteredItems);
-              }}
+              onTextChange={searchGames}
             />
             <Button
               loading={loading}
