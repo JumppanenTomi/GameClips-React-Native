@@ -1,37 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import React, {useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useGame} from 'hooks/useGame';
+import {useDebounce} from 'hooks/useDebounce';
 import GameCard from 'components/organisms/GameCard';
-import { useIsFocused } from '@react-navigation/native'
-import useGame from 'hooks/useGame';
-import { Searchbar } from 'react-native-paper';
-import { useDebounce } from 'hooks/useDebounce';
+import Loader from 'components/atoms/Loader';
+import Searchbar from 'components/atoms/Searchbar';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
-import Icon from 'components/atoms/Icon';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
 
 const GamesList = () => {
-  const isFocused = useIsFocused();
   const [games, setGames] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);;
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const [query, setQuery] = useState('');
-  const searchQuery = useDebounce(query, 1000)
-  const { getListGame } = useGame();
+  const [query, setQuery] = useState({page: 1, search: ''});
+  const [input, setInput] = useState('');
+  const debouncedInput = useDebounce(input, 400);
+  const {getListGame} = useGame();
+  const idSet = new Set();
 
   useEffect(() => {
     const fetchGames = async () => {
       setLoading(true);
       try {
-        const response = await getListGame(page, searchQuery);
+        const response = await getListGame(query);
         setGames((prevGames) => [...prevGames, ...response.results]);
       } catch (error) {
         console.log(error);
@@ -41,12 +35,23 @@ const GamesList = () => {
     };
 
     fetchGames();
-  }, [page, searchQuery]);
+  }, [query]);
+
+  useEffect(() => {
+    setGames([]);
+    setQuery({search: debouncedInput, page: 1});
+  }, [debouncedInput]);
 
   const handleLoadMore = () => {
     if (!loading) {
       setLoading(true);
-      setPage(prevPage => prevPage + 1);
+      setQuery((prevQuery) => ({...prevQuery, page: prevQuery.page + 1}));
+    }
+  };
+
+  const handleSearch = (newQuery) => {
+    if (!loading) {
+      setInput(newQuery);
     }
   };
 
@@ -54,36 +59,38 @@ const GamesList = () => {
     navigation.navigate('ClipList');
   };
 
-  const handleSearch = newQuery => {
-    console.log("The new query is ", newQuery);
-    setGames([]);
-    setPage(1);
-    setQuery(newQuery);
-  }
+  const filteredGames = games.filter((game) => {
+    if (!game.id) return true;
+    if (!idSet.has(game.id)) {
+      idSet.add(game.id);
+      return true;
+    }
+    return false;
+  });
 
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text type="heading" style={{ fontSize: 24 }}>Browse</Text>
+        <Text type="heading" style={{fontSize: 24}}>
+          Browse
+        </Text>
         <Separator height={16} />
-        <Searchbar
-          icon={() => <Icon label="search" size={16} color="rgba(255,255,255,0.5)" />}
-          style={{ backgroundColor: '#0D0D25', borderRadius: 100, borderWidth: 1, borderColor: 'rgba(255,255,255,0.5)', height: 46 }}
-          inputStyle={{ fontSize: 14, paddingLeft: 0, color: 'white' }}
-          placeholder="Search"
-          placeholderTextColor={"rgba(255,255,255,0.5)"}
-          onChangeText={handleSearch}
-          value={query}
-        />
+        <Searchbar value={query} onChangeText={handleSearch} />
       </View>
       <Separator height={18} />
       <View style={styles.mainContainer}>
+        {loading && (
+          <View>
+            <Loader />
+            <Separator height={18} />
+          </View>
+        )}
         <FlatList
-          data={games}
-          keyExtractor={(item) => item.id.toString()}
+          data={filteredGames}
+          keyExtractor={(item, index) => item.id.toString() + index}
           numColumns={2}
-          renderItem={({ item, index }) => (
-            <GameCard game={item} />
+          renderItem={({item, index}) => (
+            <GameCard game={item} onPress={handleGamePress} />
           )}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
@@ -102,10 +109,10 @@ const styles = StyleSheet.create({
     paddingTop: 50,
   },
   headerContainer: {
-    paddingHorizontal: 24
+    paddingHorizontal: 24,
   },
   mainContainer: {
-    paddingHorizontal: 18
+    paddingHorizontal: 18,
   },
   game: {
     margin: 10,
@@ -121,10 +128,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   selectedGame: {
-    transform: [{ scale: 0.9 }],
+    transform: [{scale: 0.9}],
   },
   selectedItem: {
-    transform: [{ scale: 0.9 }],
+    transform: [{scale: 0.9}],
   },
 });
 

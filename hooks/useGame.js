@@ -1,5 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { gameUrl } from "utils/variables";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {gameUrl} from 'utils/variables';
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -13,10 +13,10 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useGame = () => {
+export const useGame = () => {
   const gameKey = '6411c4fb4f4340ad87976cbfecd8158c';
 
-  const getListGame = async (page, searchQuery) => {
+  const getListGame = async (query) => {
     const options = {
       method: 'get',
       headers: {
@@ -24,33 +24,17 @@ const useGame = () => {
       },
     };
     try {
-      let daniel = '';
-      if (searchQuery) {
-        daniel += `&search=${searchQuery}`
+      let url =
+        gameUrl + `games?key=${gameKey}&page=${query.page}&page_size=150`;
+      if (query.search) {
+        url += `&search=${query.search}`;
       }
-      console.log(gameUrl + 'games' + `?page=${page}&page_size=10&key=${gameKey}` + daniel)
-      return await doFetch(gameUrl + 'games' + `?page=${page}&page_size=10&key=${gameKey}` + daniel, options);
+      console.log(url);
+      return await doFetch(url, options);
     } catch (error) {
       throw new Error('getListGame: ' + error.message);
     }
-  }
+  };
 
-  const getListGameByName = async (text) => {
-    const options = {
-      method: 'get',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-    try {
-      return await doFetch(gameUrl + 'games' + `?search=${text}&key=${gameKey}`, options);
-    } catch (error) {
-      throw new Error('getListGameByName: ' + error.message);
-    }
-  }
-
-  return { getListGame, getListGameByName }
-}
-
-
-export default useGame;
+  return {getListGame};
+};

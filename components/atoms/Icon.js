@@ -15,11 +15,12 @@ import MessageIcon from 'assets/icons/message.svg';
 import ShareIcon from 'assets/icons/share.svg';
 import SendIcon from 'assets/icons/send.svg';
 import SearchIcon from 'assets/icons/search.svg';
+import CloseIcon from 'assets/icons/close.svg';
 
-const Icon = ({ label, size, color }) => {
-  const style = { color: color || '#FFF' };
+const Icon = ({label, size, color}) => {
+  const style = {color: color || '#FFF'};
   const commonProps = {
-    ...(size ? { width: size, height: size } : {}),
+    ...(size ? {width: size, height: size} : {}),
     ...style,
   };
 
@@ -32,6 +33,8 @@ const Icon = ({ label, size, color }) => {
       return <ArrowBackIcon {...commonProps} />;
     case 'send':
       return <SendIcon {...commonProps} />;
+    case 'close':
+      return <CloseIcon {...commonProps} />;
     case 'search':
       return <SearchIcon {...commonProps} />;
     case 'message':

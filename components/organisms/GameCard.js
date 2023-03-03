@@ -2,9 +2,9 @@ import { StyleSheet, View, TouchableOpacity, ImageBackground } from "react-nativ
 import { LinearGradient } from 'expo-linear-gradient';
 import Text from "components/atoms/Text";
 
-const GameCard = ({ game }) => {
+const GameCard = ({ game, onPress }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <ImageBackground source={{ uri: game.background_image }} style={styles.background}>
         <LinearGradient colors={['transparent', 'transparent', 'rgba(0,0,0,0.8)']} style={styles.gradient}>
           <View style={styles.textContainer}>
