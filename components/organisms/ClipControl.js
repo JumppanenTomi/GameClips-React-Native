@@ -1,8 +1,7 @@
-import React, {useContext, useEffect, useRef, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {StyleSheet, Share, View, Alert} from 'react-native';
 import IconButton from '../atoms/IconButton';
 import Text from '../atoms/Text';
-import useLikes from 'hooks/useLikes';
 import Avatar from '../atoms/Avatar';
 import PropTypes from 'prop-types';
 import Separator from 'components/atoms/Separator';
@@ -10,32 +9,40 @@ import { uploadsUrl } from 'utils/variables';
 import Toast from "react-native-toast-message";
 import {useFavorites} from "../../hooks/ApiHooks"
 import {MainContext} from "../../contexts/MainContext";
+import handleLikes from "../functions/handleLikes";
 
 const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
   const { update, setUpdate } = useContext(MainContext);
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const { addLike, removeLike, getFileLikes } = useLikes();
+  const [like, toggleLike] = useState(false);
+  const [likeCount, countLikes] = useState(0);
 
   useEffect(() => {
-    const initLikes = async () => {
-      const likes = await getFileLikes(fileId);
-      setLikeCount(likes.length);
-      setIsLiked(likes.some(item => item.file_id === fileId));
-    }
+    updateLikes()
+  }, [1])
 
-    initLikes();
-  }, [])
-
-  const handleLike = () => {
-    if (isLiked) {
-      removeLike(fileId);
-      setLikeCount(likeCount - 1);
-    } else {
-      addLike(fileId);
-      setLikeCount(likeCount + 1);
+  const updateLikes = async () => {
+    try {
+      const likes = await handleLikes().getUserLikes()
+      toggleLike(likes.some(item => item.file_id === fileId))
+      const count = await handleLikes().countFileLikes(fileId)
+      countLikes(count.length)//how many likes
+      console.log('Likes updated');
+    } catch (error) {
+      alert(error);
+      console.error('avatarUpdate', error);
     }
-    setIsLiked(!isLiked);
+  }
+
+  const toggleLikes = async () =>{
+    if (like){
+      await handleLikes().dislike(fileId)
+      await updateLikes()
+      console.log("disliked")
+    } else if (!like){
+      await handleLikes().like(fileId)
+      await updateLikes()
+      console.log("liked")
+    }
   }
 
   const handleShare = async () => {
@@ -105,7 +112,7 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
       <View style={styles.container}>
         <Avatar userID={userId} size={32} />
         <Separator height={24} />
-        <IconButton label={isLiked ? 'heart-fill' : 'heart'} size={32} onPress={handleLike} />
+        <IconButton label={like ? 'heart-fill' : 'heart'} size={32} onPress={toggleLikes} />
         <Text type="meta" style={{ fontWeight: 'bold', marginTop: -3 }}>
           {likeCount}
         </Text>
