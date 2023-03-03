@@ -1,130 +1,103 @@
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {useGame} from 'hooks/useGame';
+import {useDebounce} from 'hooks/useDebounce';
+import GameCard from 'components/organisms/GameCard';
+import Loader from 'components/atoms/Loader';
+import Searchbar from 'components/atoms/Searchbar';
+import Separator from 'components/atoms/Separator';
+import Text from 'components/atoms/Text';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
 
 const GamesList = () => {
   const [games, setGames] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const idSet = new Set();
-  const [selectedItemIndex, setSelectedItemIndex] = useState(-1);
   const navigation = useNavigation();
+  const [query, setQuery] = useState({page: 1, search: ''});
+  const [input, setInput] = useState('');
+  const debouncedInput = useDebounce(input, 400);
+  const {getListGame} = useGame();
+  const idSet = new Set();
 
   useEffect(() => {
     const fetchGames = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(
-          `https://api.rawg.io/api/games?platforms=4&ordering=-added&page_size=150&page=${page}&key=6411c4fb4f4340ad87976cbfecd8158c`
-        );
-        const data = response.data.results;
-        setGames((prevGames) => [...prevGames, ...data]);
-        setLoading(false);
+        const response = await getListGame(query);
+        setGames((prevGames) => [...prevGames, ...response.results]);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
+
     fetchGames();
-  }, [page]);
+  }, [query]);
 
   useEffect(() => {
-    setSelectedItemIndex(-1);
-  }, [searchTerm]);
+    setGames([]);
+    setQuery({search: debouncedInput, page: 1});
+  }, [debouncedInput]);
 
   const handleLoadMore = () => {
     if (!loading) {
       setLoading(true);
-      setPage((prevPage) => prevPage + 1);
+      setQuery((prevQuery) => ({...prevQuery, page: prevQuery.page + 1}));
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(
-        `https://api.rawg.io/api/games?search=${searchTerm}&key=6411c4fb4f4340ad87976cbfecd8158c`
-      );
-      const data = response.data.results;
-      if (data.length > 0) {
-        setGames((prevGames) => [...prevGames, ...data]);
-      }
-    } catch (error) {
-      console.log(error);
+  const handleSearch = (newQuery) => {
+    if (!loading) {
+      setInput(newQuery);
     }
   };
 
-  const handleSearchTermChange = (term) => {
-    setSearchTerm(term);
-    if (term.length === 0) {
-      // Clearing the search bar should return the items to their original order. If the search bar is cleared too fast this won't work.
-      setPage(1);
-      setGames([]);
-      idSet.clear();
-    } else {
-      handleSearch();
-    }
+  const handleGamePress = (index) => {
+    navigation.navigate('ClipList');
   };
 
-  // Ensure all items have a unique ID
-  const filteredGames = games
-    .filter((game) =>
-      game.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .filter((game) => {
-      if (!game.id) return true;
-      if (!idSet.has(game.id)) {
-        idSet.add(game.id);
-        return true;
-      }
-      return false;
-    });
+  const filteredGames = games.filter((game) => {
+    if (!game.id) return true;
+    if (!idSet.has(game.id)) {
+      idSet.add(game.id);
+      return true;
+    }
+    return false;
+  });
 
-    const handleGamePress = (index) => {
-      navigation.navigate('ClipList');
-      setSelectedItemIndex(index);
-      setTimeout(() => setSelectedItemIndex(-1), 1.0);
-    };
-
-    return (
-      <View style={styles.container}>
-        <TextInput
-          style={styles.searchBar}
-          placeholder="Search games..."
-          placeholderTextColor="#FFF"
-          onChangeText={handleSearchTermChange}
-          value={searchTerm}
-        />
+  return (
+    <View style={styles.container}>
+      <View style={styles.headerContainer}>
+        <Text type="heading" style={{fontSize: 24}}>
+          Browse
+        </Text>
+        <Separator height={16} />
+        <Searchbar value={query} onChangeText={handleSearch} />
+      </View>
+      <Separator height={18} />
+      <View style={styles.mainContainer}>
+        {loading && (
+          <View>
+            <Loader />
+            <Separator height={18} />
+          </View>
+        )}
         <FlatList
           data={filteredGames}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item, index) => item.id.toString() + index}
           numColumns={2}
           renderItem={({item, index}) => (
-            <TouchableOpacity
-              style={[
-                styles.game,
-                selectedItemIndex === index && styles.selectedItem,
-              ]}
-              onPress={() => handleGamePress(index)}
-            >
-              <Image source={{uri: item.background_image}} style={styles.image} />
-              <Text style={styles.title}>{item.name}</Text>
-            </TouchableOpacity>
+            <GameCard game={item} onPress={handleGamePress} />
           )}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}
         />
       </View>
-    );
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -133,6 +106,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#0D0D25',
     width: '100%',
     paddingBottom: 100,
+    paddingTop: 50,
+  },
+  headerContainer: {
+    paddingHorizontal: 24,
+  },
+  mainContainer: {
+    paddingHorizontal: 18,
   },
   game: {
     margin: 10,
@@ -142,23 +122,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     overflow: 'hidden',
   },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
+
   title: {
     marginTop: 5,
     textAlign: 'center',
-  },
-  searchBar: {
-    height: 40,
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 10,
-    padding: 10,
-    backgroundColor: '#25253B',
-    color: '#fff',
-    marginTop: 40,
   },
   selectedGame: {
     transform: [{scale: 0.9}],
