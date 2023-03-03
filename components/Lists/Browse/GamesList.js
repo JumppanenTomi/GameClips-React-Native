@@ -75,7 +75,7 @@ const GamesList = () => {
           Browse
         </Text>
         <Separator height={16} />
-        <Searchbar value={query} onChangeText={handleSearch} />
+        <Searchbar value={query.search} onChangeText={handleSearch} />
       </View>
       <Separator height={18} />
       <View style={styles.mainContainer}>
