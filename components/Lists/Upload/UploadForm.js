@@ -31,8 +31,9 @@ import {MainContext} from '/contexts/MainContext';
 import {useFocusEffect} from '@react-navigation/native';
 import {appId} from '/utils/variables';
 import {Video} from 'expo-av';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
+import {clockRunning} from 'react-native-reanimated';
 const bgImage = require('assets/imgs/upload-background.png');
 
 const UploadForm = () => {
@@ -47,6 +48,7 @@ const UploadForm = () => {
     control,
     formState: {errors},
     trigger,
+    handleSubmit,
     reset,
   } = useForm({
     defaultValues: {title: '', description: ''},
@@ -55,11 +57,16 @@ const UploadForm = () => {
   const [games, setGames] = useState([]);
   const [selectedGame, setSelectedGame] = useState(null);
 
+  // Data is from the RAWG API: https://rawg.io/apidocs
+
   const searchGames = async (query) => {
     const url = `https://api.rawg.io/api/games?search=${query}&key=6411c4fb4f4340ad87976cbfecd8158c&fields=name`;
     try {
       const response = await axios.get(url);
-      const gameList = response.data.results.map((result) => ({ id: result.id, name: result.name }));
+      const gameList = response.data.results.map((result) => ({
+        id: result.id,
+        name: result.name,
+      }));
       setGames(gameList);
     } catch (error) {
       console.error(error);
@@ -71,15 +78,23 @@ const UploadForm = () => {
     setSelectedGame(game);
   };
 
-  const handleSubmit = async (data) => {
+  const onSubmit = async (data) => {
     uploadFile(data, selectedGame);
   };
 
   const uploadFile = async (data, selectedGame) => {
     setLoading(true);
     const formData = new FormData();
-    formData.append('title', data.title);
-    formData.append('description', data.description);
+    if (data.title) {
+      formData.append('title', data.title);
+    }
+    if (data.description) {
+      formData.append('description', data.description);
+    }
+
+    console.log(data.title);
+    console.log(data.description);
+
     const filename = mediafile.uri.split('/').pop();
     let fileExt = filename.split('.').pop();
     if (fileExt === 'jpg') fileExt = 'jpeg';
@@ -96,10 +111,19 @@ const UploadForm = () => {
 
       const appTag = {
         file_id: result.file_id,
+        tag: appId,
+      };
+
+      const appTag2 = {
+        file_id: result.file_id,
         tag: `${appId}_${selectedGame.name}`,
       };
+
       const tagResult = await postTag(appTag, token);
+      const tagResult2 = await postTag(appTag2, token);
+
       console.log('tag result', tagResult);
+      console.log('tag result', tagResult2);
       console.log(appTag);
 
       Alert.alert('Uploaded', 'File id: ' + result.file_id, [
@@ -211,26 +235,26 @@ const UploadForm = () => {
               )}
               name="title"
             />
+
             <Controller
               control={control}
               rules={{
                 minLength: {
                   value: 5,
-                  message: 'Minimum 5 characters!',
+                  message: 'Description min length is 5 characters.',
                 },
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   placeholder="Description"
-                  style={styles.input}
                   onBlur={onBlur}
                   onChangeText={onChange}
                   value={value}
-                  placeholderTextColor="#aaa"
-                  multiline={true}
                   errorMessage={
                     errors.description && errors.description.message
                   }
+                  style={styles.input}
+                  placeholderTextColor="#aaa"
                 />
               )}
               name="description"
@@ -254,7 +278,7 @@ const UploadForm = () => {
               style={styles.button}
               disabled={!mediafile.uri || errors.title || errors.description}
               mode="contained"
-              onPress={handleSubmit}
+              onPress={handleSubmit(onSubmit)}
             >
               Upload
             </Button>
