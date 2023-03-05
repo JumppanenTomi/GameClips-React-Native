@@ -14,7 +14,7 @@ const Browse =  ({navigation}) => {
       style={{paddingLeft: 24, paddingRight: 24}}
       keyExtractor={(item, index) => index.toString()}
       renderItem={({item}) => (
-        <ListItem navigation={navigation} singleMedia={item} />
+        <ListItem navigation={navigation} singleMedia={item} filter={true}/>
       )}
     />
   );
