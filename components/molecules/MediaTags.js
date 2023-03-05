@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {MainContext} from '../../contexts/MainContext';
 import {StyleSheet, View} from 'react-native';
 import {useTag} from '../../hooks/ApiHooks';
+import Tag from "../atoms/Tag";
 
 const MediaTags = ({singleMedia, navigation}) => {
   const item = singleMedia;

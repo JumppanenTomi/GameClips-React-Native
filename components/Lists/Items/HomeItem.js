@@ -52,15 +52,11 @@ useEffect(()=>{
         </View>
         <View style={{flexDirection: "row", overflow: "hidden"}}>
           {tags.map((item, index) => {
-            if (item.tag === appId) {
-              return null; // Skip rendering this object
-            } else {
               return (
                 <View key={index} style={styles.tagContainer}>
                   <Text style={styles.tagText}>{item.tag}</Text>
                 </View>
               );
-            }
           })}
         </View>
       </View>
