@@ -1,11 +1,15 @@
 import {StyleSheet, TouchableOpacity, View,} from 'react-native';
 import PropTypes from 'prop-types';
 import Text from '../../atoms/Text';
+import {useContext} from "react";
+import {MainContext} from "../../../contexts/MainContext";
 
 
 const ListItem = ({singleMedia}) => {
+  const {tagId, setTagId} = useContext(MainContext);
+
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={() => {setTagId(singleMedia.tag)}}>
       <View style={styles.tag}>
         <Text style={styles.tagText} type="heading">{singleMedia.tag}</Text>
       </View>
