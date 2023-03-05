@@ -65,7 +65,7 @@ useEffect(()=>{
         </View>
       </TouchableOpacity>
     );
-  }else if(filter === false){
+  }else if(filter === false || tagId === 'none'){
     return (
       <TouchableOpacity style={styles.item} onPress={()=>{
         navigation.navigate('Single', item, navigation)
