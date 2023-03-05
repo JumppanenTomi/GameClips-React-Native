@@ -239,7 +239,14 @@ const useTag = () => {
           tag: item.tag.substring(appId.length + 1),
         }));
       const noEmt = noAppID.filter(({tag}) => tag !== '');
-      return noEmt.filter(({tag}) => tag !== 'undefined');
+      const noUndefined = noEmt.filter(({tag}) => tag !== 'undefined');
+      const uniqueData = {};
+      noUndefined.forEach(obj => {
+        if (!uniqueData[obj.tag]) {
+          uniqueData[obj.tag] = obj;
+        }
+      });
+      return Object.values(uniqueData);
     } catch (error) {
       throw new Error('getListTag: ' + error.message);
     }
