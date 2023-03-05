@@ -4,7 +4,7 @@ import { uploadsUrl } from '../../utils/variables';
 import { useTag } from '../../hooks/ApiHooks';
 import { TouchableOpacity } from 'react-native';
 
-const Avatar = ({ source, userID, onPress, ...rest }) => {
+const Avatar = ({ source, userID, username, onPress, ...rest }) => {
   const { getFilesByTag } = useTag();
   const [avatar, setAvatar] = useState('');
 
@@ -20,6 +20,14 @@ const Avatar = ({ source, userID, onPress, ...rest }) => {
   useEffect(() => {
     loadAvatar();
   }, []);
+
+  if (username && !avatar) {
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <RNPAvatar.Text label={username[0]}  {...rest} />
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <TouchableOpacity onPress={onPress}>

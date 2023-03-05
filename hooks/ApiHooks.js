@@ -238,7 +238,7 @@ const useTag = () => {
       },
     };
     try {
-      return await doFetch(baseUrl + 'tags/file/'+id, options);
+      return await doFetch(baseUrl + 'tags/file/'+ id, options);
     } catch (error) {
       throw new Error('getTagsById: ' + error.message);
     }

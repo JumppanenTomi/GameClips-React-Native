@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
   },
+  body1: {
+    fontSize: 18,
+    color: '#FFF'
+  },
   body: {
     fontSize: 16,
     color: 'black',

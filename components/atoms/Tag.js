@@ -1,7 +1,7 @@
 import {Chip} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 
-const Tag = ({children, onPress, style, ...rest}) => {
+const Tag = ({children, onPress, style}) => {
   const chipStyle = [styles.chip, style];
   return (
     <Chip
@@ -23,7 +23,9 @@ const styles = StyleSheet.create({
   chipText: {
     fontSize: 14,
     color: '#FFF',
-    marginTop: 2,
+    marginTop: 0,
+    marginBottom: 3,
+    marginHorizontal: 10,
   },
 });
 

@@ -1,5 +1,6 @@
 import LogoIcon from 'assets/icons/logo.svg';
 import ArrowBackIcon from 'assets/icons/arrow-back.svg';
+import ArrowNextIcon from 'assets/icons/arrow-next.svg';
 import ArrowRightIcon from 'assets/icons/arrow-right.svg';
 import EyeIcon from 'assets/icons/eye.svg';
 import EyeSlashIcon from 'assets/icons/eye-slash.svg';
@@ -31,6 +32,8 @@ const Icon = ({label, size, color}) => {
       return <ArrowRightIcon {...commonProps} />;
     case 'arrow-back':
       return <ArrowBackIcon {...commonProps} />;
+    case 'arrow-next':
+      return <ArrowNextIcon {...commonProps} />;
     case 'send':
       return <SendIcon {...commonProps} />;
     case 'close':
