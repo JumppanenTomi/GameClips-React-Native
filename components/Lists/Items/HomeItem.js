@@ -3,16 +3,18 @@ import {Image, StyleSheet, View, Text, TouchableOpacity,
 import PropTypes from 'prop-types';
 import {appId, uploadsUrl} from '../../../utils/variables';
 import {useTag} from "../../../hooks/ApiHooks";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import profile from "../../functions/profile";
+import {MainContext} from "../../../contexts/MainContext";
 
-const ListItem = ({singleMedia, navigation}) => {
+const ListItem = ({singleMedia, navigation, filter}) => {
   const {getTagsById} = useTag();
 
   const [avatar, setAvatar] = useState('5760');
   const [owner, setOwner] = useState('');
   const [tags, setTags] = useState([]);
+  const {tagId, setTagId} = useContext(MainContext);
 
   const item = singleMedia;
 
@@ -35,33 +37,63 @@ useEffect(()=>{
   loadTags(item.file_id)
 }, []);
 
-  return (
-    <TouchableOpacity style={styles.item} onPress={()=>{
-      navigation.navigate('Single', item, navigation)
-    }
-    }>
-      <Image
-        style={styles.image}
-        source={{uri: uploadsUrl + item.thumbnails?.w160}}
-      ></Image>
-      <View style={styles.text}>
-        <Text style={styles.title}>{item.title}</Text>
-        <View style={{flexDirection: "row", alignItems: "center"}}>
-          <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
-          <Text style={styles.title}>@{owner}</Text>
-        </View>
-        <View style={{flexDirection: "row", overflow: "hidden"}}>
-          {tags.map((item, index) => {
+  if(tags.some(obj => obj.tag === tagId)){
+    return (
+      <TouchableOpacity style={styles.item} onPress={()=>{
+        navigation.navigate('Single', item, navigation)
+      }
+      }>
+        <Image
+          style={styles.image}
+          source={{uri: uploadsUrl + item.thumbnails?.w160}}
+        ></Image>
+        <View style={styles.text}>
+          <Text style={styles.title}>{item.title}</Text>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
+            <Text style={styles.title}>@{owner}</Text>
+          </View>
+          <View style={{flexDirection: "row", overflow: "hidden"}}>
+            {tags.map((item, index) => {
               return (
                 <View key={index} style={styles.tagContainer}>
                   <Text style={styles.tagText}>{item.tag}</Text>
                 </View>
               );
-          })}
+            })}
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  }else if(filter === false){
+    return (
+      <TouchableOpacity style={styles.item} onPress={()=>{
+        navigation.navigate('Single', item, navigation)
+      }
+      }>
+        <Image
+          style={styles.image}
+          source={{uri: uploadsUrl + item.thumbnails?.w160}}
+        ></Image>
+        <View style={styles.text}>
+          <Text style={styles.title}>{item.title}</Text>
+          <View style={{flexDirection: "row", alignItems: "center"}}>
+            <Image style={styles.tinyProfileImage} source={{uri: uploadsUrl + avatar}}/>
+            <Text style={styles.title}>@{owner}</Text>
+          </View>
+          <View style={{flexDirection: "row", overflow: "hidden"}}>
+            {tags.map((item, index) => {
+              return (
+                <View key={index} style={styles.tagContainer}>
+                  <Text style={styles.tagText}>{item.tag}</Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  }
 };
 
 ListItem.propTypes = {
