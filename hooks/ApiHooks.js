@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from 'react';
 import {appId, baseUrl} from '../utils/variables';
 import {MainContext} from '../contexts/MainContext';
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const doFetch = async (url, options) => {
   const response = await fetch(url, options);
@@ -65,7 +65,7 @@ const useMedia = () => {
 
   useEffect(() => {
     loadMedia();
-    loadFavoriteMedia()
+    loadFavoriteMedia();
 
     // load media when update state changes in main context
     // by adding update state to the array below
@@ -87,17 +87,24 @@ const useMedia = () => {
     }
   };
 
-  return {mediaArray, favoriteArray, postMedia, loadUserMedia, loadFavoriteMedia, mediaUser};
+  return {
+    mediaArray,
+    favoriteArray,
+    postMedia,
+    loadUserMedia,
+    loadFavoriteMedia,
+    mediaUser,
+  };
 };
 
-const useComments = () =>{
-  const getCommentsById = async (id)=>{
+const useComments = () => {
+  const getCommentsById = async (id) => {
     try {
       return await doFetch(baseUrl + 'comments/file/' + id);
     } catch (error) {
       throw new Error('getCommentsById, ' + error.message);
     }
-  }
+  };
 
   return {getCommentsById};
 };
@@ -140,7 +147,7 @@ const useUser = () => {
       headers: {'x-access-token': token},
     };
     try {
-      return await doFetch(baseUrl + 'users/'+id, options);
+      return await doFetch(baseUrl + 'users/' + id, options);
     } catch (error) {
       throw new Error('checkUserById: ' + error.message);
     }
@@ -223,7 +230,16 @@ const useTag = () => {
       },
     };
     try {
-      return await doFetch(baseUrl + 'tags', options);
+      // This function fetches the data from the API and filters it, returning only the tags that don't have the AppID, an empty string or undefined.
+      const jsonData = await doFetch(baseUrl + 'tags', options);
+      const noAppID = jsonData
+        .filter((item) => item.tag.startsWith(appId))
+        .map((item) => ({
+          ...item,
+          tag: item.tag.substring(appId.length + 1),
+        }));
+      const noEmt = noAppID.filter(({tag}) => tag !== '');
+      return noEmt.filter(({tag}) => tag !== 'undefined');
     } catch (error) {
       throw new Error('getListTag: ' + error.message);
     }
@@ -238,7 +254,21 @@ const useTag = () => {
       },
     };
     try {
-      return await doFetch(baseUrl + 'tags/file/'+id, options);
+      const jsonData = await doFetch(baseUrl + 'tags/file/' + id, options);
+
+      const noAppID = jsonData
+        .filter((item) => item.tag.startsWith(appId))
+        .map((item) => ({
+          ...item,
+          tag: item.tag.substring(appId.length + 1),
+        }));
+      const noEmt = noAppID.filter(({tag}) => tag !== '');
+      const noUndefined = noEmt.filter(({tag}) => tag !== 'undefined');
+      if (noUndefined.length > 0) {
+        return noUndefined;
+      }else{
+        return [{tag_id: 1, file_id: id, tag: 'No tags'}];
+      }
     } catch (error) {
       throw new Error('getTagsById: ' + error.message);
     }
@@ -247,8 +277,8 @@ const useTag = () => {
   return {getFilesByTag, getListTag, getTagsById, postTag};
 };
 
-const useFavorites = () =>{
-  const deleteFavorite = async (id, token)=>{
+const useFavorites = () => {
+  const deleteFavorite = async (id, token) => {
     const options = {
       method: 'DELETE',
       headers: {
@@ -257,12 +287,12 @@ const useFavorites = () =>{
       },
     };
     try {
-      return await doFetch(baseUrl + 'favourites/file/'+id, options);
+      return await doFetch(baseUrl + 'favourites/file/' + id, options);
     } catch (error) {
       throw new Error('deleteFavorite: ' + error.message);
     }
-  }
-  const addFavorite = async (id)=>{
+  };
+  const addFavorite = async (id) => {
     const token = await AsyncStorage.getItem('userToken');
     const options = {
       method: 'POST',
@@ -273,15 +303,15 @@ const useFavorites = () =>{
       body: JSON.stringify({file_id: id}),
     };
     try {
-      console.log(options)
+      console.log(options);
       return await doFetch(baseUrl + 'favourites', options);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new Error('favorite: ' + error.message);
     }
-  }
+  };
 
-  const loadFavorites = async ()=>{
+  const loadFavorites = async () => {
     const token = await AsyncStorage.getItem('userToken');
     const options = {
       method: 'GET',
@@ -295,9 +325,16 @@ const useFavorites = () =>{
     } catch (error) {
       throw new Error('favoriteList: ' + error.message);
     }
-  }
+  };
 
   return {deleteFavorite, addFavorite, loadFavorites};
 };
 
-export {useMedia, useAuthentication, useUser, useTag, useComments, useFavorites};
+export {
+  useMedia,
+  useAuthentication,
+  useUser,
+  useTag,
+  useComments,
+  useFavorites,
+};
