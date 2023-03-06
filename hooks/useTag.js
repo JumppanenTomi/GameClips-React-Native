@@ -14,7 +14,7 @@ const doFetch = async (url, options) => {
   return json;
 };
 
-const useTag = () => {
+export const useTag = () => {
   const getFilesByTag = async (tag) => {
     try {
       return await doFetch(baseUrl + 'tags/' + tag);
@@ -86,5 +86,3 @@ const useTag = () => {
 
   return {getFilesByTag, getListTag, getTagsById, postTag};
 };
-
-export default useTag;

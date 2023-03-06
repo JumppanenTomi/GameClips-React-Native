@@ -9,7 +9,7 @@ import EmptyList from 'components/molecules/EmptyList';
 import { useIsFocused } from '@react-navigation/native'
 import { baseUrl } from 'utils/variables';
 
-const Profile = ({ navigation }) => {
+const Profile = () => {
   const isFocused = useIsFocused();
   const [mediaArray, setMediaArray] = useState([]);
   const { loadUserMedia } = useMedia();
@@ -38,7 +38,7 @@ const Profile = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <FlatList
         data={mediaArray}
-        ListHeaderComponent={<ProfileInfo navigation={navigation} mediaCount={mediaArray.length} />}
+        ListHeaderComponent={<ProfileInfo mediaCount={mediaArray.length} />}
         ListEmptyComponent={<EmptyList />}
         renderItem={({ item }) => <MediaCard singleMedia={item} style={styles.card} />}
         keyExtractor={(item, index) => index.toString()}

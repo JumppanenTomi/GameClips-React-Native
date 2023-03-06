@@ -1,9 +1,9 @@
-import {StyleSheet, View, FlatList, TouchableOpacity} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 import {useMedia} from 'hooks/ApiHooks';
-import Text from 'components/atoms/Text';
-import Separator from 'components/atoms/Separator';
-import MediaCard from 'components/organisms/MediaCard';
 import Icon from 'components/atoms/Icon';
+import MediaCard from 'components/organisms/MediaCard';
+import Separator from 'components/atoms/Separator';
+import Text from 'components/atoms/Text';
 
 const NewestList = () => {
   const {mediaArray} = useMedia();
@@ -15,7 +15,7 @@ const NewestList = () => {
         <Icon label="arrow-next" size={20} />
       </TouchableOpacity>
       <Separator height={16} />
-      <View style={{flex: 1}}>
+      <View>
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}

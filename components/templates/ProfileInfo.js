@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 import Text from '../atoms/Text';
 import { StyleSheet, View } from 'react-native';
 import Separator from '../atoms/Separator';
 import Avatar from '../atoms/Avatar';
 import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
 import { getQuote } from 'utils/quotes';
-import Ionicons from "@expo/vector-icons/Ionicons";
+import Icon from 'components/atoms/Icon';
 
 const quote = getQuote();
-const ProfileInfo = ({ mediaCount, navigation }) => {
+const ProfileInfo = ({ mediaCount }) => {
+  const navigation = useNavigation();
   const { setIsLoggedIn, user, setUser } = useContext(MainContext);
   const [visible, setVisible] = React.useState(false);
   const openMenu = () => setVisible(true);
@@ -31,19 +33,19 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
     setIsLoggedIn(false);
     try {
       await AsyncStorage.removeItem('userToken');
-    } catch (e) {
-      console.log('clearing asyncstorage failed', e);
+    } catch (error) {
+      console.log('clearing asyncstorage failed', error);
     }
   };
 
   return (
     <Provider>
-      <View style={{ flex: 1, paddingLeft: 24, paddingRight: 24, flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", flexDirection: "row" }}>
-        <Ionicons name="md-videocam" size={27} color="#ffffff" onPress={uploadMedia} />
+      <View style={styles.header}>
+        <Appbar.Action icon={() => <Icon label="video" size={27} />} onPress={uploadMedia} />
         <Menu
           visible={visible}
           onDismiss={closeMenu}
-          anchor={<Appbar.Action icon={() => <Ionicons name="ellipsis-horizontal-outline" size={27} color="#ffffff" onPress={openMenu} />} />}>
+          anchor={<Appbar.Action icon={() => <Icon label="more" size={27} />} onPress={openMenu} />}>
           <Menu.Item titleStyle={styles.menuItem} onPress={updateProfile} title="Edit profile" />
           <Divider />
           <Menu.Item titleStyle={styles.menuItem} onPress={logout} title="Logout" />
@@ -51,7 +53,7 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
       </View>
 
       <View style={styles.info}>
-        <Avatar size={100} userID={user.user_id} onPress={updateProfile} />
+        <Avatar size={100} userId={user.user_id} onPress={updateProfile} />
         <Separator height={16} />
         <Text type="title">
           {user.full_name}
@@ -72,12 +74,10 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
 
 const styles = StyleSheet.create({
   header: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    backgroundColor: '#0D0D25',
-    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   info: {
     alignItems: 'center',

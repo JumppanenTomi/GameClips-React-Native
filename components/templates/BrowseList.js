@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
-import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
-import Text from 'components/atoms/Text';
-import Separator from 'components/atoms/Separator';
-import MediaCard from 'components/organisms/MediaCard';
+import React, { useEffect, useState } from 'react';
+import { useTag } from 'hooks/useTag';
+import { StyleSheet, View, TouchableOpacity, FlatList } from 'react-native';
 import Icon from 'components/atoms/Icon';
-import { appId, baseUrl } from 'utils/variables';
-import {tags} from 'utils/tags';
+import MediaCard from 'components/organisms/MediaCard';
+import Separator from 'components/atoms/Separator';
 import { TagButton } from 'components/atoms/Button';
-import useTag from 'hooks/useTag';
+import Text from 'components/atoms/Text';
+import { appId, baseUrl } from 'utils/variables';
+import { tags } from 'utils/tags';
 
 const BrowseList = () => {
+  const { getFilesByTag } = useTag();
   const [mediaArray, setMediaArray] = useState([]);
   const [tag, setTag] = useState(tags[0]);
-  const {getFilesByTag} = useTag();
 
   useEffect(() => {
     const fetchClips = async () => {
@@ -29,6 +29,10 @@ const BrowseList = () => {
     fetchClips();
   }, [tag]);
 
+  const handleTag = (currTag) => {
+    setTag(currTag);
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.header}>
@@ -43,7 +47,7 @@ const BrowseList = () => {
           data={tags}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => (
-            <TagButton style={{ marginRight: 8 }} selected={item === tag} onPress={() => setTag(item)}>{item.label}</TagButton>
+            <TagButton style={styles.tag} selected={item === tag} onPress={() => handleTag(item)}>{item.label}</TagButton>
           )}
         />
       </View>
@@ -69,6 +73,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'flex-end',
+  },
+  tag: {
+    marginRight: 8
   },
   card: {
     marginRight: 8

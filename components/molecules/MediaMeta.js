@@ -29,7 +29,7 @@ const MediaMeta = ({singleMedia}) => {
       <Text style={{color: '#FFF', fontSize: 14}}>{item.title}</Text>
       <Separator height={8} />
       <View style={styles.container}>
-        <Avatar size={24} userID={item.user_id} username={owner} />
+        <Avatar size={24} userId={item.user_id} username={owner} />
         <Text type="meta" style={styles.text}>
           @{owner}
         </Text>

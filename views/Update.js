@@ -29,7 +29,6 @@ const Update = ({navigation}) => {
     defaultValues: {
       username: user.username,
       password: '',
-      confirmPassword: '',
       email: user.email,
     },
     mode: 'onBlur',
@@ -91,9 +90,7 @@ const Update = ({navigation}) => {
         aspect: [4, 3],
         quality: 0.5,
       });
-
       console.log(result);
-
       if (!result.canceled) {
         setMediafile(result.assets[0]);
         trigger();
@@ -115,8 +112,8 @@ const Update = ({navigation}) => {
         </Text>
         <Separator height={48} />
         <Avatar
-          source={mediafile.uri || null}
-          userID={user.user_id}
+          tempSource={mediafile?.uri}
+          userId={user.user_id}
           size={160}
           onPress={pickFile}
         />
