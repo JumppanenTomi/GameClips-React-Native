@@ -22,16 +22,16 @@ const MediaMeta = ({singleMedia}) => {
       }
     };
     getOwner();
-  }, []);
+  }, [item]);
 
   return (
     <>
-      <Text type="meta" style={{fontSize: 14}}>{item.title}</Text>
+      <Text style={{color: '#FFF', fontSize: 14}}>{item.title}</Text>
       <Separator height={8} />
       <View style={styles.container}>
         <Avatar size={24} userID={item.user_id} username={owner} />
         <Text type="meta" style={styles.text}>
-          {owner}
+          @{owner}
         </Text>
       </View>
     </>

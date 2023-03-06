@@ -13,6 +13,7 @@ const Avatar = ({ source, userID, username, onPress, ...rest }) => {
       const avatarArray = await getFilesByTag('avatar_' + userID);
       setAvatar(avatarArray.pop().filename);
     } catch (error) {
+      setAvatar('4254c98a7ccd66d74ff4179b3d9df713.png');
       console.log('user avatar fetch failed', error.message);
     }
   };

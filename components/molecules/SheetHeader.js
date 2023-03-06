@@ -5,7 +5,7 @@ import Text from 'components/atoms/Text';
 
 const SheetHeader = ({ count }) => (
   <View style={styles.container}>
-    <Text type="body" style={styles.textTitle}>
+    <Text type="body">
       Comments
     </Text>
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -24,13 +24,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
   },
-  textTitle: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
   textCount: {
     color: 'rgba(255,255,255,0.5)',
-    fontWeight: 'bold',
     paddingLeft: 8,
   }
 })

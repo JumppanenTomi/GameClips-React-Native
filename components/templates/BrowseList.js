@@ -1,27 +1,78 @@
-import {FlatList} from 'react-native';
-import {useMedia} from 'hooks/ApiHooks';
-import ListItem from 'components/';
-import PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native';
+import Text from 'components/atoms/Text';
+import Separator from 'components/atoms/Separator';
+import MediaCard from 'components/organisms/MediaCard';
+import Icon from 'components/atoms/Icon';
+import { appId, baseUrl } from 'utils/variables';
+import {tags} from 'utils/tags';
+import { TagButton } from 'components/atoms/Button';
+import useTag from 'hooks/useTag';
 
-const BrowseList = ({navigation}) => {
-  const {mediaArray} = useMedia();
+const BrowseList = () => {
+  const [mediaArray, setMediaArray] = useState([]);
+  const [tag, setTag] = useState(tags[0]);
+  const {getFilesByTag} = useTag();
+
+  useEffect(() => {
+    const fetchClips = async () => {
+      const json = await getFilesByTag(appId + '_' + tag.name);
+      const media = await Promise.all(
+        json.map(async (file) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
+          return await fileResponse.json();
+        })
+      );
+      setMediaArray(media);
+    }
+
+    fetchClips();
+  }, [tag]);
 
   return (
-    <FlatList
-      horizontal
-      showsHorizontalScrollIndicator={false}
-      data={mediaArray}
-      style={{paddingLeft: 24, paddingRight: 24}}
-      keyExtractor={(item, index) => index.toString()}
-      renderItem={({item}) => (
-        <ListItem navigation={navigation} singleMedia={item} />
-      )}
-    />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.header}>
+        <Text type="title">Browse Clips </Text>
+        <Icon label="arrow-next" size={20} />
+      </TouchableOpacity>
+      <Separator height={16} />
+      <View>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={tags}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <TagButton style={{ marginRight: 8 }} selected={item === tag} onPress={() => setTag(item)}>{item.label}</TagButton>
+          )}
+        />
+      </View>
+      <Separator height={16} />
+      <View>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={mediaArray}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => <MediaCard singleMedia={item} style={styles.card} />}
+        />
+      </View>
+      <Separator height={16} />
+    </View>
   );
 };
 
-Browse.propTypes = {
-  navigation: PropTypes.object,
-};
+const styles = StyleSheet.create({
+  container: {
+    marginHorizontal: 24,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+  },
+  card: {
+    marginRight: 8
+  }
+});
 
 export default BrowseList;

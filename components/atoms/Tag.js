@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   chipText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#FFF',
     marginTop: 0,
     marginBottom: 3,

@@ -19,6 +19,25 @@ const Button = ({children, onPress, fullWidth, style, ...rest}) => {
   );
 };
 
+export const TagButton = ({children, selected, onPress, style, ...rest}) => {
+  const buttonStyle = [styles.tagButton, style, {backgroundColor: selected ? '#8C8AFA' : '#0D0D25'}];
+  return (
+    <RNPButton
+      mode="contained"
+      style={buttonStyle}
+      contentStyle={{
+        paddingVertical: 0,
+        paddingHorizontal: 12,
+      }}
+      onPress={onPress}
+      compact
+      {...rest}
+    >
+      {children}
+    </RNPButton>
+  );
+}
+
 const styles = StyleSheet.create({
   button: {
     marginVertical: 8,
@@ -29,6 +48,13 @@ const styles = StyleSheet.create({
   fullWidth: {
     width: '100%',
   },
+  tagButton: {
+    backgroundColor: '#8C8AFA',
+    borderRadius: 100,
+    borderColor: 'rgba(255, 255, 255, 0.16)',
+    borderWidth: 1,
+  },
 });
+
 
 export default Button;

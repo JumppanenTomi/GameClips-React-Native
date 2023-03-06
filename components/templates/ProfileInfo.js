@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { MainContext } from '../../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Text from '../atoms/Text';
-import {StyleSheet, View} from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Separator from '../atoms/Separator';
 import Avatar from '../atoms/Avatar';
 import { Appbar, Menu, Divider, Provider } from 'react-native-paper';
-import {getQuote} from 'utils/quotes';
+import { getQuote } from 'utils/quotes';
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const quote = getQuote();
@@ -38,13 +38,13 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
 
   return (
     <Provider>
-      <View style={{flex: 1, paddingLeft: 24, paddingRight: 24, flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", flexDirection: "row"}}>
-        <Ionicons name="md-videocam" size={27} color="#ffffff" onPress={uploadMedia}/>
+      <View style={{ flex: 1, paddingLeft: 24, paddingRight: 24, flexWrap: "nowrap", alignItems: "center", justifyContent: "space-between", flexDirection: "row" }}>
+        <Ionicons name="md-videocam" size={27} color="#ffffff" onPress={uploadMedia} />
         <Menu
           visible={visible}
           onDismiss={closeMenu}
-          anchor={<Appbar.Action icon={() => <Ionicons name="ellipsis-horizontal-outline" size={27} color="#ffffff" onPress={openMenu}/>}  />}>
-          <Menu.Item  titleStyle={styles.menuItem} onPress={updateProfile} title="Edit profile" />
+          anchor={<Appbar.Action icon={() => <Ionicons name="ellipsis-horizontal-outline" size={27} color="#ffffff" onPress={openMenu} />} />}>
+          <Menu.Item titleStyle={styles.menuItem} onPress={updateProfile} title="Edit profile" />
           <Divider />
           <Menu.Item titleStyle={styles.menuItem} onPress={logout} title="Logout" />
         </Menu>
@@ -53,15 +53,15 @@ const ProfileInfo = ({ mediaCount, navigation }) => {
       <View style={styles.info}>
         <Avatar size={100} userID={user.user_id} onPress={updateProfile} />
         <Separator height={16} />
-        <Text type="body" style={[styles.textName, {fontSize: 18}]}>
+        <Text type="title">
           {user.full_name}
         </Text>
         <Separator height={4} />
         <Text type="subHeading">@{user.username}</Text>
         <Separator height={14} />
-        <Text type="subHeading" style={{textAlign: 'center'}}>{quote}</Text>
+        <Text type="subHeading" style={{ textAlign: 'center' }}>{quote}</Text>
         <Separator height={14} />
-        <Text type="body" style={[styles.textName, {fontSize: 18}]}>{mediaCount}</Text>
+        <Text type="title">{mediaCount}</Text>
         <Separator height={8} />
         <Text type="subHeading">Clip(s)</Text>
         <Separator height={8} />

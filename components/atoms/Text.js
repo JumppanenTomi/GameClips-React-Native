@@ -33,14 +33,19 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
   },
-  body1: {
+  title: {
     fontSize: 18,
+    fontWeight: 'bold',
     color: '#FFF'
+  },
+  subTitle: {
+    fontSize: 14,
+    color: '#BFBFBF'
   },
   body: {
     fontSize: 16,
-    color: 'black',
-    lineHeight: 24,
+    fontWeight: 'bold',
+    color: '#FFF',
   },
   meta: {
     fontSize: 12,

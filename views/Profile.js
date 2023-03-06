@@ -7,6 +7,7 @@ import { useMedia } from 'hooks/ApiHooks';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import EmptyList from 'components/molecules/EmptyList';
 import { useIsFocused } from '@react-navigation/native'
+import { baseUrl } from 'utils/variables';
 
 const Profile = ({ navigation }) => {
   const isFocused = useIsFocused();
@@ -17,7 +18,13 @@ const Profile = ({ navigation }) => {
     const getMedia = async () => {
       const token = await AsyncStorage.getItem('userToken');
       const json = await loadUserMedia(token);
-      const media = json.filter((item) => item.media_type === 'video');
+
+      const media = await Promise.all(
+        json.filter((item) => item.media_type === 'video').map(async (file) => {
+          const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
+          return await fileResponse.json();
+        })
+      );
       setMediaArray(media);
     };
 
@@ -27,7 +34,6 @@ const Profile = ({ navigation }) => {
   }, [isFocused]);
 
 
-  console.log(mediaArray);
   return (
     <SafeAreaView style={styles.container}>
       <FlatList

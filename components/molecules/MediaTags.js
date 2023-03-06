@@ -21,7 +21,7 @@ const MediaTags = ({singleMedia}) => {
 
   useEffect(() => {
     getTagsByFile();
-  }, []);
+  }, [item]);
 
   return (
     <View style={styles.container}>
