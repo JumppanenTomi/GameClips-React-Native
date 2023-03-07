@@ -1,4 +1,4 @@
-import {FlatList} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {useMedia} from '../../../hooks/ApiHooks';
 import ListItem from '../Items/HomeItem';
 import PropTypes from 'prop-types';
@@ -7,6 +7,7 @@ const Browse =  ({navigation}) => {
   const {mediaArray} = useMedia();
 
   return (
+    <View style={{marginTop: 16, marginBottom: 120}}>
     <FlatList
       horizontal
       showsHorizontalScrollIndicator={false}
@@ -17,6 +18,7 @@ const Browse =  ({navigation}) => {
         <ListItem navigation={navigation} singleMedia={item} filter={true}/>
       )}
     />
+    </View>
   );
 };
 

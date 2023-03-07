@@ -1,7 +1,7 @@
 import {Image, StyleSheet, View, Text, TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {appId, uploadsUrl} from '../../../utils/variables';
+import {uploadsUrl} from '../../../utils/variables';
 import {useTag} from "../../../hooks/ApiHooks";
 import {useState, useEffect, useContext} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -37,7 +37,7 @@ useEffect(()=>{
   loadTags(item.file_id)
 }, []);
 
-  if(tags.some(obj => obj.tag === tagId)){
+  if(tags.some(obj => obj.tag === tagId || tagId === 'none')){
     return (
       <TouchableOpacity style={styles.item} onPress={()=>{
         navigation.navigate('Single', item, navigation)

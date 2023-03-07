@@ -3,21 +3,22 @@ import { uploadsUrl } from '../utils/variables';
 import PropTypes from 'prop-types';
 import { Video } from 'expo-av';
 import {
+  Dimensions,
   Keyboard,
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { IconButton } from 'react-native-paper';
 import ClipControl from 'components/organisms/ClipControl';
 import ClipMeta from 'components/organisms/ClipMeta';
 import ClipSheet from 'components/organisms/ClipSheet';
-import Icon from 'components/atoms/Icon';
 
 const Single = ({ route, navigation }) => {
   const [status, setStatus] = useState({});
   const [isHidden, toggleHidden] = useState(true);
   const { title, description, filename, user_id: userId, file_id: fileId } = route.params;
+  const { height, width } = Dimensions.get('window');
+
 
   const video = useRef(null);
   const handleVideoPress = () => {
@@ -37,7 +38,7 @@ const Single = ({ route, navigation }) => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#000000' }}>
+    <SafeAreaView style={{backgroundColor: '#000000', height: height, width: width}}>
       <TouchableOpacity
         style={styles.videoContainer}
         onPress={handleVideoPress}
@@ -47,7 +48,6 @@ const Single = ({ route, navigation }) => {
           source={{ uri: uploadsUrl + filename }}
           style={styles.video}
           useNativeControls={false}
-          shouldPlay
           resizeMode="contain"
           onError={(error) => {
             console.log(error);
@@ -56,8 +56,6 @@ const Single = ({ route, navigation }) => {
           onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </TouchableOpacity>
-      <IconButton style={styles.iconBack} icon={() => <Icon label="arrow-back" size={35} />} onPress={() => navigation.goBack()} />
-
       <ClipControl userId={userId} fileId={fileId} filename={filename} handleSheet={handleSheet} />
       <ClipMeta userId={userId} title={title} description={description} />
       <ClipSheet fileId={fileId} sheetRef={sheetRef} />
@@ -70,11 +68,6 @@ Single.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  iconBack: {
-    position: 'absolute',
-    top: 50,
-    left: 8
-  },
   video: {
     width: '100%',
     height: '100%',
