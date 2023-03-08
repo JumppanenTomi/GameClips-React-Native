@@ -98,15 +98,17 @@ const useMedia = () => {
 };
 
 const useMediaByGame = () => {
-    const fetchMediaByGame = async (gameName) => {
-      try {
-        const response = await doFetch(baseUrl + 'tags/' + gameName);
-        console.log(await response);
-        return response;
-      } catch (error) {
-        console.error('useMediaByGame', error);
-      }
-    };
+  const fetchMediaByGame = async (gameName) => {
+    try {
+      const response = await doFetch(
+        baseUrl + 'tags/' + appId + '_' + gameName
+      );
+      console.log(await response);
+      return response;
+    } catch (error) {
+      console.error('useMediaByGame', error);
+    }
+  };
 
   return {fetchMediaByGame};
 };
@@ -255,7 +257,7 @@ const useTag = () => {
       const noEmt = noAppID.filter(({tag}) => tag !== '');
       const noUndefined = noEmt.filter(({tag}) => tag !== 'undefined');
       const uniqueData = {};
-      noUndefined.forEach(obj => {
+      noUndefined.forEach((obj) => {
         if (!uniqueData[obj.tag]) {
           uniqueData[obj.tag] = obj;
         }
@@ -287,7 +289,7 @@ const useTag = () => {
       const noUndefined = noEmt.filter(({tag}) => tag !== 'undefined');
       if (noUndefined.length > 0) {
         return noUndefined;
-      }else{
+      } else {
         return [{tag_id: 1, file_id: id, tag: 'No tags'}];
       }
     } catch (error) {
