@@ -97,6 +97,20 @@ const useMedia = () => {
   };
 };
 
+const useMediaByGame = () => {
+    const fetchMediaByGame = async (gameName) => {
+      try {
+        const response = await doFetch(baseUrl + 'tags/' + gameName);
+        console.log(await response);
+        return response;
+      } catch (error) {
+        console.error('useMediaByGame', error);
+      }
+    };
+
+  return {fetchMediaByGame};
+};
+
 const useComments = () => {
   const getCommentsById = async (id) => {
     try {
@@ -344,4 +358,5 @@ export {
   useTag,
   useComments,
   useFavorites,
+  useMediaByGame,
 };

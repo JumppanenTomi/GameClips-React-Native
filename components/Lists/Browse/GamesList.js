@@ -8,6 +8,7 @@ import Loader from 'components/atoms/Loader';
 import Searchbar from 'components/atoms/Searchbar';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
+import ClipList from 'views/ClipList';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
 
@@ -55,8 +56,8 @@ const GamesList = () => {
     }
   };
 
-  const handleGamePress = (index) => {
-    navigation.navigate('ClipList');
+  const handleGamePress = (game) => {
+    navigation.navigate('BrowseClipList', {gameName: game});
   };
 
   const filteredGames = games.filter((game) => {
@@ -90,7 +91,12 @@ const GamesList = () => {
           keyExtractor={(item, index) => item.id.toString() + index}
           numColumns={2}
           renderItem={({item, index}) => (
-            <GameCard game={item} onPress={handleGamePress} />
+            <GameCard
+              game={item}
+              onPress={() => {
+                handleGamePress(item.name);
+              }}
+            />
           )}
           onEndReached={handleLoadMore}
           onEndReachedThreshold={0.5}

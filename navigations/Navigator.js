@@ -14,6 +14,7 @@ import Browse from "views/Browse";
 import Single from "views/Single";
 import TabBar from './TabBar';
 import ClipList from "views/ClipList";
+import BrowseClipList from "views/BrowseClipList";
 import { HAS_LAUNCHED_KEY } from 'utils/variables';
 import Favorites from "../views/Favorites";
 
@@ -66,6 +67,7 @@ const StackScreen = () => {
           <Stack.Screen name="Upload" component={Upload} />
           <Stack.Screen name="Single" component={Single} />
           <Stack.Screen name="ClipList" component={ClipList} />
+          <Stack.Screen name="BrowseClipList" component={BrowseClipList} />
         </>
       ) : (
         showOnboarding ? (

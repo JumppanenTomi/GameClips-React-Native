@@ -1,22 +1,27 @@
-import React from 'react';
-import { StyleSheet, View, FlatList, Text } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useRoute } from '@react-navigation/native';
+import { useMediaByGame } from 'hooks/ApiHooks';
+import { View, Text, Video } from 'react-native';
 
 const ClipList = () => {
+  const { gameName } = useRoute().params;
+  const { mediaArray } = useMediaByGame(gameName);
+  const [media, setMedia] = useState([]);
+
+  useEffect(() => {
+    setMedia(mediaArray);
+  }, [mediaArray]);
+
   return (
-    <View style={styles.container}>
-      <FlatList/>
+    <View>
+      {media && media.map(({ url, type }) => (
+        <Video key={url} controls>
+          <source uri={{ uri: url }} type={type} />
+          <Text>Your device does not support the video tag.</Text>
+        </Video>
+      ))}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0D0D25',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-
 export default ClipList;
-
