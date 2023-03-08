@@ -12,6 +12,7 @@ import {
 import ClipControl from 'components/organisms/ClipControl';
 import ClipMeta from 'components/organisms/ClipMeta';
 import ClipSheet from 'components/organisms/ClipSheet';
+import ClipActionSheet from 'components/organisms/ClipActionSheet';
 
 const Single = ({ route, navigation }) => {
   const [status, setStatus] = useState({});
@@ -33,8 +34,13 @@ const Single = ({ route, navigation }) => {
   };
 
   const sheetRef = useRef(null);
+  const actionSheetRef = useRef(null);
   const handleSheet = () => {
     sheetRef.current.snapTo(450);
+  }
+
+  const handleActionSheet = () => {
+    actionSheetRef.current.snapTo(250);
   }
 
   return (
@@ -56,9 +62,10 @@ const Single = ({ route, navigation }) => {
           onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </TouchableOpacity>
-      <ClipControl userId={userId} fileId={fileId} filename={filename} handleSheet={handleSheet} />
+      <ClipControl userId={userId} fileId={fileId} filename={filename} handleSheet={handleSheet} handleActionSheet={handleActionSheet} />
       <ClipMeta userId={userId} title={title} description={description} />
       <ClipSheet fileId={fileId} sheetRef={sheetRef} />
+      <ClipActionSheet fileId={fileId} filename={filename} actionSheetRef={actionSheetRef} />
     </SafeAreaView>
   );
 };
