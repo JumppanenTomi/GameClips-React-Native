@@ -87,6 +87,23 @@ const useMedia = () => {
     }
   };
 
+  const removeMedia = async (fileId) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'DELETE',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      return await doFetch(baseUrl + 'media/' + fileId, options);
+    } catch (error) {
+      console.log('deleteMedia: ', error);
+      throw new Error('deleteMedia: ' + error.message);
+    }
+  }
+
   return {
     mediaArray,
     favoriteArray,
@@ -94,6 +111,7 @@ const useMedia = () => {
     loadUserMedia,
     loadFavoriteMedia,
     mediaUser,
+    removeMedia
   };
 };
 

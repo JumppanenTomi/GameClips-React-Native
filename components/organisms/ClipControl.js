@@ -11,7 +11,7 @@ import {useFavorites} from "../../hooks/ApiHooks"
 import {MainContext} from "../../contexts/MainContext";
 import handleLikes from "../functions/handleLikes";
 
-const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
+const ClipControl = ({ userId, fileId, filename, handleSheet, handleActionSheet }) => {
   const { update, setUpdate } = useContext(MainContext);
   const [like, toggleLike] = useState(false);
   const [likeCount, countLikes] = useState(0);
@@ -120,6 +120,8 @@ const ClipControl = ({ userId, fileId, filename, handleSheet }) => {
         <IconButton label="message" active={true} size={32} onPress={handleSheet} />
         <Separator height={8} />
         <IconButton label="share" active={true} size={32} onPress={handleShare} />
+        <Separator height={8} />
+        <IconButton label="more" active={true} size={32} onPress={handleActionSheet} />
       </View>
 
     </View>

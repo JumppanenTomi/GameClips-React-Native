@@ -16,6 +16,10 @@ import ShareIcon from 'assets/icons/share.svg';
 import SendIcon from 'assets/icons/send.svg';
 import SearchIcon from 'assets/icons/search.svg';
 import CloseIcon from 'assets/icons/close.svg';
+import TrashIcon from 'assets/icons/trash.svg';
+import EditIcon from 'assets/icons/edit.svg';
+import LinkIcon from 'assets/icons/link.svg';
+import HeartAddIcon from 'assets/icons/heart-add.svg';
 
 const Icon = ({label, size, color}) => {
   const style = {color: color || '#FFF'};
@@ -35,6 +39,12 @@ const Icon = ({label, size, color}) => {
       return <SendIcon {...commonProps} />;
     case 'close':
       return <CloseIcon {...commonProps} />;
+    case 'edit':
+      return <EditIcon {...commonProps} />;
+    case 'link':
+      return <LinkIcon {...commonProps} />;
+    case 'trash':
+      return <TrashIcon {...commonProps} />;
     case 'search':
       return <SearchIcon {...commonProps} />;
     case 'message':
@@ -55,6 +65,8 @@ const Icon = ({label, size, color}) => {
       return <HeartIcon {...commonProps} />;
     case 'heart-fill':
       return <HeartFillIcon {...commonProps} />;
+    case 'heart-add':
+      return <HeartAddIcon {...commonProps} />;
     case 'profile':
       return <ProfileIcon {...commonProps} />;
     case 'profile-fill':
