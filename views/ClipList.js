@@ -1,25 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { useRoute } from '@react-navigation/native';
-import { useMediaByGame } from 'hooks/ApiHooks';
-import { View, Text, Video } from 'react-native';
+import React from 'react';
+import {StyleSheet, View, FlatList, Dimensions} from 'react-native';
+import {useMedia} from "../hooks/ApiHooks";
+import Single from "./Single";
 
-const ClipList = () => {
-  const { gameName } = useRoute().params;
-  const { mediaArray } = useMediaByGame(gameName);
-  const [media, setMedia] = useState([]);
 
-  useEffect(() => {
-    setMedia(mediaArray);
-  }, [mediaArray]);
+const ClipList = ({navigation}) => {
+  const {mediaArray} = useMedia();
+  const { height, width } = Dimensions.get('window');
 
   return (
-    <View>
-      {media && media.map(({ url, type }) => (
-        <Video key={url} controls>
-          <source uri={{ uri: url }} type={type} />
-          <Text>Your device does not support the video tag.</Text>
-        </Video>
-      ))}
+    <View style={styles.container}>
+      <FlatList
+        vertical
+        data={mediaArray}
+        style={{height: height, width: width}}
+        snapToInterval={height}
+        decelerationRate="fast"
+        snapToAlignment={'center'}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({item}) => (
+          <Single route={{params: item}} navigation={navigation}/>
+        )}
+        removeClippedSubviews={true}
+        initialNumToRender={1}
+        maxToRenderPerBatch={3}
+        windowSize={2} // Add this prop to lazy load items
+      />
     </View>
   );
 };

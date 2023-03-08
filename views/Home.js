@@ -61,31 +61,43 @@ const Home = ({navigation}) => {
           </View>
         </TouchableWithoutFeedback>
         <View>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle} type="heading">
-              Newest clips
-            </Text>
-            <Ionicons
-              style={styles.titleArrow}
-              name="chevron-forward-outline"
-              size={30}
-              color="#ffffff"
-            />
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate('ClipList');
+            }}
+          >
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle} type="heading">
+                Newest clips
+              </Text>
+              <Ionicons
+                style={styles.titleArrow}
+                name="chevron-forward-outline"
+                size={30}
+                color="#ffffff"
+              />
+            </View>
+          </TouchableWithoutFeedback>
           <Newest navigation={navigation}></Newest>
         </View>
         <View style={{paddingTop: 28}}>
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle} type="heading">
-              Browse clips
-            </Text>
-            <Ionicons
-              style={styles.titleArrow}
-              name="chevron-forward-outline"
-              size={30}
-              color="#ffffff"
-            />
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              navigation.navigate('ClipList');
+            }}
+          >
+            <View style={styles.section}>
+              <Text style={styles.sectionTitle} type="heading">
+                Browse clips
+              </Text>
+              <Ionicons
+                style={styles.titleArrow}
+                name="chevron-forward-outline"
+                size={30}
+                color="#ffffff"
+              />
+            </View>
+          </TouchableWithoutFeedback>
           <View>
             <TagList navigation={navigation}></TagList>
           </View>
