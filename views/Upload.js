@@ -1,24 +1,24 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {StyleSheet, View, ImageBackground} from 'react-native';
 import UploadForm from '../components/Lists/Upload/UploadForm';
 
 const Upload = () => {
   return (
-    <View style={styles.container}>
+    <ImageBackground
+      style={styles.imgBackground}
+      resizeMode="cover"
+      source={require('assets/imgs/profile-background.jpg')}
+    >
       <UploadForm />
-    </View>
+    </ImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  imgBackground: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: "100%"
+    width: '100%',
   },
 });
 
 export default Upload;
-

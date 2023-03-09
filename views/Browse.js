@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import GamesList from '../components/Lists/Browse/GamesList';
+import GamesList from 'components/templates/GamesList';
 
 const Browse = () => {
   return (

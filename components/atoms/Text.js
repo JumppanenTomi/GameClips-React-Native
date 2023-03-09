@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
-import { Text as RNPText } from 'react-native-paper';
+import {StyleSheet} from 'react-native';
+import {Text as RNPText} from 'react-native-paper';
 
-const Text = ({ children, type, style, ...rest }) => {
+const Text = ({children, type, style, ...rest}) => {
   const textStyle = [styles[type], style];
 
   return (
@@ -33,15 +33,24 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 12,
   },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FFF',
+  },
+  subTitle: {
+    fontSize: 14,
+    color: '#BFBFBF',
+  },
   body: {
     fontSize: 16,
-    color: 'black',
-    lineHeight: 24,
+    fontWeight: 'bold',
+    color: '#FFF',
   },
   meta: {
     fontSize: 12,
-    color: '#FFF'
-  }
+    color: '#FFF',
+  },
 });
 
 export default Text;
