@@ -49,9 +49,7 @@ const GamesList = () => {
   };
 
   const handleSearch = (newQuery) => {
-    if (!loading) {
       setInput(newQuery);
-    }
   };
 
   const handleGamePress = (game) => {
