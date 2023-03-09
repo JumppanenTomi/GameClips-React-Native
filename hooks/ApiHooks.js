@@ -30,7 +30,7 @@ const useMedia = () => {
           return await fileResponse.json();
         })
       );
-      setMediaArray(media);
+      setMediaArray(media.reverse());
     } catch (error) {
       console.error('List', 'loadMedia', error);
     }

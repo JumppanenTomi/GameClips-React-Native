@@ -16,18 +16,14 @@ import ClipActionSheet from 'components/organisms/ClipActionSheet';
 
 const Single = ({ route, navigation, height }) => {
   const [status, setStatus] = useState({});
-  const [isHidden, toggleHidden] = useState(true);
   const { title, description, filename, user_id: userId, file_id: fileId } = route.params;
 
   const video = useRef(null);
   const handleVideoPress = () => {
-    if (status.isPlaying && isHidden) {
+    if (status.isPlaying) {
       video.current.pauseAsync();
-    } else if (isHidden) {
-      video.current.playAsync();
     } else {
-      Keyboard.dismiss();
-      toggleHidden(true);
+      video.current.playAsync();
     }
   };
 

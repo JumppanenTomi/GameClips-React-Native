@@ -1,12 +1,11 @@
 import React from 'react';
 import {View, FlatList, Dimensions} from 'react-native';
-import {useMedia} from '../hooks/ApiHooks';
 import Single from './Single';
 
 const height = Dimensions.get('window').height + 50;
 
-const ClipList = ({navigation}) => {
-  const {mediaArray} = useMedia();
+const ClipList = ({navigation, route}) => {
+  const {mediaArray} = route.params;
 
   return (
     <View style={{flex: 1}}>

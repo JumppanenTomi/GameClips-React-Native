@@ -1,24 +1,12 @@
-import React, {
-  useEffect,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-  SafeAreaView,
-  List,
-} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import {Card, Input} from '@rneui/themed';
-import PropTypes from 'prop-types';
 import {Controller, useForm} from 'react-hook-form';
 import {
   Alert,
   Keyboard,
-  ScrollView,
   TouchableOpacity,
   StyleSheet,
   View,
-  Text,
   TextInput,
   FlatList,
   ImageBackground,
@@ -33,13 +21,17 @@ import {appId} from '/utils/variables';
 import {Video} from 'expo-av';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import {clockRunning} from 'react-native-reanimated';
+import Text from 'components/atoms/Text';
+import Separator from 'components/atoms/Separator';
+import FormInput from 'components/atoms/FormInput';
+import Loader from 'components/atoms/Loader';
+import Icon from 'components/atoms/Icon';
 const bgImage = require('assets/imgs/upload-background.png');
 
 const UploadForm = () => {
   const [mediafile, setMediafile] = useState({});
   const video = useRef(null);
-  const [loading, setLoading] = useState(false);
+  const [loader, setLoader] = useState(false);
   const navigation = useNavigation();
   const {postMedia} = useMedia();
   const {postTag} = useTag();
@@ -83,7 +75,7 @@ const UploadForm = () => {
   };
 
   const uploadFile = async (data, selectedGame) => {
-    setLoading(true);
+    setLoader(true);
     const formData = new FormData();
     if (data.title) {
       formData.append('title', data.title);
@@ -143,7 +135,7 @@ const UploadForm = () => {
     } catch (error) {
       console.error('file upload failed', error);
     } finally {
-      setLoading(false);
+      setLoader(false);
     }
   };
 
@@ -186,130 +178,87 @@ const UploadForm = () => {
   console.log('tupe', mediafile.type);
 
   return (
-    <View style={styles.container}>
-      <ImageBackground
-        style={styles.backgroundImage}
-        resizeMode="cover"
-        source={bgImage}
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => Keyboard.dismiss()}
+      activeOpacity={1}
+    >
+      <Text type="heading" style={{textAlign: 'center'}}>
+        Upload your clip!
+      </Text>
+      <Separator height={32} />
+      {mediafile.type === 'video' ? (
+        <Video
+          ref={video}
+          source={{uri: mediafile.uri}}
+          style={{width: '100%', height: 200}}
+          resizeMode="cover"
+          useNativeControls
+          onError={(error) => {
+            console.log(error);
+          }}
+        />
+      ) : (
+        <Button fullWidth onPress={pickFile} style={styles.uploadButton}>
+          Choose File
+        </Button>
+      )}
+      <FormInput
+        control={control}
+        name="title"
+        label="Title"
+        rules={{required: true, minLength: 3}}
+        errorText={
+          errors.title && 'Please enter a title with at least 3 characters'
+        }
+      />
+      <FormInput
+        control={control}
+        name="description"
+        label="Description"
+        rules={{minLength: 5}}
+        errorText={
+          errors.username &&
+          'Please enter a description with at least 5 characters'
+        }
+      />
+      <SearchableDropdown
+        onItemSelect={handleGameSelect}
+        containerStyle={styles.dropdownContainer}
+        textInputStyle={styles.textInput}
+        itemStyle={styles.item}
+        itemTextStyle={styles.itemText}
+        placeholderTextColor="#aaa"
+        itemsContainerStyle={styles.itemsContainer}
+        items={games}
+        placeholder={selectedGame ? selectedGame.name : 'Select game'}
+        resetValue={false}
+        underlineColorAndroid="transparent"
+        onTextChange={searchGames}
+      />
+      <Button
+        fullWidth
+        icon={() =>
+          loader ? <Loader size={16} /> : <Icon label="arrow-right" />
+        }
+        onPress={handleSubmit(onSubmit)}
       >
-        <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
-          <Card containerStyle={styles.ccontainer}>
-            {mediafile.type === 'video' ? (
-              <Video
-                ref={video}
-                source={{uri: mediafile.uri}}
-                style={{width: '100%', height: 200}}
-                resizeMode="cover"
-                useNativeControls
-                onError={(error) => {
-                  console.log(error);
-                }}
-              />
-            ) : (
-              <Button onPress={pickFile} style={styles.uploadButton}>
-                Choose File
-              </Button>
-            )}
-            <Controller
-              control={control}
-              rules={{
-                required: {
-                  value: true,
-                  message: 'A title is required!',
-                },
-                minLength: {
-                  value: 3,
-                  message: 'Title min length is 3 characters.',
-                },
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  placeholder="Title"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={errors.title && errors.title.message}
-                  style={styles.input}
-                  placeholderTextColor="#aaa"
-                />
-              )}
-              name="title"
-            />
-
-            <Controller
-              control={control}
-              rules={{
-                minLength: {
-                  value: 5,
-                  message: 'Description min length is 5 characters.',
-                },
-              }}
-              render={({field: {onChange, onBlur, value}}) => (
-                <TextInput
-                  placeholder="Description"
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  value={value}
-                  errorMessage={
-                    errors.description && errors.description.message
-                  }
-                  style={styles.input}
-                  placeholderTextColor="#aaa"
-                />
-              )}
-              name="description"
-            />
-            <SearchableDropdown
-              onItemSelect={handleGameSelect}
-              containerStyle={styles.dropdownContainer}
-              textInputStyle={styles.textInput}
-              itemStyle={styles.item}
-              itemTextStyle={styles.itemText}
-              placeholderTextColor="#aaa"
-              itemsContainerStyle={styles.itemsContainer}
-              items={games}
-              placeholder={selectedGame ? selectedGame.name : 'Select game'}
-              resetValue={false}
-              underlineColorAndroid="transparent"
-              onTextChange={searchGames}
-            />
-            <Button
-              loading={loading}
-              style={styles.button}
-              disabled={!mediafile.uri || errors.title || errors.description}
-              mode="contained"
-              onPress={handleSubmit(onSubmit)}
-            >
-              Upload
-            </Button>
-            <Button onPress={resetForm} style={styles.button}>
-              Reset
-            </Button>
-          </Card>
-        </TouchableOpacity>
-      </ImageBackground>
-    </View>
+        Upload
+      </Button>
+      <Button fullWidth onPress={resetForm}>
+        Reset
+      </Button>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#0D0D25',
+    height: '100%',
     alignItems: 'center',
+    padding: 24,
+    backgroundColor: 'rgba(13,13,37,0.8)',
     justifyContent: 'center',
-    borderColor: '#00000000',
-    height: '100%',
-  },
-  ccontainer: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    paddingTop: 100,
-    paddingLeft: 110,
-    paddingRight: 110,
-    backgroundColor: '#00000000',
-    borderColor: '#00000000',
   },
   dropdownContainer: {
     width: '100%',
@@ -323,6 +272,10 @@ const styles = StyleSheet.create({
   textInput: {
     color: '#aaa',
   },
+  uploadButton: {
+    paddingVertical: 20,
+    borderRadius: 15
+  },
   item: {
     padding: 10,
   },
@@ -331,16 +284,6 @@ const styles = StyleSheet.create({
   },
   itemsContainer: {
     maxHeight: 140,
-  },
-  button: {
-    width: 200,
-    marginTop: 10,
-  },
-  uploadButton: {
-    width: 200,
-    marginTop: 10,
-    borderRadius: 10,
-    padding: 10,
   },
   input: {
     borderColor: '#aaa',

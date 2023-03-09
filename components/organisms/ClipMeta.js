@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useUser } from "hooks/ApiHooks";
-import { StyleSheet, View } from "react-native";
-import Text from "components/atoms/Text";
+import {useEffect, useState} from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useUser} from 'hooks/ApiHooks';
+import {StyleSheet, View} from 'react-native';
+import Text from 'components/atoms/Text';
+import Separator from 'components/atoms/Separator';
 
-const ClipMeta = ({ userId, title, description }) => {
+const ClipMeta = ({userId, title, description}) => {
   const [owner, setOwner] = useState('');
-  const { getUserById } = useUser();
+  const {getUserById} = useUser();
 
   useEffect(() => {
     const getOwner = async () => {
@@ -17,22 +18,22 @@ const ClipMeta = ({ userId, title, description }) => {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getOwner();
-  }, [])
+  }, []);
 
   return (
     <View style={styles.container}>
-      <Text type="brightSubHeading" style={{ fontSize: 16, fontWeight: '700' }}>
+      <Text type="body" style={styles.text}>
         @{owner}
       </Text>
-      <Text type="brightSubHeading" style={{ fontSize: 18 }}>
+      <Text type="title" style={styles.text}>
         {title}
       </Text>
-      <Text style={{ color: '#fff' }}>{description}</Text>
+      <Text type="subTitle">{description}</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -41,7 +42,10 @@ const styles = StyleSheet.create({
     height: 90,
     width: '100%',
     paddingHorizontal: 16,
-  }
-})
+  },
+  text: {
+    fontWeight: 'normal',
+  },
+});
 
 export default ClipMeta;

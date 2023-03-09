@@ -7,11 +7,17 @@ import FormInput from 'components/atoms/FormInput';
 import Button from 'components/atoms/Button';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
-import {StyleSheet, View, ImageBackground, Alert} from 'react-native';
+import {
+  StyleSheet,
+  Keyboard,
+  ImageBackground,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'components/atoms/Icon';
 import Avatar from 'components/atoms/Avatar';
 import * as ImagePicker from 'expo-image-picker';
 import Loader from 'components/atoms/Loader';
+import Toast from 'react-native-toast-message';
 
 const Update = ({navigation}) => {
   const [mediafile, setMediafile] = useState({});
@@ -19,7 +25,8 @@ const Update = ({navigation}) => {
   const {putUser, getUserByToken} = useUser();
   const {postMedia} = useMedia();
   const {postTag} = useTag();
-  const {user, setUser} = useContext(MainContext);
+  const {setIsLoggedIn, user, setUser} = useContext(MainContext);
+
   const {
     control,
     handleSubmit,
@@ -29,7 +36,6 @@ const Update = ({navigation}) => {
     defaultValues: {
       username: user.username,
       password: '',
-      confirmPassword: '',
       email: user.email,
     },
     mode: 'onBlur',
@@ -46,10 +52,25 @@ const Update = ({navigation}) => {
       console.log('updateUser', updateResult);
       const updatedData = await getUserByToken(token);
       setUser(updatedData);
-      uploadAvatar();
-      navigation.navigate('Profile');
+      if (mediafile.uri) {
+        uploadAvatar();
+      }
+      console.log('Logging out!');
+      setUser({});
+      setIsLoggedIn(false);
+      await AsyncStorage.removeItem('userToken');
+      Toast.show({
+        type: 'success',
+        text1: 'Successfully updated profile. Please login again.',
+        visibilityTime: 3000,
+      });
     } catch (error) {
       console.log('Error updating user', error);
+      Toast.show({
+        type: 'error',
+        text1: error.message,
+        visibilityTime: 3000,
+      });
     } finally {
       setLoader(false);
     }
@@ -91,9 +112,7 @@ const Update = ({navigation}) => {
         aspect: [4, 3],
         quality: 0.5,
       });
-
       console.log(result);
-
       if (!result.canceled) {
         setMediafile(result.assets[0]);
         trigger();
@@ -109,14 +128,18 @@ const Update = ({navigation}) => {
       resizeMode="cover"
       source={require('assets/imgs/profile-background.jpg')}
     >
-      <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.container}
+        onPress={() => Keyboard.dismiss()}
+        activeOpacity={1}
+      >
         <Text type="heading" style={{textAlign: 'center'}}>
           Update your account!
         </Text>
         <Separator height={48} />
         <Avatar
-          source={mediafile.uri || null}
-          userID={user.user_id}
+          tempSource={mediafile?.uri}
+          userId={user.user_id}
           size={160}
           onPress={pickFile}
         />
@@ -170,7 +193,7 @@ const Update = ({navigation}) => {
             Go back
           </Text>
         </Text>
-      </View>
+      </TouchableOpacity>
     </ImageBackground>
   );
 };
