@@ -9,7 +9,7 @@ const ClipList = ({navigation}) => {
   const { height, width } = Dimensions.get('window');
 
   return (
-    <View style={styles.container}>
+    <View>
       <FlatList
         vertical
         data={mediaArray}
