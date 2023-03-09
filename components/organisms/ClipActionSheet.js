@@ -7,10 +7,13 @@ import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import * as Clipboard from 'expo-clipboard';
 import {uploadsUrl} from 'utils/variables';
+import {useContext} from "react";
+import {MainContext} from "../../contexts/MainContext";
 
 const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef}) => {
   const {removeMedia} = useMedia();
   const {addFavorite} = useFavorites();
+  const {update, setUpdate} = useContext(MainContext);
   const navigation = useNavigation();
 
   const handleEdit = () => {
@@ -25,7 +28,7 @@ const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef})
         text1: 'Successfully added to favorites',
         visibilityTime: 1500,
       });
-      //setUpdate(!update);
+      setUpdate(!update);
     } catch (error) {
       console.log(error);
       Toast.show({
