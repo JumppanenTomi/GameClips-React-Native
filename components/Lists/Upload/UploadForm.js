@@ -1,26 +1,14 @@
-import React, {
-  useEffect,
-  useCallback,
-  useContext,
-  useRef,
-  useState,
-  SafeAreaView,
-  List,
-} from 'react';
+import React, {useCallback, useContext, useRef, useState} from 'react';
 import SearchableDropdown from 'react-native-searchable-dropdown';
-import {Card, Input} from '@rneui/themed';
-import PropTypes from 'prop-types';
+import {Card} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
 import {
   Alert,
   Keyboard,
-  ScrollView,
   TouchableOpacity,
   StyleSheet,
   View,
-  Text,
   TextInput,
-  FlatList,
   ImageBackground,
 } from 'react-native';
 import Button from 'components/atoms/Button';
@@ -33,7 +21,6 @@ import {appId} from '/utils/variables';
 import {Video} from 'expo-av';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import {clockRunning} from 'react-native-reanimated';
 const bgImage = require('assets/imgs/upload-background.png');
 
 const UploadForm = () => {
@@ -60,6 +47,7 @@ const UploadForm = () => {
   // Data is from the RAWG API: https://rawg.io/apidocs
 
   const searchGames = async (query) => {
+    // Fetching games from API into a list
     const url = `https://api.rawg.io/api/games?search=${query}&key=6411c4fb4f4340ad87976cbfecd8158c&fields=name`;
     try {
       const response = await axios.get(url);
@@ -114,7 +102,7 @@ const UploadForm = () => {
         tag: appId,
       };
 
-      const appTag2 = {
+      const appTag2 = { // Attaching name of the associated game as tag.
         file_id: result.file_id,
         tag: `${appId}_${selectedGame.name}`,
       };
@@ -131,11 +119,7 @@ const UploadForm = () => {
           text: 'OK',
           onPress: () => {
             console.log('OK Pressed');
-            // update 'update' state in context
             setUpdate(!update);
-            // reset form
-            // reset();
-            // TODO: navigate to home
             navigation.navigate('Home');
           },
         },
@@ -149,7 +133,6 @@ const UploadForm = () => {
 
   const pickFile = async () => {
     try {
-      // No permissions request is necessary for launching the image library
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
         allowsEditing: true,
@@ -161,7 +144,6 @@ const UploadForm = () => {
 
       if (!result.canceled) {
         setMediafile(result.assets[0]);
-        // validate form
         trigger();
       }
     } catch (error) {
@@ -177,13 +159,10 @@ const UploadForm = () => {
   useFocusEffect(
     useCallback(() => {
       return () => {
-        console.log('leaving');
         resetForm();
       };
     }, [])
   );
-
-  console.log('tupe', mediafile.type);
 
   return (
     <View style={styles.container}>

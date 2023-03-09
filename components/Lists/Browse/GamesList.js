@@ -8,7 +8,6 @@ import Loader from 'components/atoms/Loader';
 import Searchbar from 'components/atoms/Searchbar';
 import Separator from 'components/atoms/Separator';
 import Text from 'components/atoms/Text';
-import ClipList from 'views/ClipList';
 
 // Data is from the RAWG API: https://rawg.io/apidocs
 
