@@ -35,7 +35,7 @@ const BrowseClipList = ({navigation}) => {
           snapToAlignment={'center'}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({item}) => (
-            <Single route={{params: item}} navigation={navigation} />
+            <Single route={{params: item}} navigation={navigation} height={height} />
           )}
           removeClippedSubviews={true}
           initialNumToRender={1}
