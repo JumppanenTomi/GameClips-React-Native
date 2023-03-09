@@ -1,25 +1,27 @@
 import React from 'react';
-import {StyleSheet, View, FlatList, Dimensions} from 'react-native';
-import {useMedia} from "../hooks/ApiHooks";
-import Single from "./Single";
+import {View, FlatList, Dimensions} from 'react-native';
+import {useMedia} from '../hooks/ApiHooks';
+import Single from './Single';
 
+const height = Dimensions.get('window').height + 50;
 
 const ClipList = ({navigation}) => {
   const {mediaArray} = useMedia();
-  const { height, width } = Dimensions.get('window');
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <FlatList
-        vertical
         data={mediaArray}
-        style={{height: height, width: width}}
         snapToInterval={height}
         decelerationRate="fast"
-        snapToAlignment={'center'}
+        snapToAlignment="center"
         keyExtractor={(item, index) => index.toString()}
         renderItem={({item}) => (
-          <Single route={{params: item}} navigation={navigation}/>
+          <Single
+            route={{params: item}}
+            navigation={navigation}
+            height={height}
+          />
         )}
         removeClippedSubviews={true}
         initialNumToRender={1}
