@@ -45,7 +45,7 @@ const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef})
         text1: 'Link copied',
         visibilityTime: 1500,
       });
-      actionSheetRef.current.snapTo(0);
+      actionSheetRef.current?.snapTo(0);
     } catch (error) {
       console.log(error);
       Toast.show({

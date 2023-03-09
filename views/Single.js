@@ -34,11 +34,11 @@ const Single = ({ route, navigation, height }) => {
   const sheetRef = useRef(null);
   const actionSheetRef = useRef(null);
   const handleSheet = () => {
-    sheetRef.current.snapTo(450);
+    sheetRef.current?.snapTo(1);
   }
 
   const handleActionSheet = () => {
-    actionSheetRef.current.snapTo(250);
+    actionSheetRef.current?.snapTo(1);
   }
 
   return (
