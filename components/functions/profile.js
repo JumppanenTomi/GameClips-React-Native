@@ -7,7 +7,6 @@ const profile =  () => {
       const avatarArray = await useTag().getFilesByTag('avatar_' + id);
       return avatarArray.pop().filename;
     } catch (error) {
-      console.log(error);
       return '4254c98a7ccd66d74ff4179b3d9df713.png';
     }
   };
