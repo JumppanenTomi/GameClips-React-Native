@@ -8,10 +8,14 @@ import Toast from 'react-native-toast-message';
 import * as Clipboard from 'expo-clipboard';
 import {uploadsUrl} from 'utils/variables';
 
-const ClipActionSheet = ({fileId, filename, actionSheetRef}) => {
+const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef}) => {
   const {removeMedia} = useMedia();
   const {addFavorite} = useFavorites();
   const navigation = useNavigation();
+
+  const handleEdit = () => {
+    navigation.navigate('EditClip', {fileId, title, description});
+  };
 
   const handleAddToFavorite = async () => {
     try {
@@ -96,6 +100,7 @@ const ClipActionSheet = ({fileId, filename, actionSheetRef}) => {
           title="Edit"
           titleStyle={{color: '#FFF'}}
           left={(props) => <Icon label="edit" />}
+          onPress={handleEdit}
         />
         <List.Item
           title="Add to favorites"

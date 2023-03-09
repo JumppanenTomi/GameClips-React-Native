@@ -87,6 +87,24 @@ const useMedia = () => {
     }
   };
 
+  const updateMedia = async (fileId, fileData) => {
+    const token = await AsyncStorage.getItem('userToken');
+    const options = {
+      method: 'post',
+      headers: {
+        'x-access-token': token,
+        'Content-Type': 'multipart/form-data',
+      },
+      body: fileData,
+    };
+    try {
+      return await doFetch(baseUrl + 'media/' + fileId, options);
+    } catch (error) {
+      console.log('updateMedia: ', error);
+      throw new Error('updateMedia: ' + error.message);
+    }
+  }
+
   const removeMedia = async (fileId) => {
     const token = await AsyncStorage.getItem('userToken');
     const options = {
@@ -111,6 +129,7 @@ const useMedia = () => {
     loadUserMedia,
     loadFavoriteMedia,
     mediaUser,
+    updateMedia,
     removeMedia
   };
 };
