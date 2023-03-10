@@ -6,11 +6,11 @@ GameClips is a mobile application built using React Native. It is the ultimate p
 
 ## Key Features
 
-- Built using Atomic Design principles to ensure a consistent and intuitive user experience
-- Utilizes the powerful React Native Paper library for flexible and dynamic UI design
+- Built using **Atomic Design** principles to ensure a consistent and intuitive user experience
+- Utilizes the powerful **React Native Paper** library for flexible and dynamic UI design
 - Integrates with the [rawg.io API](https://api.rawg.io/docs/) to fetch game information and provide enhanced functionality
 - Backed by [Media API](https://media.mw.metropolia.fi/wbma/docs/), allowing for seamless upload and playing of high-quality game clips
-- Absolute imports, which facilitates managing complex file structures and dependencies
+- **Absolute imports**, which facilitates managing complex file structures and dependencies
 
 ## Installation
 GameClips is already set up with pre-configured API keys and environment variables, so you can start using it right away by following these steps:
