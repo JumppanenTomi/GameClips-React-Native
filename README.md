@@ -13,7 +13,9 @@ GameClips is a mobile application built using React Native. It is the ultimate p
 - Absolute imports, which facilitates managing complex file structures and dependencies
 
 ## Installation
-To get started with GameClips on your local machine, simply clone the repository and run npm install. The app is already set up with pre-configured API keys and environment variables, so you can start using it right away.
+GameClips is already set up with pre-configured API keys and environment variables, so you can start using it right away by following these steps:
+- Clone the repository
+- Run `npm install`, then `npm start`
 
 ## Usage
 - Install GameClips to your local device
