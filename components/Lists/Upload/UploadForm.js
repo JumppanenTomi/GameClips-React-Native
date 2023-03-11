@@ -143,7 +143,7 @@ const UploadForm = () => {
     try {
       // No permissions request is necessary for launching the image library
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.5,
@@ -251,7 +251,7 @@ const UploadForm = () => {
       <Separator height={24} />
       <Text type="subHeading">
         Don't want to upload?{' '}
-        <Text type="link" onPress={() => navigation.navigate('Profile')}>
+        <Text type="link" onPress={() => navigation.goBack()}>
           Go back
         </Text>
       </Text>
