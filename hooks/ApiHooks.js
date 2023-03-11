@@ -90,12 +90,12 @@ const useMedia = () => {
   const updateMedia = async (fileId, fileData) => {
     const token = await AsyncStorage.getItem('userToken');
     const options = {
-      method: 'post',
+      method: 'PUT',
       headers: {
         'x-access-token': token,
-        'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/json',
       },
-      body: fileData,
+      body: JSON.stringify(fileData),
     };
     try {
       return await doFetch(baseUrl + 'media/' + fileId, options);

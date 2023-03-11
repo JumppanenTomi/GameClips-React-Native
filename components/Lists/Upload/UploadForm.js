@@ -248,6 +248,13 @@ const UploadForm = () => {
       <Button fullWidth onPress={resetForm}>
         Reset
       </Button>
+      <Separator height={24} />
+      <Text type="subHeading">
+        Don't want to upload?{' '}
+        <Text type="link" onPress={() => navigation.navigate('Profile')}>
+          Go back
+        </Text>
+      </Text>
     </TouchableOpacity>
   );
 };
@@ -274,7 +281,7 @@ const styles = StyleSheet.create({
   },
   uploadButton: {
     paddingVertical: 20,
-    borderRadius: 15
+    borderRadius: 15,
   },
   item: {
     padding: 10,

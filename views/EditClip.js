@@ -50,7 +50,6 @@ const EditClip = ({navigation, route}) => {
       Toast.show({
         type: 'error',
         text1: error.message,
-        text2: 'Clip might already be added to favorites.',
         visibilityTime: 3000,
       });
     } finally {
@@ -100,6 +99,13 @@ const EditClip = ({navigation, route}) => {
           >
             Update
           </Button>
+          <Separator height={24} />
+          <Text type="subHeading">
+            Everything is correct?{' '}
+            <Text type="link" onPress={() => navigation.navigate('Profile')}>
+              Go back
+            </Text>
+          </Text>
         </View>
       </TouchableOpacity>
     </ImageBackground>
