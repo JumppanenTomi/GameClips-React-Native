@@ -6,12 +6,8 @@ import {
   ImageBackground,
   Keyboard,
 } from 'react-native';
-import PropTypes from 'prop-types';
-import {MainContext} from 'contexts/MainContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useAuthentication, useMedia, useUser} from 'hooks/ApiHooks';
+import {useMedia} from 'hooks/ApiHooks';
 import {useForm} from 'react-hook-form';
-import {TextInput} from 'react-native-paper';
 import Button from 'components/atoms/Button';
 import FormInput from 'components/atoms/FormInput';
 import Icon from 'components/atoms/Icon';
@@ -38,13 +34,14 @@ const EditClip = ({navigation, route}) => {
   const updateClip = async (updateData) => {
     setLoader(true);
     try {
+      console.log(updateData)
       await updateMedia(fileId, updateData);
-      navigation.navigate('Home');
       Toast.show({
         type: 'success',
         text1: 'Successfully editted clip',
         visibilityTime: 1500,
       });
+      navigation.navigate('Profile');
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -102,7 +99,7 @@ const EditClip = ({navigation, route}) => {
           <Separator height={24} />
           <Text type="subHeading">
             Everything is correct?{' '}
-            <Text type="link" onPress={() => navigation.navigate('Profile')}>
+            <Text type="link" onPress={() => navigation.goBack()}>
               Go back
             </Text>
           </Text>

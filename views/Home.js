@@ -48,7 +48,6 @@ const Home = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    minHeight: '100%',
     backgroundColor: '#0D0D25',
     paddingTop: 50,
     paddingBottom: 90,

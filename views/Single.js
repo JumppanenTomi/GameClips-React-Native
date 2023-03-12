@@ -55,6 +55,7 @@ const Single = ({route, navigation, height}) => {
             console.log(error);
           }}
           isLooping
+          shouldPlay
           onPlaybackStatusUpdate={(status) => setStatus(() => status)}
         />
       </TouchableOpacity>
@@ -77,6 +78,7 @@ const Single = ({route, navigation, height}) => {
         filename={filename}
         title={title}
         description={description}
+        video={video}
         actionSheetRef={actionSheetRef}
       />
     </View>

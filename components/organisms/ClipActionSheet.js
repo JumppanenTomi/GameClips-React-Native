@@ -7,10 +7,17 @@ import {useNavigation} from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 import * as Clipboard from 'expo-clipboard';
 import {uploadsUrl} from 'utils/variables';
-import {useContext} from "react";
-import {MainContext} from "../../contexts/MainContext";
+import {useContext} from 'react';
+import {MainContext} from '../../contexts/MainContext';
 
-const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef}) => {
+const ClipActionSheet = ({
+  fileId,
+  filename,
+  title,
+  description,
+  video,
+  actionSheetRef,
+}) => {
   const {removeMedia} = useMedia();
   const {addFavorite} = useFavorites();
   const {update, setUpdate} = useContext(MainContext);
@@ -18,6 +25,8 @@ const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef})
 
   const handleEdit = () => {
     navigation.navigate('EditClip', {fileId, title, description});
+    video.current?.pauseAsync();
+    actionSheetRef.current?.snapTo(0);
   };
 
   const handleAddToFavorite = async () => {
@@ -48,7 +57,6 @@ const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef})
         text1: 'Link copied',
         visibilityTime: 1500,
       });
-      actionSheetRef.current?.snapTo(0);
     } catch (error) {
       console.log(error);
       Toast.show({
@@ -79,6 +87,8 @@ const ClipActionSheet = ({fileId, filename, title, description, actionSheetRef})
                 text1: 'Successfully deleted',
                 visibilityTime: 1500,
               });
+              video.current?.pauseAsync();
+              actionSheetRef.current?.snapTo(0);
               navigation.goBack();
             } catch (error) {
               console.log(error);

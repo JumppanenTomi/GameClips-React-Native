@@ -17,15 +17,8 @@ import {MainContext} from 'contexts/MainContext';
 import MediaMeta from 'components/molecules/MediaMeta';
 
 const FavoriteListitem = ({singleMedia, navigation}) => {
-  const [avatar, setAvatar] = useState('5760');
-  const [owner, setOwner] = useState('');
   const {update, setUpdate} = useContext(MainContext);
   const item = singleMedia;
-
-  const getData = async () => {
-    setOwner(await profile().loadOwner(item.user_id));
-    setAvatar(await profile().loadAvatar(item.user_id));
-  };
 
   const deleteFavorite = async (id) => {
     const token = await AsyncStorage.getItem('userToken');
@@ -63,10 +56,6 @@ const FavoriteListitem = ({singleMedia, navigation}) => {
       {cancelable: true}
     );
   };
-
-  useEffect(() => {
-    getData();
-  }, []);
 
   return (
     <TouchableOpacity

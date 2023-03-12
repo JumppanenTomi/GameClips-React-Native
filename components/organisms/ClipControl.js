@@ -6,8 +6,6 @@ import Avatar from '../atoms/Avatar';
 import PropTypes from 'prop-types';
 import Separator from 'components/atoms/Separator';
 import {uploadsUrl} from 'utils/variables';
-import Toast from 'react-native-toast-message';
-import {useFavorites} from '../../hooks/ApiHooks';
 import {MainContext} from '../../contexts/MainContext';
 import handleLikes from '../functions/handleLikes';
 
