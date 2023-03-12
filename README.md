@@ -43,8 +43,11 @@ GameClips is already set up with pre-configured API keys and environment variabl
 ## Demo video
 [![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
 
-## Changes based on user testings
-#45
+## Changes made based on user testings
+[Clip update is not working #45](https://github.com/JumppanenTomi/GameClips-React-Native/issues/45)
+[Clips should have autoplay feature #44](https://github.com/JumppanenTomi/GameClips-React-Native/issues/44)
+[App could have more indicators for navigation (arrows that take you back etc) #43](https://github.com/JumppanenTomi/GameClips-React-Native/issues/43)
+[When clip is uploaded and you'll be taken back to home screen, for some rason bottom nav is hidden #42](https://github.com/JumppanenTomi/GameClips-React-Native/issues/42)
 
 ## Others
 - Project management: [Trello board](https://trello.com/b/D8L11f8Q/web-based-mobile-project)
