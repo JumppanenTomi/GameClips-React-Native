@@ -1,3 +1,4 @@
+
 # GameClips
 Share your best gaming moments with the world.
 
@@ -41,6 +42,9 @@ GameClips is already set up with pre-configured API keys and environment variabl
 
 ## Demo video
 [![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
+
+## Changes based on user testings
+Clip update is not working - Issue #45
 
 ## Others
 - Project management: [Trello board](https://trello.com/b/D8L11f8Q/web-based-mobile-project)
