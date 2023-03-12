@@ -93,8 +93,8 @@ GameClips is already set up with pre-configured API keys and environment variabl
 - [When clip is uploaded and you'll be taken back to home screen, for some rason bottom nav is hidden #42](https://github.com/JumppanenTomi/GameClips-React-Native/issues/42)
 
 ### Issues
-Our current issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aopen+is%3Aissue)
-And eliminated issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aissue+is%3Aclosed)
+- Our current issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aopen+is%3Aissue)
+- And eliminated issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aissue+is%3Aclosed)
 
 ## Others
 - Project management: [Trello board](https://trello.com/b/D8L11f8Q/web-based-mobile-project)
