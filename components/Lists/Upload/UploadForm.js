@@ -128,7 +128,7 @@ const UploadForm = () => {
             // reset form
             // reset();
             // TODO: navigate to home
-            navigation.navigate('Home');
+            navigation.goBack();
           },
         },
       ]);

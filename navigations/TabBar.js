@@ -1,19 +1,19 @@
-import { StyleSheet, View } from 'react-native';
-import { Appbar, Button, IconButton } from 'react-native-paper';
+import {StyleSheet, View} from 'react-native';
+import {Appbar, Button, IconButton} from 'react-native-paper';
 import Icon from 'components/atoms/Icon';
 import AppbarButton from './AppbarButton';
 
-const TabBar = ({ state, descriptors, navigation }) => {
+const TabBar = ({state, descriptors, navigation}) => {
   return (
     <Appbar style={styles.container}>
       {state.routes.map((route, index) => {
-        const { options } = descriptors[route.key];
+        const {options} = descriptors[route.key];
         const label =
           options.tabBarLabel !== undefined
             ? options.tabBarLabel
             : options.title !== undefined
-              ? options.title
-              : route.name;
+            ? options.title
+            : route.name;
 
         const isFocused = state.index === index;
 
@@ -25,7 +25,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate({ name: route.name, merge: true });
+            navigation.navigate({name: route.name, merge: true});
           }
         };
 
@@ -37,7 +37,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
               <Appbar.Action
                 icon={() => <Icon label={label} />}
                 onPress={onPress}
-                key={item => item}
+                key={(item) => item}
               />
             )}
           </View>
@@ -45,7 +45,7 @@ const TabBar = ({ state, descriptors, navigation }) => {
       })}
     </Appbar>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     paddingVertical: 24,
     height: 90,
     borderTopLeftRadius: 15,
-    borderTopRightRadius: 15
+    borderTopRightRadius: 15,
   },
-})
+});
 
 export default TabBar;
