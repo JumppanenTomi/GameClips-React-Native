@@ -24,6 +24,7 @@ GameClips is already set up with pre-configured API keys and environment variabl
 - Browse other users' clips and interact with them by liking, commenting, and sharing
 
 ## Screenshots
+<div>
 <img src="./assets/screenshots/onboarding.png" alt="onboarding" width="200"/>
 <img src="./assets/screenshots/login.png" alt="login" width="200"/>
 <img src="./assets/screenshots/register.png" alt="register" width="200"/>
@@ -36,6 +37,7 @@ GameClips is already set up with pre-configured API keys and environment variabl
 <img src="./assets/screenshots/favorties.png" alt="favorites" width="200"/>
 <img src="./assets/screenshots/profile.png" alt="profile" width="200"/>
 <img src="./assets/screenshots/update.png" alt="update" width="200"/>
+</div>
 
 ## Demo video
 [![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
