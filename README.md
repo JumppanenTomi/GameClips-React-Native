@@ -34,7 +34,7 @@ GameClips is already set up with pre-configured API keys and environment variabl
 <img src="./assets/screenshots/comment.png" alt="comment" width="200"/>
 <img src="./assets/screenshots/clip-action.png" alt="clip-action" width="200"/>
 <img src="./assets/screenshots/browse.png" alt="browse" width="200"/>
-<img src="./assets/screenshots/favorties.png" alt="favorites" width="200"/>
+<img src="./assets/screenshots/favorites.png" alt="favorites" width="200"/>
 <img src="./assets/screenshots/profile.png" alt="profile" width="200"/>
 <img src="./assets/screenshots/update.png" alt="update" width="200"/>
 </div>
