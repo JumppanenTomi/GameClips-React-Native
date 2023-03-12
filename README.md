@@ -24,7 +24,21 @@ GameClips is already set up with pre-configured API keys and environment variabl
 - Browse other users' clips and interact with them by liking, commenting, and sharing
 
 ## Screenshots
+<img src="./assets/screenshots/onboarding.png" alt="onboarding" width="200"/>
+<img src="./assets/screenshots/login.png" alt="login" width="200"/>
+<img src="./assets/screenshots/register.png" alt="register" width="200"/>
+<img src="./assets/screenshots/home.png" alt="home" width="200"/>
+<img src="./assets/screenshots/upload.png" alt="upload" width="200"/>
+<img src="./assets/screenshots/clip.png" alt="clip" width="200"/>
+<img src="./assets/screenshots/comment.png" alt="comment" width="200"/>
+<img src="./assets/screenshots/clip-action.png" alt="clip-action" width="200"/>
+<img src="./assets/screenshots/browse.png" alt="browse" width="200"/>
+<img src="./assets/screenshots/favorties.png" alt="favorites" width="200"/>
+<img src="./assets/screenshots/profile.png" alt="profile" width="200"/>
+<img src="./assets/screenshots/update.png" alt="update" width="200"/>
 
+## Demo video
+[![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
 
 ## Others
 - Project management: [Trello board](https://trello.com/b/D8L11f8Q/web-based-mobile-project)
