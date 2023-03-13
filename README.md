@@ -42,27 +42,6 @@ GameClips is already set up with pre-configured API keys and environment variabl
 ## Demo video
 [![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
 
-## Changes made based on user testings
-- [Clip update is not working #45](https://github.com/JumppanenTomi/GameClips-React-Native/issues/45)
-- [Clips should have autoplay feature #44](https://github.com/JumppanenTomi/GameClips-React-Native/issues/44)
-- [App could have more indicators for navigation (arrows that take you back etc) #43](https://github.com/JumppanenTomi/GameClips-React-Native/issues/43)
-- [When clip is uploaded and you'll be taken back to home screen, for some rason bottom nav is hidden #42](https://github.com/JumppanenTomi/GameClips-React-Native/issues/42)
-
-### Issues
-- Our current issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aopen+is%3Aissue)
-- And eliminated issues are [here](https://github.com/JumppanenTomi/GameClips-React-Native/issues?q=is%3Aissue+is%3Aclosed)
-
-## Others
-- Project management: [Trello board](https://trello.com/b/D8L11f8Q/web-based-mobile-project)
-- Design prototype: [Figma](https://www.figma.com/file/S84gPK5QA63M2jY0y1CaWi/GameClips-mobile-app?node-id=0%3A1&t=sR3d69R6rhajfWmK-0)
-
-## Contributors
-1. Tomi Jumppanen
-2. Valtteri Niininen
-3. Dat Pham (Daniel)
-
-[![demo_video](https://img.youtube.com/vi/mGbsy2Y-akQ/0.jpg)](https://www.youtube.com/watch?v=mGbsy2Y-akQ)
-
 ## Resolved Issues
 - Issue #45: [Clip update is not working](https://github.com/JumppanenTomi/GameClips-React-Native/issues/45)
 - Issue #44: [Clips should have autoplay feature #44](https://github.com/JumppanenTomi/GameClips-React-Native/issues/44)
